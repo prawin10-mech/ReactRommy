@@ -1,9 +1,1 @@
-export const cities = [
-  "Dubai",
-  "New York",
-  "Riyadh",
-  "xyz0",
-  "abc",
-  "aa",
-  "addh",
-];
+export const cities = ["Riyadh", "Dubai", "New York"];

@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { cities } from "../../helper";
+import Dubai from "../../assets/Dubai.JPG";
+import NewYork from "../../assets/New York.JPG";
+import Riyadh from "../../assets/Riyadh.JPG";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 
 const CityCarousel = () => {
   const [currentCityIndex, setCurrentCityIndex] = useState(0);
@@ -9,7 +13,6 @@ const CityCarousel = () => {
     const updateCarouselCities = () => {
       const slicedCities = cities.slice(currentCityIndex, currentCityIndex + 3);
       const remainingCities = cities.slice(0, 3 - slicedCities.length);
-
       setCarouselCities([...slicedCities, ...remainingCities]);
     };
 
@@ -30,31 +33,72 @@ const CityCarousel = () => {
 
   const carouselItems = carouselCities.map((city, index) => {
     const isActive = index === 1;
-    const styles = isActive ? "bg-yellow-400 h-96" : "bg-gray-200 h-72";
+    const styles = isActive ? "h-60" : "my-auto h-52";
+
+    let image = null;
+    let cityName = null;
+    if (city === "Dubai") {
+      image = (
+        <img
+          src={Dubai}
+          alt="Dubai"
+          className="h-full object-cover w-96 rounded-2xl"
+        />
+      );
+      cityName = "Dubai";
+    } else if (city === "New York") {
+      image = (
+        <img
+          src={NewYork}
+          alt="New York"
+          className="h-full object-cover w-96 rounded-2xl"
+        />
+      );
+      cityName = "New York";
+    } else if (city === "Riyadh") {
+      image = (
+        <img
+          src={Riyadh}
+          alt="Riyadh"
+          className="h-full object-cover w-96 rounded-2xl"
+        />
+      );
+      cityName = "Riyadh";
+    }
+
     return (
       <div
         key={city}
-        className={`w-96 flex items-center justify-center font-bold text-3xl ${styles}`}
+        className={`flex items-center justify-center font-bold text-3xl ${styles} rounded-md relative`}
       >
-        {city}
+        {image}
+        <div className="absolute bottom-4 left-0 right-0 text-white font-semibold text-center">
+          {cityName}
+        </div>
       </div>
     );
   });
 
   return (
-    <div className="flex justify-center items-center mt-20">
+    <div className="relative flex justify-center items-center mt-20">
       <button
-        className="bg-green-500 text-white px-4 py-2 rounded mr-2"
+        className=" left-0 top-1/2 transform -translate-y-1/2"
         onClick={handlePrevClick}
       >
-        Prev
+        <ChevronLeftIcon
+          className="h-8 w-8 text-slate-800 cursor-pointer"
+          onClick={handlePrevClick}
+        />
       </button>
-      <div className="flex w-96">{carouselItems}</div>
+      <div className="flex w-auto">{carouselItems}</div>
       <button
-        className="bg-green-500 text-white px-4 py-2 rounded ml-2"
+        className="right-0 top-1/2 transform -translate-y-1/2"
         onClick={handleNextClick}
       >
-        Next
+        <ChevronRightIcon
+          className=" h-8 w-8 text-slate-800 cursor-pointer"
+          onClick={handleNextClick}
+        />
       </button>
     </div>
   );
