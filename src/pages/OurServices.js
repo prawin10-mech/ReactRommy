@@ -1,26 +1,28 @@
 import React, { useState } from "react";
-import MainBgImg from "../assets/mainBackground.jpg";
 import FloatingImage from "../components/FloatingImage";
 import Search from "../components/Search";
 import CityCourosol from "../components/UI/CityCourosol";
+import Rooms from "../components/Rooms";
 
 const OurServices = () => {
   return (
-    <div
-      className="bg-cover bg-no-repeat bg-center w-full h-screen flex flex-col justify-between"
-      style={{ backgroundImage: `url(${MainBgImg})` }}
-    >
-      <div className="flex  justify-between">
-        <div className="py-16">
-          <p className="text-4xl font-bold text-white pl-10">
-            Find your perfect sharing space.
-          </p>
-          <Search />
+    <div className="flex flex-col justify-between !important">
+      <div className="flex flex-col justify-between !important">
+        <div className="flex justify-around">
+          <div className="pt-16">
+            <p className="text-4xl font-bold text-white pl-10">
+              Find your perfect sharing space.
+            </p>
+            <div className="pt-5">
+              <Search />
+            </div>
+          </div>
+          <FloatingImage />
         </div>
-        <FloatingImage />
-      </div>
-      <div className="">
-        <CityCourosol />
+        <div>
+          <CityCourosol />
+          <Rooms />
+        </div>
       </div>
     </div>
   );

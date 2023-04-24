@@ -9,8 +9,8 @@ const Search = () => {
     setActiveLink(link);
   };
   return (
-    <div className="bg-white h-32 m-10 w-[120%] p-5 rounded-lg shadow-lg shadow-black">
-      <div className="flex mb-2">
+    <div className="bg-white h-32 mx-10 mt-10 w-[120%] p-5 rounded-lg shadow-md shadow-black shadow-opacity-50">
+      <div className="flex">
         <p
           className={`mr-3 text-orange-500 text-bold px-5 ${
             activeLink === "rooms"

@@ -10,7 +10,7 @@ const Nav = () => {
   };
 
   return (
-    <div className="p-3 flex justify-between h-">
+    <div className="p-3 flex justify-between bg-white">
       <NavLink to={"/"} className="flex align-content-center">
         <img
           src={RoomyFinderLogo}
