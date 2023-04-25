@@ -3,6 +3,7 @@ import FloatingImage from "../components/FloatingImage";
 import Search from "../components/Search";
 import CityCourosol from "../components/UI/CityCourosol";
 import Rooms from "../components/Rooms";
+import AvailableRooms from "../components/cityCorosols/AvailableRooms";
 
 const OurServices = () => {
   return (
@@ -22,6 +23,7 @@ const OurServices = () => {
         <div>
           <CityCourosol />
           <Rooms />
+          <AvailableRooms />
         </div>
       </div>
     </div>

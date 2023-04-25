@@ -71,7 +71,6 @@ const CityCarousel = () => {
         key={city}
         className={`flex items-center justify-center font-bold text-3xl ${styles} relative`}
       >
-        {console.log(styles)}
         {image}
         <div className="absolute bottom-4 left-0 right-0 text-white font-semibold text-center">
           {cityName}

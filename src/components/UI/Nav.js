@@ -10,7 +10,7 @@ const Nav = () => {
   };
 
   return (
-    <div className="p-3 flex justify-between bg-white">
+    <div className="nav-container p-3 flex justify-between bg-white">
       <NavLink to={"/"} className="flex align-content-center">
         <img
           src={RoomyFinderLogo}
@@ -78,6 +78,25 @@ const Nav = () => {
           Sign up
         </button>
       </div>
+      <style>{`
+        @media screen and (min-width: 1290px) {
+          .nav-container {
+            font-size: 1.2rem;
+          }
+        }
+
+        @media screen and (min-width: 1440px) {
+          .nav-container {
+            font-size: 1.4rem;
+          }
+        }
+
+        @media screen and (min-width: 1800px) {
+          .nav-container {
+            font-size: 1.6rem;
+          }
+        }
+      `}</style>
     </div>
   );
 };

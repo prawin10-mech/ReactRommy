@@ -23,7 +23,7 @@ function App() {
           <Route path="/contactUs" element={<ContactUs />} />
           <Route path="/postProperty" element={<PostProperty />} />
         </Routes>
-        {/* <Footer /> */}
+        <Footer />
       </Router>
     </div>
   );

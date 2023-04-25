@@ -5,8 +5,8 @@ import FooterMobile from "../assets/footerMobile.png";
 
 const Footer = () => {
   return (
-    <div className="flex justify-between h-96 m-10 bg-white relative overflow-y-hidden">
-      <div className="mt-24">
+    <div className="footer-container flex flex-col sm:flex-row justify-between h-auto sm:h-96 m-10 bg-white relative overflow-hidden">
+      <div className="mt-4 sm:mt-24 sm:w-1/4">
         <NavLink to={"/"} className="flex">
           <img
             src={logo}
@@ -20,7 +20,7 @@ const Footer = () => {
             <p className="text-bold text-2xl text-orange-600">Finder</p>
           </div>
         </NavLink>
-        <div className="flex justify-between gap-24">
+        <div className="flex flex-col sm:flex-row justify-between w-screen mt-4">
           <div>
             <p className="font-bold">Company</p>
             <ul>
@@ -72,11 +72,30 @@ const Footer = () => {
               <li>+1234567890</li>
             </ul>
           </div>
-        </div>
-        <div className="absolute top-10 right-[-130px] overflow-y-hidden">
-          <img src={FooterMobile} alt="footer phone" />
+          <div className="mt-[-100px] ml-[-100px]">
+            <img src={FooterMobile} alt="footer phone" width={"350px"} />
+          </div>
         </div>
       </div>
+      <style>{`
+        @media screen and (min-width: 1290px) {
+          .footer-container {
+            font-size: 1.2rem;
+          }
+        }
+
+        @media screen and (min-width: 1440px) {
+          .footer-container {
+            font-size: 1.4rem;
+          }
+        }
+
+        @media screen and (min-width: 1800px) {
+          .footer-container {
+            font-size: 1.6rem;
+          }
+        }
+      `}</style>
     </div>
   );
 };
