@@ -33,7 +33,7 @@ const CityCarousel = () => {
 
   const carouselItems = carouselCities.map((city, index) => {
     const isActive = index === 1;
-    const styles = isActive ? "h-60" : "my-auto h-52";
+    const styles = isActive ? "h-60 rounded-2xl" : "my-auto h-52 rounded-md";
 
     let image = null;
     let cityName = null;
@@ -42,7 +42,7 @@ const CityCarousel = () => {
         <img
           src={Dubai}
           alt="Dubai"
-          className="h-full object-cover w-96 rounded-2xl"
+          className={`h-full object-cover w-96 ${styles}`}
         />
       );
       cityName = "Dubai";
@@ -51,7 +51,7 @@ const CityCarousel = () => {
         <img
           src={NewYork}
           alt="New York"
-          className="h-full object-cover w-96 rounded-2xl"
+          className={`h-full object-cover w-96 ${styles}`}
         />
       );
       cityName = "New York";
@@ -60,7 +60,7 @@ const CityCarousel = () => {
         <img
           src={Riyadh}
           alt="Riyadh"
-          className="h-full object-cover w-96 rounded-2xl"
+          className={`h-full object-cover w-96 ${styles}`}
         />
       );
       cityName = "Riyadh";
@@ -69,8 +69,9 @@ const CityCarousel = () => {
     return (
       <div
         key={city}
-        className={`flex items-center justify-center font-bold text-3xl ${styles} rounded-md relative`}
+        className={`flex items-center justify-center font-bold text-3xl ${styles} relative`}
       >
+        {console.log(styles)}
         {image}
         <div className="absolute bottom-4 left-0 right-0 text-white font-semibold text-center">
           {cityName}
