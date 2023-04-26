@@ -6,6 +6,7 @@ import ContactUs from "./pages/ContactUs";
 import PostProperty from "./pages/postProperty";
 import MainBgImg from "./assets/mainBackground.jpg";
 import Footer from "./components/Footer";
+import Header from "./components/Header";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       }}
     >
       <Router>
+      {/* <Header /> */}
         <Nav />
         <Routes>
           <Route path="/" element={<OurServices />} />

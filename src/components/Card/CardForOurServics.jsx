@@ -1,0 +1,157 @@
+import { Box, Button, Grid, Typography, Container, Stack, Paper } from "@mui/material";
+import React, { useState } from "react";
+// import ImageCarousel55 from "./MultipleImages1";
+import { Carousel } from "react-responsive-carousel";
+import  CityCourosol from '../UI/CityCourosol'
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+
+
+
+const images = [
+  "https://via.placeholder.com/600x300/FF5733/FFFFFF?text=Image%201",
+  "https://via.placeholder.com/600x300/C70039/FFFFFF?text=Image%202",
+  "https://via.placeholder.com/600x300/581845/FFFFFF?text=Image%203",
+  "https://via.placeholder.com/600x300/900C3F/FFFFFF?text=Image%204",
+  "https://via.placeholder.com/600x300/FFC300/FFFFFF?text=Image%205",
+  "https://via.placeholder.com/600x300/DAF7A6/FFFFFF?text=Image%206",
+  "https://via.placeholder.com/600x300/FF5733/FFFFFF?text=Image%207",
+  "https://via.placeholder.com/600x300/C70039/FFFFFF?text=Image%208",
+  "https://via.placeholder.com/600x300/581845/FFFFFF?text=Image%209",
+  "https://via.placeholder.com/600x300/900C3F/FFFFFF?text=Image%2010",
+  "https://via.placeholder.com/600x300/FFC300/FFFFFF?text=Image%2011",
+  "https://via.placeholder.com/600x300/DAF7A6/FFFFFF?text=Image%2012",
+];
+
+const AddWithCarasol = () => {
+  const [slideIndex, setSlideIndex] = useState(1);
+
+  const plusSlides = (n) => {
+    setSlideIndex((prevIndex) => prevIndex + n);
+  };
+
+  const currentSlide = (n) => {
+    setSlideIndex(n);
+  };
+
+  const showSlides = (n) => {
+    let i;
+    const slides = document.getElementsByClassName("mySlides");
+    const dots = document.getElementsByClassName("dot");
+    if (n > slides.length) {
+      setSlideIndex(1);
+    }
+    if (n < 1) {
+      setSlideIndex(slides.length);
+    }
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex - 1].style.display = "block";
+    dots[slideIndex - 1].className += " active";
+  };
+
+  return (
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            px: 6,
+            pt:1,
+            pb:4,
+            backgroundImage:
+              " linear-gradient(120deg, #d57eeb 0%, #fccb90 100%);"
+          }}
+        >
+          <Grid
+            item
+            xs={6}  
+            sx={{
+              // backgroundColor: "blue",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              // backgroundColor: "pink",
+              p: 6,
+            }}
+          >
+            <Typography sx={{ textAlign: "center" }} variant="h4" gutterBottom>
+              Roommate looking for shared living in UAE
+            </Typography>
+            <Button
+              variant="outlined"
+              size="large"
+              sx={{
+                boxShadow:
+                  "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;",
+              }}
+            >
+              Chat!
+            </Button>
+          </Grid>
+          <Grid item xs={12} md={4} >
+            
+            <Box  sx={{ml:'10%'}} mt={'1'} >
+
+            {/* <Grid container spacing={2}>
+              <Grid item xs={12} md={3}> */}
+                <Paper xs={12} sm={6} md={4} sx={{}}>
+                  <Typography variant="h6">Image Carousel</Typography>
+                  <Carousel infiniteLoop={true}>
+                    {images.map((image, index) => (
+                      <div key={index}>
+                        <img src={image} alt={`Image ${index}`} />
+                      </div>
+                    ))}
+                  </Carousel>
+                </Paper>
+              {/* </Grid>
+
+            </Grid> */}
+            </Box>
+          </Grid>
+        </Grid>
+        <Box
+          sx={{
+            backgroundImage:
+              " linear-gradient(120deg, #fccb90 0%, #d57eeb 100%);",
+            p: 3,
+            width: "70%",
+            mt: "-40px",
+          }}
+        >
+          <Grid container sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+            <Grid item xs={1}>
+              fgh
+            </Grid>
+            <Grid item xs={2} >
+              <Typography variant="subtitle1" gutterBottom>
+                Find Your home in Saaudi Arabia!
+              </Typography>
+            </Grid>
+            <Grid item xs={6} md={4}>
+                <CityCourosol/>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    </>
+  );
+};
+
+export default AddWithCarasol;
