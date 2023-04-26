@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import RoomsTypeActions from "./Rooms";
+import RoomsReducer from "./Rooms";
+import SearchReducer from "./Search";
 
 const store = configureStore({
   reducer: {
-    roomType: RoomsTypeActions,
+    room: RoomsReducer,
+    search: SearchReducer,
   },
 });
 

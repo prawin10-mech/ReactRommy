@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import FloatingImage from "../components/FloatingImage";
 import Search from "../components/Search";
 import CityCourosol from "../components/UI/CityCourosol";

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const initialState = { roomsType: "propertyAds", rooms: [] };
 
@@ -12,10 +13,8 @@ const RoomsTypeSlice = createSlice({
     roommateAds(state) {
       state.roomsType = "propertyAds";
     },
-    availableRooms(state, actions) {
-      state.rooms = actions.payload;
-      console.log(actions);
-      console.log(state.rooms);
+    availableRooms(state, action) {
+      state.rooms = action.payload;
     },
   },
 });
