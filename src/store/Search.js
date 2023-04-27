@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  searchType: "room",
+  searchType: "property",
   searchText: null,
   propertyType: null,
   baths_beds: null,
   price: null,
   commercialProperty: false,
+  availableRooms: [],
 };
 
 const SearchSlice = createSlice({
@@ -14,7 +15,7 @@ const SearchSlice = createSlice({
   initialState,
   reducers: {
     roomSearch(state) {
-      state.searchType = "room";
+      state.searchType = "property";
     },
     roommateSearch(state) {
       state.searchType = "roommate";
@@ -33,6 +34,9 @@ const SearchSlice = createSlice({
     },
     commercialProperty(state) {
       state.commercialProperty = !state.commercialProperty;
+    },
+    availableRooms(state, action) {
+      state.availableRooms = action.payload;
     },
   },
 });

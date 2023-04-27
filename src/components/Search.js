@@ -3,8 +3,10 @@ import { SearchIcon } from "@heroicons/react/solid";
 import { useSelector, useDispatch } from "react-redux";
 import { SearchActions } from "../store/Search";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Search = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const searchType = useSelector((state) => state.search.searchType);
   const searchText = useSelector((state) => state.search.searchText);
@@ -15,6 +17,7 @@ const Search = () => {
     (state) => state.search.commercialProperty
   );
 
+  console.log(searchType);
   const handleSearch = async () => {
     const obj = {};
     if (searchText) {
@@ -35,10 +38,11 @@ const Search = () => {
 
     if (Object.keys(obj).length > 0) {
       const { data } = await axios.post(
-        "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available",
+        `http://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/${searchType}-ad/available`,
         obj
       );
-      console.log(data);
+      dispatch(SearchActions.availableRooms(data));
+      navigate("/allAvailableRooms");
     } else {
       console.log("obj is empty");
     }
@@ -75,7 +79,7 @@ const Search = () => {
         <div className="flex mb-4 md:mb-0">
           <p
             className={`mr-3 text-orange-500 text-bold px-5 cursor-pointer ${
-              searchType === "room"
+              searchType === "property"
                 ? "border-x-2 border-t-2 border-purple-500 rounded-md bg-purple-200 text-purple-600"
                 : ""
             }`}

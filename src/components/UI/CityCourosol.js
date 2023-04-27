@@ -4,6 +4,7 @@ import Dubai from "../../assets/Dubai.JPG";
 import NewYork from "../../assets/New York.JPG";
 import Riyadh from "../../assets/Riyadh.JPG";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
+import { NavLink } from "react-router-dom";
 
 const CityCarousel = () => {
   const [currentCityIndex, setCurrentCityIndex] = useState(0);
@@ -33,35 +34,43 @@ const CityCarousel = () => {
 
   const carouselItems = carouselCities.map((city, index) => {
     const isActive = index === 1;
-    const styles = isActive ? "h-60 rounded-2xl" : "my-auto h-52 rounded-md";
+    const styles = isActive
+      ? "min-h-[35vh] h-[35vh] rounded-2xl"
+      : "my-auto h-[30vh] rounded-md";
 
     let image = null;
     let cityName = null;
     if (city === "Dubai") {
       image = (
-        <img
-          src={Dubai}
-          alt="Dubai"
-          className={`h-full object-cover w-96 ${styles}`}
-        />
+        <NavLink to="/allAvailableRooms">
+          <img
+            src={Dubai}
+            alt="Dubai"
+            className={`h-full object-cover w-96  ${styles}`}
+          />
+        </NavLink>
       );
       cityName = "Dubai";
     } else if (city === "New York") {
       image = (
-        <img
-          src={NewYork}
-          alt="New York"
-          className={`h-full object-cover w-96 ${styles}`}
-        />
+        <NavLink to="/allAvailableRooms">
+          <img
+            src={NewYork}
+            alt="New York"
+            className={`h-full object-cover w-96 ${styles}`}
+          />
+        </NavLink>
       );
       cityName = "New York";
     } else if (city === "Riyadh") {
       image = (
-        <img
-          src={Riyadh}
-          alt="Riyadh"
-          className={`h-full object-cover w-96 ${styles}`}
-        />
+        <NavLink to="/allAvailableRooms">
+          <img
+            src={Riyadh}
+            alt="Riyadh"
+            className={`h-full object-cover w-96 ${styles}`}
+          />
+        </NavLink>
       );
       cityName = "Riyadh";
     }
