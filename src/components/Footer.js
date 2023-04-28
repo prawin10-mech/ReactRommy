@@ -5,7 +5,7 @@ import FooterMobile from "../assets/footerMobile.png";
 
 const Footer = () => {
   return (
-    <div className="footer-container flex flex-col sm:flex-row justify-between h-auto sm:h-96 m-10 bg-white relative overflow-hidden">
+    <div className="footer-container flex flex-col sm:flex-row justify-between h-auto sm:h-96 mt-2 mx-10 mb-10 bg-white relative overflow-hidden">
       <div className="mt-4 sm:mt-24 sm:w-1/4">
         <NavLink to={"/"} className="flex">
           <img

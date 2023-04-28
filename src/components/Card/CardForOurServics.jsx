@@ -1,8 +1,9 @@
 import { Box, Button, Grid, Typography, Container, Stack, Paper } from "@mui/material";
 import React, { useState } from "react";
 // import ImageCarousel55 from "./MultipleImages1";
-import { Carousel } from "react-responsive-carousel";
-import  CityCourosol from '../UI/CityCourosol'
+// import { Carousel } from "react-responsive-carousel";
+import Carousel from 'react-material-ui-carousel'
+import CityCarousel2 from '../UI/CityCarousel2'
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 
@@ -67,15 +68,14 @@ const AddWithCarasol = () => {
           spacing={2}
           sx={{
             px: 6,
-            pt:1,
-            pb:4,
+            pt: 1,
+            pb: 4,
             backgroundImage:
               " linear-gradient(120deg, #d57eeb 0%, #fccb90 100%);"
           }}
         >
           <Grid
-            item
-            xs={6}  
+            item xs={12} sm={6} md={6}
             sx={{
               // backgroundColor: "blue",
               display: "flex",
@@ -100,32 +100,24 @@ const AddWithCarasol = () => {
               Chat!
             </Button>
           </Grid>
-          <Grid item xs={12} md={4} >
-            
-            <Box  sx={{ml:'10%'}} mt={'1'} >
-
-            {/* <Grid container spacing={2}>
-              <Grid item xs={12} md={3}> */}
-                <Paper xs={12} sm={6} md={4} sx={{}}>
-                  <Typography variant="h6">Image Carousel</Typography>
-                  <Carousel infiniteLoop={true}>
-                    {images.map((image, index) => (
-                      <div key={index}>
-                        <img src={image} alt={`Image ${index}`} />
-                      </div>
-                    ))}
-                  </Carousel>
-                </Paper>
-              {/* </Grid>
-
-            </Grid> */}
+          <Grid item xs={12} sm={6} md={6} sx={{py:4,display:'flex',alignItems:'center',justifyContent:'center'}} >
+            <Box sx={{ width: '270px', height: '200px' ,}}>
+              <Carousel>
+                {
+                  images.map((item, i) => (
+                    <img src={item} alt='jhf' style={{width: '2680px', height: '180px'}} />
+                  ))
+                }
+              </Carousel>
             </Box>
+
+
           </Grid>
         </Grid>
         <Box
           sx={{
             backgroundImage:
-              " linear-gradient(120deg, #fccb90 0%, #d57eeb 100%);",
+              "  linear-gradient(to right, #43e97b 0%, #38f9d7 100%);",
             p: 3,
             width: "70%",
             mt: "-40px",
@@ -136,16 +128,18 @@ const AddWithCarasol = () => {
             justifyContent: "center",
             alignItems: "center",
           }}>
-            <Grid item xs={1}>
-              fgh
-            </Grid>
-            <Grid item xs={2} >
+            <Grid item xs={12} md={4}>
               <Typography variant="subtitle1" gutterBottom>
                 Find Your home in Saaudi Arabia!
               </Typography>
             </Grid>
-            <Grid item xs={6} md={4}>
-                <CityCourosol/>
+            <Grid item xs={12} md={4} >
+              <Typography variant="subtitle1" gutterBottom>
+                Find Your home in Saaudi Arabia!
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <CityCarousel2 />
             </Grid>
           </Grid>
         </Box>

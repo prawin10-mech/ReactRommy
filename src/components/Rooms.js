@@ -17,7 +17,7 @@ const Rooms = () => {
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center mt-10">
       <div className="m-10 flex flex-col md:flex-row gap-10">
         <div
           className="flex flex-col md:flex-row cursor-pointer"
