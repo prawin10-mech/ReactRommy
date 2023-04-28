@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import MainBgImg from "./assets/mainBackground.jpg";
 import AllRooms from "./components/rooms/AllRooms";
+import SecondPage from "./pages/SecondPage";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/contactUs" element={<ContactUs />} />
           <Route path="/postProperty" element={<PostProperty />} />
           <Route path="/allAvailableRooms" element={<AllRooms />} />
+          <Route path="/sp" element={<SecondPage />} />
         </Routes>
         <Footer />
       </div>
