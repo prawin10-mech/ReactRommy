@@ -3,11 +3,14 @@ import FloatingImage from "../components/FloatingImage";
 import Search from "../components/Search";
 import CityCourosol from "../components/UI/CityCourosol";
 import Rooms from "../components/Rooms";
-import AvailableRooms from "../components/cityCorosols/AvailableRooms";
-import { Stack, Typography,Box } from "@mui/material";
-import CarouselWithMultipleImage from "../components/CarouselWithMultipleImage";
+import { Stack, Typography, Box } from "@mui/material";
 import AddWithCarasol from "../components/Card/CardForOurServics";
 import axios from "axios";
+import { SearchActions } from "../store/Search";
+import { useDispatch } from "react-redux";
+
+import CarouselWithMultipleImage from '../components/CarouselWithMultipleImage'
+
 
 const OurServices = () => {
   const [propertyAddAvilableRoom, setpropertyAddAvilableRoom] = useState([])
@@ -46,24 +49,30 @@ console.log("propertyAddAvilableRoom",propertyAddAvilableRoom);
 console.log("PartitionAddAvilableRoom",PartitionAddAvilableRoom);
 
   // useEffect ==========================
+ 
+  
   useEffect(() => {
     getAffordableRoomData()
     getPartitionRoomData()
    
   }, [])
   
-  return (<>
+  
 
-    <div className="flex flex-col justify-between !important">
+  return (
+    <div>
       <div className="flex flex-col justify-between !important">
-        <div className="flex justify-around">
-          <div className="pt-16">
-            <p className="text-4xl font-bold text-white pl-10">
-              Find your perfect sharing space.
-            </p>
-            <div className="pt-5">
-              <Search />
+        <div className="flex flex-col justify-between !important">
+          <div className="flex justify-around">
+            <div className="pt-16">
+              <p className="text-4xl font-bold text-white pl-10">
+                Find your perfect sharing space.
+              </p>
+              <div className="pt-5">
+                <Search />
+              </div>
             </div>
+            <FloatingImage />
           </div>
           <FloatingImage />
         </div>
@@ -90,7 +99,6 @@ console.log("PartitionAddAvilableRoom",PartitionAddAvilableRoom);
         </div>
       </div>
     </div>
-  </>
   );
 };
 
