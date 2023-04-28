@@ -4,7 +4,7 @@ const initialState = {
   searchType: "property",
   searchText: null,
   propertyType: null,
-  baths_beds: null,
+  location: null,
   price: null,
   commercialProperty: false,
   availableRooms: [],
@@ -26,8 +26,8 @@ const SearchSlice = createSlice({
     propertyType(state, action) {
       state.propertyType = action.payload;
     },
-    baths_beds(state, action) {
-      state.baths_beds = action.payload;
+    location(state, action) {
+      state.location = action.payload;
     },
     price(state, action) {
       state.price = action.payload;

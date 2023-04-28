@@ -1,17 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Box, Grid } from "@mui/material";
 import AdvancedSearch from "./AdvancedSearch";
 import AllAvailableRooms from "./AllAvailableRooms";
 import SimmerUI from "./SimmerUi";
-import { useSelector } from "react-redux";
+import SearchInputs from "../SearchInputs";
 
 const AllRooms = () => {
   const availableRooms = useSelector((state) => state.search.availableRooms);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div className="flex">
-      <AdvancedSearch />
-      {availableRooms && <AllAvailableRooms />}
-      {!availableRooms && <SimmerUI />}
-    </div>
+    <Grid container>
+      <Grid item xs={12} md={3}>
+        <AdvancedSearch />
+      </Grid>
+      <Grid item xs={12} md={9}>
+        <Box display="flex" flexDirection="column">
+          <Box mb={2}>
+            <SearchInputs />
+          </Box>
+          <Box>{loading ? <SimmerUI /> : <AllAvailableRooms />}</Box>
+        </Box>
+      </Grid>
+    </Grid>
   );
 };
 
