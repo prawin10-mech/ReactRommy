@@ -15,9 +15,9 @@ function App() {
     <Router>
       <div
         className="bg-cover bg-no-repeat bg-center w-full h-screen"
-        style={{
-          backgroundImage: `url(${MainBgImg})`,
-        }}
+        // style={{
+        //   backgroundImage: `url(${MainBgImg})`,
+        // }}
       >
         {/* <Header /> */}
         <Nav />
