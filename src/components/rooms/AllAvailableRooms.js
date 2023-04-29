@@ -27,7 +27,7 @@ const AllAvailableRooms = () => {
         "& > div": {
           width: "100%",
           "@media (min-width: 600px)": {
-            width: "50%",
+            width: "100%",
           },
         },
       }}

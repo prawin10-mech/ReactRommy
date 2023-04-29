@@ -19,9 +19,6 @@ const AllRooms = () => {
 
   return (
     <Grid container>
-      <Grid item xs={12} md={3}>
-        <AdvancedSearch />
-      </Grid>
       <Grid item xs={12} md={9}>
         <Box display="flex" flexDirection="column">
           <Box mb={2}>

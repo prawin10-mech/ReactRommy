@@ -31,7 +31,6 @@ const AdvancedSearch = () => {
   return (
     <Paper
       sx={{
-        width: "20vw",
         height: "100%",
         p: 4,
         backgroundImage: `url(${AdvancedSearchBg})`,

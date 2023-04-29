@@ -54,7 +54,7 @@ const SearchInputs = () => {
         obj
       );
       dispatch(SearchActions.availableRooms(data));
-      navigate("/allAvailableRooms");
+      navigate("/sp");
     } else {
       console.log("obj is empty");
     }

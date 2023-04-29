@@ -16,15 +16,15 @@ import CarouselWithMultipleImage from "../components/CarouselWithMultipleImage";
 const OurServices = () => {
   const [propertyAddAvilableRoom, setpropertyAddAvilableRoom] = useState([]);
   const [PartitionAddAvilableRoom, setPartitionAddAvilableRoom] = useState([]);
+  const dispatch = useDispatch();
 
   // api call ==============================
-  const getAffordableRoomData = () => {
-    console.log(
-      "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available",
-      {
-        countryCode: "AE",
-      }
+  const getAffordableRoomData = async () => {
+    const { data } = await axios.post(
+      `http://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available`,
+      { countryCode: "AE" }
     );
+    dispatch(SearchActions.availableRooms(data));
     axios
       .post(
         "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available",

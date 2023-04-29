@@ -21,7 +21,6 @@ const AvaibleRoom = ({ room }) => {
           mb: 3,
           display: "flex",
           border: "1px solid #555",
-          width: "100%",
           position: "relative",
         }}
       >

@@ -1,15 +1,19 @@
-import * as React from 'react';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import * as React from "react";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 export default function SelectSmall(props) {
-  const [age, setAge] = React.useState('');
+  const [value, setValue] = React.useState("");
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setValue(event.target.value);
   };
+
+  const menuItemsData = props.values.map((value) => {
+    return <MenuItem value={value}>{value}</MenuItem>;
+  });
 
   return (
     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -17,16 +21,14 @@ export default function SelectSmall(props) {
       <Select
         labelId="demo-select-small-label"
         id="demo-select-small"
-        value={age}
+        value={value}
         label="Age"
         onChange={handleChange}
       >
         <MenuItem value="">
-          <em>None</em>
+          <em>Select one option</em>
         </MenuItem>
-        <MenuItem value={10}>Ten</MenuItem>
-        <MenuItem value={20}>Twenty</MenuItem>
-        <MenuItem value={30}>Thirty</MenuItem>
+        {menuItemsData}
       </Select>
     </FormControl>
   );
