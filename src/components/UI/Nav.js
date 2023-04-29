@@ -1,12 +1,42 @@
 import React, { useState } from "react";
 import RoomyFinderLogo from "../../assets/roomyFinderLogo.jpg.png";
 import { NavLink } from "react-router-dom";
+import {
+  Button,
+  Stack,
+  Typography,
+  IconButton,
+  Box,
+  Menu,
+  MenuItem,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+
+const pages = ["About Us", "Contact Us", "Our Services", "Post Property"];
+const pageNavigate = ["aboutUs", "contactUs", "", "postProperty"];
 
 const Nav = () => {
   const [activeLink, setActiveLink] = useState("ourServices");
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleClick = (link) => {
     setActiveLink(link);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
   };
 
   return (
@@ -15,88 +45,204 @@ const Nav = () => {
         <img
           src={RoomyFinderLogo}
           alt="Roomy finder logo"
-          width={"80px"}
-          height={"80px"}
+          width={70}
           className="mr-2"
         />
-        <div className="m-auto">
-          <p className="text-bold text-2xl text-purple-800">Roomy</p>
-          <p className="text-bold text-2xl text-orange-600">Finder</p>
-        </div>
+        <Stack sx={{ margiin: "auto" }}>
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: "bolder",
+              color: "purple",
+              display: { xs: "none", md: "flex" },
+            }}
+          >
+            Roomy
+          </Typography>
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: "bolder",
+              color: "purple",
+              display: { xs: "none", md: "flex" },
+            }}
+          >
+            Finder
+          </Typography>
+        </Stack>
       </NavLink>
-      <div className="flex m-auto">
-        <NavLink
-          to={"/aboutUs"}
-          className={`mr-3 text-bold text-purple-800 px-3 py-2 rounded-lg ${
-            activeLink === "aboutUs"
-              ? "bg-purple-800 text-white"
-              : "hover:bg-purple-800 hover:text-white"
-          }`}
+
+      <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+        <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="menu-appbar"
+          aria-haspopup="true"
+          onClick={handleOpenNavMenu}
+          color="inherit"
+        >
+          <MenuIcon />
+        </IconButton>
+        <Menu
+          id="menu-appbar"
+          anchorEl={anchorElNav}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          keepMounted
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+          open={Boolean(anchorElNav)}
+          onClose={handleCloseNavMenu}
+          sx={{
+            display: { xs: "block", md: "none" },
+          }}
+        >
+          {pages.map((page, index) => (
+            <MenuItem key={page} onClick={handleCloseNavMenu}>
+              <NavLink to={`/${pageNavigate[index]}`}>
+                <Typography
+                  textAlign="center"
+                  sx={{
+                    color: "purple",
+                  }}
+                >
+                  {page}
+                </Typography>
+              </NavLink>
+            </MenuItem>
+          ))}
+        </Menu>
+      </Box>
+      <Stack
+        direction="row"
+        spacing={2}
+        alignItems="center"
+        sx={{ m: "auto", display: { xs: "none", md: "flex" } }}
+      >
+        <Button
+          color={activeLink === "aboutUs" ? "primary" : "inherit"}
+          sx={{
+            borderRadius: "10px",
+            fontWeight: "bold",
+            color: activeLink === "aboutUs" ? "#fff" : "purple",
+            backgroundColor:
+              activeLink === "aboutUs" ? "purple" : "transparent",
+            "&:hover": {
+              backgroundColor: "purple",
+              color: "#fff",
+            },
+          }}
           onClick={() => handleClick("aboutUs")}
+          component={NavLink}
+          to={"/aboutUs"}
         >
           About Us
-        </NavLink>
-        <NavLink
-          to={"/"}
-          className={`mr-3 text-bold text-purple-800 px-3 py-2 rounded-lg ${
-            activeLink === "ourServices"
-              ? "bg-purple-800 text-white"
-              : "hover:bg-purple-800 hover:text-white"
-          }`}
+        </Button>
+        <Button
+          color={activeLink === "ourServices" ? "primary" : "inherit"}
+          sx={{
+            borderRadius: "10px",
+            fontWeight: "bold",
+            color: activeLink === "ourServices" ? "#fff" : "purple",
+            backgroundColor:
+              activeLink === "ourServices" ? "purple" : "transparent",
+            "&:hover": {
+              backgroundColor: "purple",
+              color: "#fff",
+            },
+          }}
           onClick={() => handleClick("ourServices")}
+          component={NavLink}
+          to={"/"}
         >
           Our Services
-        </NavLink>
-        <NavLink
-          to={"/contactUs"}
-          className={`mr-3 text-bold text-purple-800 px-3 py-2 rounded-lg ${
-            activeLink === "contactUs"
-              ? "bg-purple-800 text-white"
-              : "hover:bg-purple-800 hover:text-white"
-          }`}
+        </Button>
+        <Button
+          color={activeLink === "contactUs" ? "primary" : "inherit"}
+          sx={{
+            borderRadius: "10px",
+            fontWeight: "bold",
+            color: activeLink === "contactUs" ? "#fff" : "purple",
+            backgroundColor:
+              activeLink === "contactUs" ? "purple" : "transparent",
+            "&:hover": {
+              backgroundColor: "purple",
+              color: "#fff",
+            },
+          }}
           onClick={() => handleClick("contactUs")}
+          component={NavLink}
+          to={"/contactUs"}
         >
           Contact Us
-        </NavLink>
-        <NavLink
-          to={"/postProperty"}
-          className={`text-bold text-purple-800 px-3 py-2 rounded-lg ${
-            activeLink === "postProperty"
-              ? "bg-purple-800 text-white"
-              : "hover:bg-purple-800 hover:text-white"
-          }`}
+        </Button>
+        <Button
+          color={activeLink === "postProperty" ? "primary" : "inherit"}
+          sx={{
+            borderRadius: "10px",
+            fontWeight: "bold",
+            color: activeLink === "postProperty" ? "#fff" : "purple",
+            backgroundColor:
+              activeLink === "postProperty" ? "purple" : "transparent",
+            "&:hover": {
+              backgroundColor: "purple",
+              color: "#fff",
+            },
+          }}
           onClick={() => handleClick("postProperty")}
+          component={NavLink}
+          to={"/postProperty"}
         >
           Post Property
-        </NavLink>
-      </div>
-      <div className="my-auto">
-        <button className="px-4 py-1 border-2 border-orange-500 bg-orange-500 text-white mr-3 rounded-full">
+        </Button>
+      </Stack>
+
+      <Stack direction="row" spacing={2} alignItems="center">
+        <Button
+          variant="contained"
+          color={activeLink === "login" ? "primary" : "inherit"}
+          sx={{
+            borderRadius: "10px",
+            fontWeight: "bold",
+            color: "#fff",
+            backgroundColor: "orange",
+            border: "2px solid orange",
+            "&:hover": {
+              backgroundColor: "white",
+              color: "orange",
+            },
+          }}
+          // onClick={() => handleClick("login")}
+          component={NavLink}
+          to={"/postProperty"}
+        >
           Login
-        </button>
-        <button className="px-4 py-1 border-2 text-orange-500 border-orange-500 bg-white rounded-full hover:bg-orange-500 hover:text-white">
-          Sign up
-        </button>
-      </div>
-      <style>{`
-        @media screen and (min-width: 1290px) {
-          .nav-container {
-            font-size: 1.2rem;
-          }
-        }
-
-        @media screen and (min-width: 1440px) {
-          .nav-container {
-            font-size: 1.4rem;
-          }
-        }
-
-        @media screen and (min-width: 1800px) {
-          .nav-container {
-            font-size: 1.6rem;
-          }
-        }
-      `}</style>
+        </Button>
+        <Button
+          variant="contained"
+          color={activeLink === "postProperty" ? "primary" : "inherit"}
+          sx={{
+            borderRadius: "10px",
+            fontWeight: "bold",
+            color: "orange",
+            backgroundColor: "white",
+            border: "2px solid orange",
+            "&:hover": {
+              backgroundColor: "orange",
+              color: "white",
+            },
+          }}
+          onClick={() => handleClick("postProperty")}
+          component={NavLink}
+          to={"/postProperty"}
+        >
+          Sign Up
+        </Button>
+      </Stack>
     </div>
   );
 };
