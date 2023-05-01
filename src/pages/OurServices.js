@@ -33,7 +33,6 @@ const OurServices = () => {
         }
       )
       .then((res) => {
-        console.log("Response090", res.data);
         setpropertyAddAvilableRoom(res.data);
       })
       .catch((err) => {

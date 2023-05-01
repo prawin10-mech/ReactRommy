@@ -1,55 +1,52 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Chip from '@mui/material/Chip';
-import Paper from '@mui/material/Paper';
-import TagFacesIcon from '@mui/icons-material/TagFaces';
-
-const ListItem = styled('li')(({ theme }) => ({
-  margin: theme.spacing(0.5),
-}));
+import React, { useState } from "react";
+import {TextField, Autocomplete, Chip} from "@mui/material";
 
 export default function ChipsArray() {
-  const [chipData, setChipData] = React.useState([
-    { key: 0, label: 'Angular' },
-    { key: 1, label: 'jQuery' },
-    { key: 2, label: 'Polymer' },
-    { key: 3, label: 'React' },
-    { key: 4, label: 'Vue.js' },
-  ]);
+  const [value, setValue] = useState("");
+  const [chips, setChips] = useState([]);
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      setChips([...chips, value]);
+      setValue("");
+    }
+  };
 
   const handleDelete = (chipToDelete) => () => {
-    setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
+    setChips((chips) => chips.filter((chip) => chip !== chipToDelete));
   };
 
   return (
-    <Paper
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        listStyle: 'none',
-        p: 0.5,
-        m: 0,
+    <Autocomplete
+      multiple
+      freeSolo
+      value={chips}
+      onChange={(event, newValue) => {
+        setChips(newValue);
       }}
-      component="ul"
-    >
-      {chipData.map((data) => {
-        let icon;
-
-        if (data.label === 'React') {
-          icon = <TagFacesIcon />;
-        }
-
-        return (
-          <ListItem key={data.key}>
-            <Chip
-              icon={icon}
-              label={data.label}
-              onDelete={data.label === 'React' ? undefined : handleDelete(data)}
-            />
-          </ListItem>
-        );
-      })}
-    </Paper>
+      options={chips}
+      renderTags={(value, getTagProps) =>
+        value.map((option, index) => (
+          <Chip
+            key={index}
+            label={option}
+            onDelete={handleDelete(option)}
+            {...getTagProps({ index })}
+          />
+        ))
+      }
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label="Type your input and press enter"
+          variant="outlined"
+          sx={{ minWidth: "auto" }}
+          onKeyDown={handleKeyDown}
+          value={value}
+          onChange={(event) => setValue(event.target.value)}
+        />
+      )}
+    />
   );
 }

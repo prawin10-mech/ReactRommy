@@ -18,26 +18,17 @@ import IconLabelButtons from "../components/MUIcomponent/ButtonMuiWithIcon";
 
 import AllAvailableRooms from "../components/rooms/AllAvailableRooms";
 import AdvancedSearch from "../components/rooms/AdvancedSearch";
+import { useSelector } from "react-redux";
 
 const ListItem = styled("li")(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
 const SecondPage = () => {
+  const city = useSelector((state) => state.search.location);
+  const availableRooms = useSelector((state) => state.search.availableRooms);
   // chip=============
-  const [chipData, setChipData] = React.useState([
-    { key: 0, label: "Angular" },
-    { key: 1, label: "jQuery" },
-    { key: 2, label: "Polymer" },
-    { key: 3, label: "React" },
-    { key: 4, label: "Vue.js" },
-  ]);
 
-  const handleDelete = (chipToDelete) => () => {
-    setChipData((chips) =>
-      chips.filter((chip) => chip.key !== chipToDelete.key)
-    );
-  };
   // ========================
   return (
     <>
@@ -65,7 +56,13 @@ const SecondPage = () => {
         }}
       >
         <Grid container>
-          <Grid item xs={12} sm={4} md={3} sx={{ backgroundColor: "#99f099" }}>
+          <Grid
+            item
+            xs={12}
+            sm={4}
+            md={3}
+            sx={{ backgroundColor: "#99f099", width: "100%" }}
+          >
             <AdvancedSearch />
           </Grid>
           <Grid item xs={12} sm={8} md={9}>
@@ -92,19 +89,23 @@ const SecondPage = () => {
                 <CustomizeSelectBox
                   mainbox={{ m: 2 }}
                   name={"Room"}
-                  values={["room", "roommate"]}
+                  values={["property", "roommate"]}
+                  fn="roomSearch"
                 />
                 <ChipsArray />
                 <CustomizeSelectBox
                   name={"Apartment"}
+                  fn="propertyType"
                   values={["Bed", "Partition", "Master Room", "Room", "Mix"]}
                 />
                 <CustomizeSelectBox
                   name={"Location"}
+                  fn="location"
                   values={["Dubai", "Saudi Arabia"]}
                 />
                 <CustomizeSelectBox
                   name={"Price"}
+                  fn="price"
                   values={[
                     "100-500",
                     "500-1000",
@@ -142,9 +143,12 @@ const SecondPage = () => {
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                   <Typography variant="h5">
                     {" "}
-                    Apartments for Rent in Dubai
+                    Apartments for Rent in {city}
                   </Typography>
-                  <Typography variant="subtitle2"> 721 results</Typography>
+                  <Typography variant="subtitle2">
+                    {" "}
+                    {availableRooms.length} results
+                  </Typography>
                 </Box>
                 <Box sx={{ display: "flex", flexDirection: "row" }}>
                   <PositionedMenu />

@@ -14,16 +14,17 @@ const SearchSlice = createSlice({
   name: "Search",
   initialState,
   reducers: {
-    roomSearch(state) {
-      state.searchType = "property";
+    roomSearch(state, action) {
+      state.searchType = action.payload;
     },
-    roommateSearch(state) {
-      state.searchType = "roommate";
-    },
+    // roommateSearch(state) {
+    //   state.searchType = "roommate";
+    // },
     searchText(state, action) {
       state.searchText = action.payload;
     },
     propertyType(state, action) {
+      console.log("object");
       state.propertyType = action.payload;
     },
     location(state, action) {

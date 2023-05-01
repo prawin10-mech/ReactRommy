@@ -6,14 +6,10 @@ import { ButtonGroup, Button } from "@mui/material";
 
 const Search = () => {
   const dispatch = useDispatch();
-  const searchType = useSelector((state) => state.search.searchType);
+  const searchType1 = useSelector((state) => state.search.searchType);
 
-  const roomSearchHandle = () => {
-    dispatch(SearchActions.roomSearch());
-  };
-
-  const roommateSearchHandle = () => {
-    dispatch(SearchActions.roommateSearch());
+  const searchType = (name) => {
+    dispatch(SearchActions.roomSearch(name));
   };
 
   return (
@@ -36,21 +32,23 @@ const Search = () => {
       >
         <ButtonGroup>
           <Button
-            variant={searchType === "property" ? "contained" : "outlined"}
+            variant={searchType1 === "property" ? "contained" : "outlined"}
             color="secondary"
-            onClick={roomSearchHandle}
+            onClick={() => {
+              searchType("property");
+            }}
             sx={{
               mr: 2,
-              bgcolor: searchType === "property" ? "#6b46c1" : "#fff",
+              bgcolor: searchType1 === "property" ? "#6b46c1" : "#fff",
             }}
           >
             Room
           </Button>
           <Button
-            variant={searchType === "roommate" ? "contained" : "outlined"}
+            variant={searchType1 === "roommate" ? "contained" : "outlined"}
             color="secondary"
-            onClick={roommateSearchHandle}
-            sx={{ bgcolor: searchType === "roommate" ? "#6b46c1" : "#fff" }}
+            onClick={() => searchType("roommate")}
+            sx={{ bgcolor: searchType1 === "roommate" ? "#6b46c1" : "#fff" }}
           >
             Room mate
           </Button>
