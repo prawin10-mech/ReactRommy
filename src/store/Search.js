@@ -8,6 +8,12 @@ const initialState = {
   price: null,
   commercialProperty: false,
   availableRooms: [],
+  budget: [0, 10000],
+  anemities: [],
+  preferences: [],
+  propertyTypes: [],
+  PreferredRentType: [],
+  gender: null,
 };
 
 const SearchSlice = createSlice({
@@ -17,9 +23,6 @@ const SearchSlice = createSlice({
     roomSearch(state, action) {
       state.searchType = action.payload;
     },
-    // roommateSearch(state) {
-    //   state.searchType = "roommate";
-    // },
     searchText(state, action) {
       state.searchText = action.payload;
     },
@@ -38,6 +41,24 @@ const SearchSlice = createSlice({
     },
     availableRooms(state, action) {
       state.availableRooms = action.payload;
+    },
+    budget(state, action) {
+      state.budget = action.payload;
+    },
+    anemities(state, action) {
+      state.anemities = action.payload;
+    },
+    preferences(state, action) {
+      state.preferences = action.payload;
+    },
+    propertyTypes(state, action) {
+      state.propertyTypes = action.payload;
+    },
+    PreferredRentType(state, action) {
+      state.PreferredRentType = action.payload;
+    },
+    gender(state, action) {
+      state.gender = action.payload;
     },
   },
 });
