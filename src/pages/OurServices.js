@@ -94,12 +94,12 @@ const OurServices = () => {
             </div>
             <FloatingImage />
           </div>
-          <FloatingImage />
+          {/* <FloatingImage /> */}
         </div>
         <div>
           <CityCourosol />
           <Rooms />
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <Box sx={{ display: "flex", flexDirection: "column" ,mb:4}}>
             <Stack sx={{ mb: 1 }}>
               <Typography variant="h5" sx={{ mb: 1 }}>
                 Top affordable sharing option in UAE
