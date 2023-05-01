@@ -1,15 +1,19 @@
-import { Box, Button, Grid, Typography, Container, Stack, Paper } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  Typography,
+  Container,
+  Stack,
+  Paper,
+} from "@mui/material";
 import React, { useState } from "react";
 // import ImageCarousel55 from "./MultipleImages1";
 // import { Carousel } from "react-responsive-carousel";
-import Carousel from 'react-material-ui-carousel'
-import CityCarousel2 from '../UI/CityCarousel2'
+import Carousel from "react-material-ui-carousel";
+import CityCarousel2 from "../UI/CityCarousel2";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import SingleCardCarousel from "./SingleCardCarousel";
-
-
-
-
 
 const AddWithCarasol = () => {
   const [slideIndex, setSlideIndex] = useState(1);
@@ -59,11 +63,14 @@ const AddWithCarasol = () => {
             pt: 1,
             pb: 4,
             backgroundImage:
-              " linear-gradient(120deg, #d57eeb 0%, #fccb90 100%);"
+              " linear-gradient(120deg, #d57eeb 0%, #fccb90 100%);",
           }}
         >
           <Grid
-            item xs={12} sm={6} md={6}
+            item
+            xs={12}
+            sm={6}
+            md={6}
             sx={{
               // backgroundColor: "blue",
               display: "flex",
@@ -88,10 +95,21 @@ const AddWithCarasol = () => {
               Chat!
             </Button>
           </Grid>
-          <Grid item xs={12} sm={6}  sx={{py:4,display:'flex',alignItems:'center',justifyContent:'center'}} >
-            <SingleCardCarousel boxStyle={{width: '270px', height: '200px'}} imageStyle={{width: '100%', height: '180px'}}/>
-
-
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            sx={{
+              py: 4,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <SingleCardCarousel
+              boxStyle={{ width: "270px", height: "200px" }}
+              imageStyle={{ width: "100%", height: "180px" }}
+            />
           </Grid>
         </Grid>
         <Box
@@ -103,17 +121,20 @@ const AddWithCarasol = () => {
             mt: "-40px",
           }}
         >
-          <Grid container sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}>
+          <Grid
+            container
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <Grid item xs={12} md={4}>
               <Typography variant="subtitle1" gutterBottom>
                 Find Your home in Saaudi Arabia!
               </Typography>
             </Grid>
-            <Grid item xs={12} md={4} >
+            <Grid item xs={12} md={4}>
               <Typography variant="subtitle1" gutterBottom>
                 Find Your home in Saaudi Arabia!
               </Typography>

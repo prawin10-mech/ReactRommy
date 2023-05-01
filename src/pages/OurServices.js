@@ -82,7 +82,7 @@ const OurServices = () => {
       }}
     >
       <div className="flex flex-col justify-between !important">
-        <div className="flex flex-col justify-between !important">
+        <div className="flex flex-col justify-between !important mb-5">
           <div className="flex justify-around">
             <div className="pt-16">
               <p className="text-4xl font-bold text-white pl-10">
@@ -99,7 +99,7 @@ const OurServices = () => {
         <div>
           <CityCourosol />
           <Rooms />
-          <Box sx={{ display: "flex", flexDirection: "column" ,mb:4}}>
+          <Box sx={{ display: "flex", flexDirection: "column", mb: 4 }}>
             <Stack sx={{ mb: 1 }}>
               <Typography variant="h5" sx={{ mb: 1 }}>
                 Top affordable sharing option in UAE

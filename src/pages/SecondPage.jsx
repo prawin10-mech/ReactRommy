@@ -20,10 +20,6 @@ import AllAvailableRooms from "../components/rooms/AllAvailableRooms";
 import AdvancedSearch from "../components/rooms/AdvancedSearch";
 import { useSelector } from "react-redux";
 
-const ListItem = styled("li")(({ theme }) => ({
-  margin: theme.spacing(0.5),
-}));
-
 const SecondPage = () => {
   const city = useSelector((state) => state.search.location);
   const availableRooms = useSelector((state) => state.search.availableRooms);

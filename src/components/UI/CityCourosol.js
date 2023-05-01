@@ -3,12 +3,14 @@ import { cities } from "../../helper";
 import Dubai from "../../assets/Dubai.JPG";
 import NewYork from "../../assets/New York.JPG";
 import Riyadh from "../../assets/Riyadh.JPG";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
+import { Box } from "@mui/material";
 
 const CityCarousel = () => {
   const [currentCityIndex, setCurrentCityIndex] = useState(0);
   const [carouselCities, setCarouselCities] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(1);
 
   useEffect(() => {
     const updateCarouselCities = () => {
@@ -33,27 +35,27 @@ const CityCarousel = () => {
   };
 
   const carouselItems = carouselCities.map((city, index) => {
-    const isActive = index === 1;
+    const isActive = index === activeIndex;
     const styles = isActive
-      ? "min-h-[35vh] h-[35vh] rounded-2xl"
-      : "my-auto h-[30vh] rounded-md";
+      ? "min-h-[35vh] h-[40vh] rounded-2xl"
+      : "my-auto max-h-[30vh] rounded-md";
 
     let image = null;
     let cityName = null;
     if (city === "Dubai") {
       image = (
-        <NavLink to="/allAvailableRooms">
+        <NavLink to="/sp">
           <img
             src={Dubai}
             alt="Dubai"
-            className={`h-full object-cover w-96  ${styles}`}
+            className={`h-full object-cover w-96 ${styles}`}
           />
         </NavLink>
       );
       cityName = "Dubai";
     } else if (city === "New York") {
       image = (
-        <NavLink to="/allAvailableRooms">
+        <NavLink to="/sp">
           <img
             src={NewYork}
             alt="New York"
@@ -64,7 +66,7 @@ const CityCarousel = () => {
       cityName = "New York";
     } else if (city === "Riyadh") {
       image = (
-        <NavLink to="/allAvailableRooms">
+        <NavLink to="/sp">
           <img
             src={Riyadh}
             alt="Riyadh"
@@ -76,40 +78,56 @@ const CityCarousel = () => {
     }
 
     return (
-      <div
+      <Box
         key={city}
-        className={`flex items-center justify-center font-bold text-3xl ${styles} relative`}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontWeight: "bold",
+          fontSize: "3xl",
+          ...styles,
+          position: "relative",
+        }}
       >
         {image}
-        <div className="absolute bottom-4 left-0 right-0 text-white font-semibold text-center">
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: "4",
+            left: "0",
+            right: "0",
+            color: "white",
+            fontWeight: "semibold",
+            textAlign: "center",
+          }}
+        >
           {cityName}
-        </div>
-      </div>
+        </Box>
+      </Box>
     );
   });
 
   return (
-    <div className="relative flex justify-center items-center mt-20">
-      <button
-        className=" left-0 top-1/2 transform -translate-y-1/2"
+    <Box
+      sx={{
+        position: "relative",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        mt: "20",
+      }}
+    >
+      <ChevronLeft
+        className="h-8 w-8 text-slate-800 cursor-pointer"
         onClick={handlePrevClick}
-      >
-        <ChevronLeftIcon
-          className="h-8 w-8 text-slate-800 cursor-pointer"
-          onClick={handlePrevClick}
-        />
-      </button>
-      <div className="flex w-auto">{carouselItems}</div>
-      <button
-        className="right-0 top-1/2 transform -translate-y-1/2"
+      />
+      <Box sx={{ display: "flex" }}>{carouselItems}</Box>
+      <ChevronRight
+        className="h-8 w-8 text-slate-800 cursor-pointer"
         onClick={handleNextClick}
-      >
-        <ChevronRightIcon
-          className=" h-8 w-8 text-slate-800 cursor-pointer"
-          onClick={handleNextClick}
-        />
-      </button>
-    </div>
+      />
+    </Box>
   );
 };
 

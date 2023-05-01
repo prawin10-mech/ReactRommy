@@ -35,8 +35,10 @@ const SearchInputs = () => {
 
   const handleSearch = async () => {
     const obj = {};
-    if (location) {
-      obj.countryCode = location;
+    if (location === "Dubai") {
+      obj.countryCode = "AE";
+    } else if (location === "Saudi Arabia") {
+      obj.countryCode = "SA";
     }
     if (propertyType) {
       obj.type = propertyType;
@@ -87,8 +89,8 @@ const SearchInputs = () => {
           onChange={(e) => searchLocationHandle(e)}
         >
           <option value="">location</option>
-          <option value="AE">Dubai</option>
-          <option value="SA">Saudi Arabia</option>
+          <option value="Dubai">Dubai</option>
+          <option value="Saudi Arabia">Saudi Arabia</option>
         </select>
         <select
           name="price"
