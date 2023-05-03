@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 
-import TopBackground from "../components/postPropertyComponents/Topbackground";
+import TopBackground from "../components/postPropertyComponents/TopBackground";
 import BottomBackground from "../components/postPropertyComponents/BottomBackground";
 import InputDropDown from "../components/postPropertyComponents/InputDropDown";
 import TextInput from "../components/postPropertyComponents/TextInput";

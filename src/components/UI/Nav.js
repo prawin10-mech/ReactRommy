@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import RoomyFinderLogo from "../../assets/roomyFinderLogo.jpg.png";
 import { NavLink } from "react-router-dom";
+import Logout from "./Logout";
 import {
   Button,
   Stack,
@@ -11,6 +12,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useSelector } from "react-redux";
 
 const pages = ["About Us", "Contact Us", "Our Services", "Post Property"];
 const pageNavigate = ["aboutUs", "contactUs", "", "postProperty"];
@@ -20,6 +22,7 @@ const Nav = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
+  const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
   const handleClick = (link) => {
     setActiveLink(link);
   };
@@ -39,6 +42,7 @@ const Nav = () => {
     setAnchorElUser(event.currentTarget);
   };
 
+  console.log(isLoggedIn);
   return (
     <div className="nav-container p-3 flex justify-between bg-white">
       <NavLink to={"/"} className="flex align-content-center">
@@ -71,7 +75,6 @@ const Nav = () => {
           </Typography>
         </Stack>
       </NavLink>
-
       <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
         <IconButton
           size="large"
@@ -201,48 +204,51 @@ const Nav = () => {
         </Button>
       </Stack>
 
-      <Stack direction="row" spacing={2} alignItems="center">
-        <Button
-          variant="contained"
-          color={activeLink === "login" ? "primary" : "inherit"}
-          sx={{
-            borderRadius: "10px",
-            fontWeight: "bold",
-            color: "#fff",
-            backgroundColor: "orange",
-            border: "2px solid orange",
-            "&:hover": {
-              backgroundColor: "white",
-              color: "orange",
-            },
-          }}
-          // onClick={() => handleClick("login")}
-          component={NavLink}
-          to={"/postProperty"}
-        >
-          Login
-        </Button>
-        <Button
-          variant="contained"
-          color={activeLink === "postProperty" ? "primary" : "inherit"}
-          sx={{
-            borderRadius: "10px",
-            fontWeight: "bold",
-            color: "orange",
-            backgroundColor: "white",
-            border: "2px solid orange",
-            "&:hover": {
+      {!isLoggedIn && (
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Button
+            variant="contained"
+            color={activeLink === "login" ? "primary" : "inherit"}
+            sx={{
+              borderRadius: "10px",
+              fontWeight: "bold",
+              color: "#fff",
               backgroundColor: "orange",
-              color: "white",
-            },
-          }}
-          onClick={() => handleClick("postProperty")}
-          component={NavLink}
-          to={"/postProperty"}
-        >
-          Sign Up
-        </Button>
-      </Stack>
+              border: "2px solid orange",
+              "&:hover": {
+                backgroundColor: "white",
+                color: "orange",
+              },
+            }}
+            onClick={() => handleClick("login")}
+            component={NavLink}
+            to={"/login"}
+          >
+            Login
+          </Button>
+          <Button
+            variant="contained"
+            color={activeLink === "postProperty" ? "primary" : "inherit"}
+            sx={{
+              borderRadius: "10px",
+              fontWeight: "bold",
+              color: "orange",
+              backgroundColor: "white",
+              border: "2px solid orange",
+              "&:hover": {
+                backgroundColor: "orange",
+                color: "white",
+              },
+            }}
+            onClick={() => handleClick("signUp")}
+            component={NavLink}
+            to={"/signup"}
+          >
+            Sign Up
+          </Button>
+        </Stack>
+      )}
+      {isLoggedIn && <Logout />}
     </div>
   );
 };

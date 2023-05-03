@@ -1,5 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
+
 import Nav from "./components/UI/Nav";
 import OurServices from "./pages/OurServices";
 import AboutUs from "./pages/AboutUs";
@@ -10,7 +12,7 @@ import Header from "./components/Header";
 import MainBgImg from "./assets/mainBackground.jpg";
 import AllRooms from "./components/rooms/AllRooms";
 import SecondPage from "./pages/SecondPage";
-import "react-toastify/dist/ReactToastify.css";
+import Login from "./pages/Login";
 
 function App() {
   return (
@@ -30,6 +32,7 @@ function App() {
           <Route path="/postProperty" element={<PostProperty />} />
           <Route path="/allAvailableRooms" element={<AllRooms />} />
           <Route path="/sp" element={<SecondPage />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
         <Footer />
       </div>

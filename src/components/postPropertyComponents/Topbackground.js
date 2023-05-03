@@ -27,7 +27,7 @@ const Background = () => {
         component="img"
         src={topBackground}
         alt="Top Background"
-        sx={{ width: "100%", ...imageHeight }}
+        sx={{ width: "100vw", ...imageHeight }}
       />
     </Grid>
   );
