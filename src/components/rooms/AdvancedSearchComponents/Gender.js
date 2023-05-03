@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   FormGroup,
   Typography,
@@ -11,8 +11,12 @@ import { SearchActions } from "../../../store/Search";
 
 const Gender = () => {
   const dispatch = useDispatch();
-  const handleCheckboxChange = (event) => {
-    dispatch(SearchActions.gender(event.target.value));
+  const [selectedValue, setSelectedValue] = useState("");
+
+  const handleRadioChange = (event) => {
+    const value = event.target.value;
+    setSelectedValue(value);
+    dispatch(SearchActions.gender(value));
   };
 
   return (
@@ -23,29 +27,26 @@ const Gender = () => {
       <Grid container direction="column">
         <Grid item>
           <FormControlLabel
-            control={<Radio />}
+            control={<Radio checked={selectedValue === "Male"} />}
             label="Male"
             value="Male"
-            name="gender"
-            onChange={handleCheckboxChange}
+            onChange={handleRadioChange}
           />
         </Grid>
         <Grid item>
           <FormControlLabel
-            control={<Radio />}
+            control={<Radio checked={selectedValue === "Female"} />}
             label="Female"
             value="Female"
-            name="gender"
-            onChange={handleCheckboxChange}
+            onChange={handleRadioChange}
           />
         </Grid>
         <Grid item>
           <FormControlLabel
-            control={<Radio />}
+            control={<Radio checked={selectedValue === "Mix"} />}
             label="Mix"
             value="Mix"
-            name="gender"
-            onChange={handleCheckboxChange}
+            onChange={handleRadioChange}
           />
         </Grid>
       </Grid>

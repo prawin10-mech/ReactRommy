@@ -10,6 +10,7 @@ import Header from "./components/Header";
 import MainBgImg from "./assets/mainBackground.jpg";
 import AllRooms from "./components/rooms/AllRooms";
 import SecondPage from "./pages/SecondPage";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
