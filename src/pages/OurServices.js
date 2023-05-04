@@ -117,7 +117,7 @@ const OurServices = () => {
                 />
               </Typography>
             </Stack>
-            <AddWithCarasol />
+            <AddWithCarasol smallcard={true}/>
           </Box>
           {/* <AvailableRooms /> */}
         </div>

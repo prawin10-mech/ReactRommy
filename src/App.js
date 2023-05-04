@@ -10,6 +10,8 @@ import Header from "./components/Header";
 import MainBgImg from "./assets/mainBackground.jpg";
 import AllRooms from "./components/rooms/AllRooms";
 import SecondPage from "./pages/SecondPage";
+import ThirdFile from "./pages/ThirdFile";
+import ControlPanel from "./pages/ControlPanel";
 
 function App() {
   return (
@@ -29,6 +31,9 @@ function App() {
           <Route path="/postProperty" element={<PostProperty />} />
           <Route path="/allAvailableRooms" element={<AllRooms />} />
           <Route path="/sp" element={<SecondPage />} />
+          <Route path="/third" element={<ThirdFile />} />
+          <Route path="/cp" element={<ControlPanel />} />
+
         </Routes>
         <Footer />
       </div>
