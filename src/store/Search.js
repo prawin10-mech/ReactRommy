@@ -9,7 +9,7 @@ const initialState = {
   commercialProperty: false,
   availableRooms: [],
   budget: [0, 10000],
-  anemities: [],
+  amneities: [],
   preferences: [],
   propertyTypes: [],
   PreferredRentType: [],
@@ -27,7 +27,6 @@ const SearchSlice = createSlice({
       state.searchText = action.payload;
     },
     propertyType(state, action) {
-      console.log("object");
       state.propertyType = action.payload;
     },
     location(state, action) {
@@ -45,8 +44,8 @@ const SearchSlice = createSlice({
     budget(state, action) {
       state.budget = action.payload;
     },
-    anemities(state, action) {
-      state.anemities = action.payload;
+    amneities(state, action) {
+      state.amneities = action.payload;
     },
     preferences(state, action) {
       state.preferences = action.payload;

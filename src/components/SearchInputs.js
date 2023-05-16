@@ -35,6 +35,9 @@ const SearchInputs = () => {
 
   const handleSearch = async () => {
     const obj = {};
+    if (searchText) {
+      obj.city = searchText;
+    }
     if (location === "Dubai") {
       obj.countryCode = "AE";
     } else if (location === "Saudi Arabia") {
@@ -49,6 +52,8 @@ const SearchInputs = () => {
     if (commercialProperty) {
       obj.commercialProperty = commercialProperty;
     }
+
+    console.log(obj);
 
     if (Object.keys(obj).length > 0) {
       const { data } = await axios.post(
@@ -68,7 +73,7 @@ const SearchInputs = () => {
         <input
           className="border-2 border-grey-300 mr-2 mb-2 md:mb-0 md:w-[50%]"
           type="text"
-          placeholder="City, Area or Building"
+          placeholder="Search by city"
           onChange={searchTextHandle}
         />
         <select
@@ -76,12 +81,23 @@ const SearchInputs = () => {
           className="border-2 border-grey-300 mr-2 mb-2 md:mb-0"
           onChange={(e) => searchPropertyTypeHandle(e)}
         >
-          <option value="">Property Type</option>
-          <option value="Bed">Bed</option>
-          <option value="Partition">Partition</option>
-          <option value="Room">Room</option>
-          <option value="Master Room">Master room</option>
-          <option value="Mix">Mix</option>
+          {searchType === "property" ? (
+            <>
+              <option value="">Property Type</option>
+              <option value="Bed">Bed</option>
+              <option value="Partition">Partition</option>
+              <option value="Room">Room</option>
+              <option value="Master Room">Master room</option>
+              <option value="Mix">Mix</option>{" "}
+            </>
+          ) : (
+            <>
+              <option value="">Property Type</option>
+              <option value="Studio">Studio</option>
+              <option value="Appartment">Appartment</option>
+              <option value="House">House</option>
+            </>
+          )}
         </select>
         <select
           name="bedsBaths"

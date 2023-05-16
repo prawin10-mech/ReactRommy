@@ -7,10 +7,10 @@ import {
   Checkbox,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { SearchActions } from "../../../store/Search";
+import { AdvanceSearchActions } from "../../../store/AdvanceSearch";
 
 const Preferences = () => {
-  const checkedItems = useSelector((state) => state.search.preferences);
+  const checkedItems = useSelector((state) => state.advanceSearch.preferences);
 
   const dispatch = useDispatch();
 
@@ -19,10 +19,10 @@ const Preferences = () => {
     const isChecked = event.target.checked;
 
     if (isChecked) {
-      dispatch(SearchActions.preferences([...checkedItems, item]));
+      dispatch(AdvanceSearchActions.preferences([...checkedItems, item]));
     } else {
       dispatch(
-        SearchActions.preferences(
+        AdvanceSearchActions.preferences(
           checkedItems.filter((checkedItem) => checkedItem !== item)
         )
       );
@@ -39,23 +39,39 @@ const Preferences = () => {
           <FormControlLabel
             control={<Checkbox />}
             label="Smoking Allowed"
-            name="Smoking Allowed"
+            name="smoking"
             onChange={handleCheckboxChange}
           />
         </Grid>
         <Grid item>
           <FormControlLabel
             control={<Checkbox />}
+            name="visitors"
             label="Visitors Allowed"
-            name="Visitors Allowed"
             onChange={handleCheckboxChange}
           />
         </Grid>
         <Grid item>
           <FormControlLabel
             control={<Checkbox />}
+            name="drinking"
+            label="Drinking Allowed"
+            onChange={handleCheckboxChange}
+          />
+        </Grid>
+        <Grid item>
+          <FormControlLabel
+            control={<Checkbox />}
+            name="friendParty"
             label="Party Allowed"
-            name="Party Allowed"
+            onChange={handleCheckboxChange}
+          />
+        </Grid>
+        <Grid item>
+          <FormControlLabel
+            control={<Checkbox />}
+            name="pets"
+            label="Pets Allowed"
             onChange={handleCheckboxChange}
           />
         </Grid>

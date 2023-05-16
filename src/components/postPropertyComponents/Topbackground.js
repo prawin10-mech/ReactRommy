@@ -21,13 +21,19 @@ const Background = () => {
     },
   };
 
+  const imgStyles = {
+    width: "100vw",
+    ...imageHeight,
+    userDrag: "none",
+  };
+
   return (
     <Grid sx={{ overflow: "hidden" }}>
       <Box
         component="img"
         src={topBackground}
         alt="Top Background"
-        sx={{ width: "100vw", ...imageHeight }}
+        sx={imgStyles}
       />
     </Grid>
   );

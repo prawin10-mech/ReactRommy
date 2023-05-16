@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { Box, Grid } from "@mui/material";
 import AdvancedSearch from "./AdvancedSearch";
@@ -17,6 +17,11 @@ const AllRooms = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const allAvailableRooms = useMemo(
+    () => <AllAvailableRooms />,
+    [availableRooms]
+  );
+
   return (
     <Grid container>
       <Grid item xs={12} md={9}>
@@ -24,7 +29,7 @@ const AllRooms = () => {
           <Box mb={2}>
             <SearchInputs />
           </Box>
-          <Box>{loading ? <SimmerUI /> : <AllAvailableRooms />}</Box>
+          <Box>{loading ? <SimmerUI /> : allAvailableRooms}</Box>
         </Box>
       </Grid>
     </Grid>

@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { FormGroup, Typography, Slider } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { SearchActions } from "../../../store/Search";
+import { AdvanceSearchActions } from "../../../store/AdvanceSearch";
 
 const Budget = () => {
-  const value = useSelector((state) => state.search.budget);
   const dispatch = useDispatch();
-  const handleChange = (newValue) => {
-    dispatch(SearchActions.budget(newValue));
+  const minBudget = useSelector((state) => state.advanceSearch.minBudget);
+  const maxBudget = useSelector((state) => state.advanceSearch.maxBudget);
+
+  const handleBudgetChange = (event, newValue) => {
+    dispatch(AdvanceSearchActions.minBudget(newValue[0]));
+    dispatch(AdvanceSearchActions.maxBudget(newValue[1]));
   };
 
   return (
@@ -17,16 +20,22 @@ const Budget = () => {
       </Typography>
       <Slider
         getAriaLabel={() => "Price range"}
-        value={value}
-        onChange={handleChange}
+        value={[minBudget, maxBudget]}
+        onChange={handleBudgetChange}
         valueLabelDisplay="auto"
+        step={1}
+        marks={[
+          { value: 0, label: "0K" },
+          { value: 50, label: "50K" },
+          { value: 100, label: "100K" },
+        ]}
       />
       <Typography variant="subtitle1" sx={{ mt: 1 }}>
-        {value[0]}
-        {value[0] !== 0 ? "K" : ""} - {value[1]}K USD
+        {minBudget}
+        {minBudget !== 0 ? "K" : ""} - {maxBudget}K USD
       </Typography>
     </FormGroup>
   );
 };
 
-export default Budget;
+export default React.memo(Budget);

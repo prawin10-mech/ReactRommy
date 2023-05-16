@@ -7,22 +7,26 @@ import {
   Checkbox,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { SearchActions } from "../../../store/Search";
+import { AdvanceSearchActions } from "../../../store/AdvanceSearch";
 
 const PropertyType = () => {
-  const selectedItems = useSelector((state) => state.search.propertyTypes);
+  const selectedItems = useSelector(
+    (state) => state.advanceSearch.propertyType
+  );
   const dispatch = useDispatch();
 
   const handleCheckboxChange = (event) => {
     const selectedItem = event.target.value;
     if (selectedItems.includes(selectedItem)) {
       dispatch(
-        SearchActions.propertyTypes(
+        AdvanceSearchActions.propertyType(
           selectedItems.filter((item) => item !== selectedItem)
         )
       );
     } else {
-      dispatch(SearchActions.propertyTypes([...selectedItems, selectedItem]));
+      dispatch(
+        AdvanceSearchActions.propertyType([...selectedItems, selectedItem])
+      );
     }
   };
   return (
@@ -128,7 +132,7 @@ const PropertyType = () => {
             xs={6}
             sx={{
               height: "80px",
-              border: selectedItems.includes("Bed Space")
+              border: selectedItems.includes("Bed")
                 ? "2px solid purple"
                 : "none",
               borderRadius: "5px",
@@ -139,13 +143,13 @@ const PropertyType = () => {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={selectedItems.includes("Bed Space")}
+                  checked={selectedItems.includes("Bed")}
                   onChange={handleCheckboxChange}
-                  value="Bed Space"
+                  value="Bed"
                   sx={{ display: "none" }}
                 />
               }
-              label="Bed Space"
+              label="Bed"
               sx={{
                 marginBottom: "10px",
                 padding: "20px",

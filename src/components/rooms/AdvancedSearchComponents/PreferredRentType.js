@@ -7,10 +7,9 @@ import {
   Radio,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { SearchActions } from "../../../store/Search";
+import { AdvanceSearchActions } from "../../../store/AdvanceSearch";
 
 const PreferredRentType = () => {
-  const checkedItems = useSelector((state) => state.search.PreferredRentType);
   const [selectedValue, setSelectedValue] = useState("");
 
   const dispatch = useDispatch();
@@ -18,13 +17,13 @@ const PreferredRentType = () => {
   const handleRadioChange = (event) => {
     const value = event.target.value;
     setSelectedValue(value);
-    dispatch(SearchActions.PreferredRentType(value));
+    dispatch(AdvanceSearchActions.preferredRentType(value));
   };
 
   return (
     <FormGroup sx={{ my: 3 }}>
       <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: "bold" }}>
-        Gender
+        Rent period
       </Typography>
       <Grid container direction="column">
         <Grid item>

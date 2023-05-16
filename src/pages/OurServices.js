@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import FloatingImage from "../components/FloatingImage";
 import Search from "../components/Search";
-import CityCourosol from "../components/UI/CityCourosol";
+import CityCarousel from "../components/UI/CityCarousel";
 import Rooms from "../components/Rooms";
-import { Stack, Typography, Box } from "@mui/material";
-import AddWithCarasol from "../components/Card/CardForOurServics";
+import { Typography, Box, Grid } from "@mui/material";
+import AddWithCarousel from "../components/Card/CardForOurServics";
 import MainBgImg from "../assets/mainBackground.jpg";
 import axios from "axios";
+import Footer from "../components/Footer";
 
 import { SearchActions } from "../store/Search";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { UserActions } from "../store/User";
 
 import CarouselWithMultipleImage from "../components/CarouselWithMultipleImage";
 
@@ -17,8 +19,8 @@ const OurServices = () => {
   const [propertyAddAvilableRoom, setpropertyAddAvilableRoom] = useState([]);
   const [PartitionAddAvilableRoom, setPartitionAddAvilableRoom] = useState([]);
   const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
 
-  // api call ==============================
   const getAffordableRoomData = async () => {
     const { data } = await axios.post(
       `http://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available`,
@@ -28,9 +30,7 @@ const OurServices = () => {
     axios
       .post(
         "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available",
-        {
-          countryCode: "AE",
-        }
+        { countryCode: "AE" }
       )
       .then((res) => {
         setpropertyAddAvilableRoom(res.data);
@@ -39,90 +39,109 @@ const OurServices = () => {
         console.log(err);
       });
   };
-  // ---------------------------------------
+
   const getPartitionRoomData = () => {
-    console.log(
-      "http://roomy-finder-evennode.ap-1.evennode.com/api/ads/roommate-ads/available",
-      {
-        countryCode: "AE",
-      }
+    const { data } = axios.post(
+      "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/roommate-ad/available",
+      { countryCode: "AE" }
     );
-    axios
-      .post(
-        "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/roommate-ad/available",
-        {
-          countryCode: "AE",
-        }
-      )
-      .then((res) => {
-        console.log("Response090", res.data);
-        setPartitionAddAvilableRoom(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(SearchActions.availableRooms(data));
+    setPartitionAddAvilableRoom(data);
   };
 
-  // console.log ==========================
-  console.log("propertyAddAvilableRoom", propertyAddAvilableRoom);
-  console.log("PartitionAddAvilableRoom", PartitionAddAvilableRoom);
-
-  // useEffect ==========================
+  const fetchMyBookings = async () => {
+    const { data } = await axios.get(
+      "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
+      { headers: { Authorization: token } }
+    );
+    dispatch(UserActions.myBookings(data));
+  };
 
   useEffect(() => {
     getAffordableRoomData();
     getPartitionRoomData();
+    fetchMyBookings();
   }, []);
 
   return (
-    <div
-      className="bg-cover bg-no-repeat bg-center w-full "
-      style={{
-        backgroundImage: `url(${MainBgImg})`,
-      }}
-    >
-      <div className="flex flex-col justify-between !important">
-        <div className="flex flex-col justify-between !important mb-5">
-          <div className="flex justify-around">
-            <div className="pt-16">
-              <p className="text-4xl font-bold text-white pl-10">
+    <Box sx={{ position: "relative" }}>
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "90vh",
+          backgroundImage: `url(${MainBgImg})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          marginBottom: "50px",
+        }}
+      ></Box>
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        <Grid container justifyContent="space-between" alignItems="center">
+          <Grid item xs={12} sm={8}>
+            <Box sx={{ pt: { xs: 10, md: 16 }, pl: { xs: 0, md: 2 } }}>
+              <Typography
+                variant="h3"
+                sx={{
+                  fontWeight: "bold",
+                  color: "white",
+                  mb: 3,
+                  pl: { xs: 0, md: 3 },
+                  textAlign: { xs: "center", md: "left" },
+                }}
+              >
                 Find your perfect sharing space.
-              </p>
-              <div className="pt-5">
-                <Search />
-              </div>
-            </div>
+              </Typography>
+              <Search />
+            </Box>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={4}
+            sx={{ display: { xs: "none", sm: "block" } }}
+          >
             <FloatingImage />
-          </div>
-          {/* <FloatingImage /> */}
-        </div>
-        <div>
-          <CityCourosol />
+          </Grid>
+        </Grid>
+        <Box sx={{ pt: { xs: 6, md: 10 } }}>
+          <CityCarousel />
           <Rooms />
           <Box sx={{ display: "flex", flexDirection: "column", mb: 4 }}>
-            <Stack sx={{ mb: 1 }}>
+            <Box sx={{ mb: 1 }}>
               <Typography variant="h5" sx={{ mb: 1 }}>
                 Top affordable sharing option in UAE
               </Typography>
               <CarouselWithMultipleImage
                 propertyAddAvilableRoom={propertyAddAvilableRoom}
               />
-            </Stack>
+            </Box>
 
-            <Stack sx={{ mt: 1, mb: 2 }}>
+            <Box sx={{ mt: 1, mb: 2 }}>
               <Typography variant="h5" sx={{ my: 1 }}>
-                Partitions for rent in Sharjsh
-                <CarouselWithMultipleImage
-                  PartitionAddAvilableRoom={PartitionAddAvilableRoom}
-                />
+                Partitions for rent in Sharjah
               </Typography>
-            </Stack>
-            <AddWithCarasol />
+              <CarouselWithMultipleImage
+                PartitionAddAvilableRoom={PartitionAddAvilableRoom}
+              />
+            </Box>
+            <AddWithCarousel />
           </Box>
           {/* <AvailableRooms /> */}
-        </div>
-      </div>
-    </div>
+        </Box>
+        <Footer />
+      </Box>
+    </Box>
   );
 };
 

@@ -1,103 +1,114 @@
 import React from "react";
+import { Box, Grid, Toolbar, Typography } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
 import FooterMobile from "../assets/footerMobile.png";
+import AppStore from "../assets/AppStore.png";
+import GooglePlay from "../assets/GooglePlay.png";
+import FooterBottom from "../assets/FooterBottom.png";
+import { footerSections } from "../utils/FooterData";
 
-const Footer = () => {
+const Footer2 = () => {
   return (
-    <div className="footer-container flex flex-col sm:flex-row justify-between h-auto sm:h-96 mt-2 mx-10 mb-10 bg-white relative overflow-hidden">
-      <div className="mt-4 sm:mt-24 sm:w-1/4">
-        <NavLink to={"/"} className="flex">
-          <img
-            src={logo}
-            alt="Roomy finder logo"
-            width={"80px"}
-            height={"80px"}
-            className="mr-2"
-          />
-          <div className="">
-            <p className="text-bold text-2xl text-purple-800">Roomy</p>
-            <p className="text-bold text-2xl text-orange-600">Finder</p>
-          </div>
-        </NavLink>
-        <div className="flex flex-col sm:flex-row justify-between w-screen mt-4">
-          <div>
-            <p className="font-bold">Company</p>
-            <ul>
-              <li>About Us</li>
-              <li>About Us</li>
-              <li>About Us</li>
-              <li>About Us</li>
-            </ul>
-          </div>
-          <div>
-            <p className="font-bold">Invest</p>
-            <ul>
-              <li>Mutual Funds</li>
-              <li>Gold</li>
-              <li>NFC</li>
-            </ul>
-          </div>
-          <div>
-            <p className="font-bold">Insure</p>
-            <ul>
-              <li>Health</li>
-              <li>Life</li>
-              <li>About Us</li>
-              <li>About Us</li>
-              <li>About Us</li>
-            </ul>
-          </div>
-          <div>
-            <p className="font-bold">Goals</p>
-            <ul>
-              <li>Mutual Funds</li>
-              <li>Gold</li>
-              <li>NFC</li>
-            </ul>
-          </div>
-          <div>
-            <p className="font-bold">Resources</p>
-            <ul>
-              <li>Health</li>
-              <li>Life</li>
-              <li>About Us</li>
-              <li>About Us</li>
-            </ul>
-          </div>
-          <div>
-            <p className="font-bold">Contact Details</p>
-            <ul>
-              <li>abc@test.com</li>
-              <li>+1234567890</li>
-            </ul>
-          </div>
-          <div className="mt-[-100px] ml-[-100px]">
-            <img src={FooterMobile} alt="footer phone" width={"350px"} />
-          </div>
-        </div>
-      </div>
-      <style>{`
-        @media screen and (min-width: 1290px) {
-          .footer-container {
-            font-size: 1.2rem;
-          }
-        }
-
-        @media screen and (min-width: 1440px) {
-          .footer-container {
-            font-size: 1.4rem;
-          }
-        }
-
-        @media screen and (min-width: 1800px) {
-          .footer-container {
-            font-size: 1.6rem;
-          }
-        }
-      `}</style>
-    </div>
+    <>
+      <Toolbar
+        sx={{
+          backgroundColor: "#F7F7F7",
+          display: "flex",
+          paddingY: "3%",
+          flexDirection: "column",
+        }}
+      >
+        <Grid
+          sx={{
+            display: "flex",
+            marginBottom: "10px",
+          }}
+        >
+          <NavLink to={"/"}>
+            <img src={logo} alt="Roomy finder logo" width={70} />
+          </NavLink>
+          <Box
+            sx={{
+              display: "flex",
+              ml: 2,
+              flexDirection: "column",
+            }}
+          >
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: "bolder", color: "purple" }}
+            >
+              Roomy
+            </Typography>
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: "bolder", color: "orange" }}
+            >
+              Finder
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid
+          container
+          spacing={2}
+          justifyContent="space-between"
+          sx={{ width: "100%" }}
+        >
+          {footerSections.map((section) => (
+            <Grid item key={section.title}>
+              <Box>
+                <Typography variant="h6" sx={{ fontWeight: "700" }}>
+                  {section.title}
+                </Typography>
+                <Box>
+                  {section.items.map((item, index) => (
+                    <Typography key={index} variant="subtitle2" sx={{ mt: 1 }}>
+                      {item}
+                    </Typography>
+                  ))}
+                </Box>
+              </Box>
+            </Grid>
+          ))}
+          <Grid item>
+            <Box>
+              <Typography variant="h6" sx={{ fontWeight: "700" }}>
+                Get the app
+              </Typography>
+              <Box>
+                <Typography variant="subtitle2" sx={{ mt: 1 }}>
+                  <Box item>
+                    <img src={AppStore} alt="App Store" width={120} />
+                  </Box>
+                  <Box item>
+                    <img src={GooglePlay} alt="Google Play" width={120} />
+                  </Box>
+                </Typography>
+              </Box>
+            </Box>
+          </Grid>
+          {/* <Box>
+            <img
+              src={FooterMobile}
+              alt="Footer mobile"
+              width="20%"
+              sx={{ display: { xs: "block", md: "none" } }}
+            />
+          </Box> */}
+        </Grid>
+      </Toolbar>
+      <Box
+        sx={{
+          backgroundColor: "#FAFAFA",
+          backgroundImage: `url(${FooterBottom})`,
+          color: "#fff",
+        }}
+      >
+        T&C
+      </Box>
+    </>
   );
 };
 
-export default Footer;
+export default Footer2;

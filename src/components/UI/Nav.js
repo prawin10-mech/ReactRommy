@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import RoomyFinderLogo from "../../assets/roomyFinderLogo.jpg.png";
-import { NavLink } from "react-router-dom";
-import Logout from "./Logout";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import {
   Button,
   Stack,
@@ -10,19 +9,26 @@ import {
   Box,
   Menu,
   MenuItem,
+  Tooltip,
+  Avatar,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { UserActions } from "../../store/User";
+import avatar from "../../assets/avatar.jpg";
 
 const pages = ["About Us", "Contact Us", "Our Services", "Post Property"];
 const pageNavigate = ["aboutUs", "contactUs", "", "postProperty"];
 
 const Nav = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState("ourServices");
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const settings = ["Profile", "Account", "Dashboard", "My Bookings", "Logout"];
 
-  const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const handleClick = (link) => {
     setActiveLink(link);
   };
@@ -35,14 +41,25 @@ const Nav = () => {
     setAnchorElUser(null);
   };
 
+  const handleLogout = () => {
+    dispatch(UserActions.isLoggedIn(false));
+    localStorage.removeItem("token");
+    setAnchorElUser(null);
+  };
+
   const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
+    setAnchorElNav("/", event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  console.log(isLoggedIn);
+  const handleItemClick = (pageUrl) => {
+    handleCloseUserMenu();
+    // Redirect to the desired page
+    navigate(`${pageUrl}`);
+  };
+  if (localStorage.getItem("token")) dispatch(UserActions.isLoggedIn(true));
   return (
     <div className="nav-container p-3 flex justify-between bg-white">
       <NavLink to={"/"} className="flex align-content-center">
@@ -205,7 +222,12 @@ const Nav = () => {
       </Stack>
 
       {!isLoggedIn && (
-        <Stack direction="row" spacing={2} alignItems="center">
+        <Stack
+          direction="row"
+          spacing={2}
+          alignItems="center"
+          justifyContent={"center"}
+        >
           <Button
             variant="contained"
             color={activeLink === "login" ? "primary" : "inherit"}
@@ -248,7 +270,66 @@ const Nav = () => {
           </Button>
         </Stack>
       )}
-      {isLoggedIn && <Logout />}
+      {isLoggedIn && (
+        <Box sx={{ flexGrow: 0, display: "flex" }}>
+          <Tooltip title="Open settings">
+            <IconButton
+              onClick={handleOpenUserMenu}
+              sx={{ p: 0, width: "50px" }}
+            >
+              <Avatar
+                alt="Avatar Sharp"
+                src={avatar}
+                sx={{
+                  width: 50, // replace with your desired width value
+                  height: 50, // replace with your desired width value
+                }}
+              />
+            </IconButton>
+          </Tooltip>
+          <Menu
+            sx={{ mt: "45px" }}
+            id="menu-appbar"
+            anchorEl={anchorElUser}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={Boolean(anchorElUser)}
+            onClose={handleCloseUserMenu}
+          >
+            {settings.map((setting) => {
+              if (setting === "Logout") {
+                return (
+                  <MenuItem key={setting} onClick={() => handleLogout()}>
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                );
+              } else if (setting === "My Bookings") {
+                return (
+                  <MenuItem
+                    key={setting}
+                    onClick={() => handleItemClick("/myBookings")}
+                  >
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                );
+              } else {
+                return (
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                );
+              }
+            })}
+          </Menu>
+        </Box>
+      )}
     </div>
   );
 };

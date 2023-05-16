@@ -1,31 +1,39 @@
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import SingleCardCarousel from "../components/Card/SingleCardCarousel";
 
 import { styled } from "@mui/material/styles";
-import Chip from "@mui/material/Chip";
-import Paper from "@mui/material/Paper";
-import TagFacesIcon from "@mui/icons-material/TagFaces";
 import CustomizeSelectBox from "../components/MUIcomponent/CustomizeSelectBox";
-import IconButton from "../components/MUIcomponent/IconButtonMUI";
 import IconButtonMUI from "../components/MUIcomponent/IconButtonMUI";
 import ChipsArray from "../components/MUIcomponent/ChipsArray";
 import CheckboxLabels from "../components/MUIcomponent/CheckBox";
 import PositionedMenu from "../components/MUIcomponent/Menu";
-import MediaControlCard from "../components/MUIcomponent/ImageCard";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import IconLabelButtons from "../components/MUIcomponent/ButtonMuiWithIcon";
 
 import AllAvailableRooms from "../components/rooms/AllAvailableRooms";
+import axios from "axios";
 import AdvancedSearch from "../components/rooms/AdvancedSearch";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { UserActions } from "../store/User";
 
 const SecondPage = () => {
   const city = useSelector((state) => state.search.location);
   const availableRooms = useSelector((state) => state.search.availableRooms);
-  // chip=============
+  const searchType = useSelector((state) => state.search.searchType);
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
 
-  // ========================
+  const fetchMyBookings = async () => {
+    const { data } = await axios.get(
+      "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
+      { headers: { Authorization: token } }
+    );
+    dispatch(UserActions.myBookings(data));
+  };
+  useEffect(() => {
+    fetchMyBookings();
+  });
   return (
     <>
       <Box
@@ -92,7 +100,11 @@ const SecondPage = () => {
                 <CustomizeSelectBox
                   name={"Apartment"}
                   fn="propertyType"
-                  values={["Bed", "Partition", "Master Room", "Room", "Mix"]}
+                  values={
+                    searchType === "property"
+                      ? ["Bed", "Partition", "Master Room", "Room", "Mix"]
+                      : ["Studio", "Appartment", "House"]
+                  }
                 />
                 <CustomizeSelectBox
                   name={"Location"}

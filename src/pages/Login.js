@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Grid, Button, Box, TextField } from "@mui/material";
 import TopBackground from "../components/postPropertyComponents/TopBackground.js";
 import BottomBackground from "../components/postPropertyComponents/BottomBackground.js";
-import { LoginActions } from "../store/userLogin.js";
+import { UserActions } from "../store/User.js";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
@@ -18,26 +18,33 @@ const Login = () => {
   };
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const email = useSelector((state) => state.login.email);
-  const password = useSelector((state) => state.login.password);
+  const email = useSelector((state) => state.user.email);
+  const password = useSelector((state) => state.user.password);
 
   const emailInputHandler = (e) => {
-    dispatch(LoginActions.email(e.target.value));
+    dispatch(UserActions.email(e.target.value));
   };
 
   const passwordInputHandler = (e) => {
-    dispatch(LoginActions.password(e.target.value));
+    dispatch(UserActions.password(e.target.value));
   };
 
   const loginHandler = async () => {
     try {
-      const { data } = await axios.post(
-        "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/login",
-        { email, password, fcmToken: "123" }
+      const response = await axios.post(
+        "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/token",
+        { email, password }
       );
-      toast.success("Login Successfully", toastOptions);
-      dispatch(LoginActions.isLoggedIn(true));
-      navigate("/");
+      if (response.status) {
+        const { data } = await axios.post(
+          "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/login",
+          { email, password, fcmToken: "123" }
+        );
+        localStorage.setItem("token", "bearer " + response.data.token);
+        toast.success("Login Successfully", toastOptions);
+        dispatch(UserActions.isLoggedIn(true));
+        navigate("/");
+      }
     } catch (err) {
       toast.error("please enter valid credentials", toastOptions);
       console.log(err);
@@ -72,6 +79,11 @@ const Login = () => {
                 onClick={loginHandler}
               >
                 Login
+              </Button>
+            </Box>
+            <Box sx={{ mt: 2 }}>
+              <Button onClick={() => navigate("/reset_password")}>
+                Forgot Password
               </Button>
             </Box>
           </Box>

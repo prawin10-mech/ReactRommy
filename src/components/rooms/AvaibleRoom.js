@@ -1,21 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, memo } from "react";
 import { LocationMarkerIcon } from "@heroicons/react/solid";
 import { Carousel } from "react-responsive-carousel";
 import { Box, Card, CardMedia, IconButton, Typography } from "@mui/material";
 import { Favorite as FavoriteIcon } from "@mui/icons-material";
+import { Link as RouterLink } from "react-router-dom";
 
-const AvaibleRoom = ({ room }) => {
-  console.log(room);
+const AvailableRoom = memo(({ room }) => {
   const [liked, setLiked] = useState(false);
+  const images = room.images || [];
 
-  const handleClick = () => {
-    setLiked(!liked);
-  };
+  const handleClick = useCallback(() => {
+    setLiked((prevState) => !prevState);
+  }, []);
 
   return (
-    <>
+    <RouterLink
+      to={`/rooms/view-room/${room.id}`}
+      sx={{ textDecoration: "none" }}
+    >
       <Card
-        key={room.id}
+        key={`room-${room.id}`}
         variant="outlined"
         sx={{
           mb: 3,
@@ -26,7 +30,7 @@ const AvaibleRoom = ({ room }) => {
       >
         <Box sx={{ width: "400px", height: "250px" }}>
           <Carousel autoPlay>
-            {room.images.map((image, index) => (
+            {images.map((image, index) => (
               <CardMedia
                 key={index}
                 component="img"
@@ -70,8 +74,8 @@ const AvaibleRoom = ({ room }) => {
             {!room.action && <Typography variant="h6">{room.type}</Typography>}
             {room.action && (
               <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                {room.poster.firstName} {room.poster.lastName},{" "}
-                {room?.aboutYou?.age}
+                {room.poster?.firstName} {room.poster?.lastName},{" "}
+                {room?.aboutYou?.age || "Unknown age"}
               </Typography>
             )}
             {!room.action && (
@@ -87,7 +91,7 @@ const AvaibleRoom = ({ room }) => {
           </Box>
           <Box sx={{ flex: 1 }}>
             <Typography variant="body2" sx={{ mb: 1 }}>
-              {/* {room.description} */}
+              {room.description}
             </Typography>
             <Typography
               variant="body2"
@@ -100,8 +104,8 @@ const AvaibleRoom = ({ room }) => {
           </Box>
         </Box>
       </Card>
-    </>
+    </RouterLink>
   );
-};
+});
 
-export default AvaibleRoom;
+export default AvailableRoom;

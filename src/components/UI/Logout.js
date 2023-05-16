@@ -15,6 +15,7 @@ const Logout = () => {
         fullWidth
         onClick={() => {
           navigate("/login");
+          localStorage.removeItem("token");
           dispatch(LoginActions.isLoggedIn(false));
         }}
       >

@@ -6,17 +6,16 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { SearchActions } from "../../../store/Search";
+import { useDispatch, useSelector } from "react-redux";
+import { AdvanceSearchActions } from "../../../store/AdvanceSearch";
 
 const Gender = () => {
   const dispatch = useDispatch();
-  const [selectedValue, setSelectedValue] = useState("");
+  const gender = useSelector((state) => state.advanceSearch.gender);
 
   const handleRadioChange = (event) => {
     const value = event.target.value;
-    setSelectedValue(value);
-    dispatch(SearchActions.gender(value));
+    dispatch(AdvanceSearchActions.gender(value));
   };
 
   return (
@@ -27,7 +26,7 @@ const Gender = () => {
       <Grid container direction="column">
         <Grid item>
           <FormControlLabel
-            control={<Radio checked={selectedValue === "Male"} />}
+            control={<Radio checked={gender === "Male"} />}
             label="Male"
             value="Male"
             onChange={handleRadioChange}
@@ -35,7 +34,7 @@ const Gender = () => {
         </Grid>
         <Grid item>
           <FormControlLabel
-            control={<Radio checked={selectedValue === "Female"} />}
+            control={<Radio checked={gender === "Female"} />}
             label="Female"
             value="Female"
             onChange={handleRadioChange}
@@ -43,7 +42,7 @@ const Gender = () => {
         </Grid>
         <Grid item>
           <FormControlLabel
-            control={<Radio checked={selectedValue === "Mix"} />}
+            control={<Radio checked={gender === "Mix"} />}
             label="Mix"
             value="Mix"
             onChange={handleRadioChange}

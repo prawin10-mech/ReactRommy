@@ -48,7 +48,7 @@ const CityCarousel = () => {
           <img
             src={Dubai}
             alt="Dubai"
-            className={`h-full object-cover w-96 ${styles}`}
+            className={`h-56 object-cover w-96 ${styles}`}
           />
         </NavLink>
       );
@@ -59,7 +59,7 @@ const CityCarousel = () => {
           <img
             src={NewYork}
             alt="New York"
-            className={`h-full object-cover w-96 ${styles}`}
+            className={`h-56 object-cover w-96 ${styles}`}
           />
         </NavLink>
       );
@@ -70,7 +70,7 @@ const CityCarousel = () => {
           <img
             src={Riyadh}
             alt="Riyadh"
-            className={`h-full object-cover w-96 ${styles}`}
+            className={`h-56 object-cover w-96 ${styles}`}
           />
         </NavLink>
       );

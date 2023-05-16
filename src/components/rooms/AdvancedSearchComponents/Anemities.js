@@ -1,37 +1,21 @@
 import React from "react";
-import {
-  FormGroup,
-  Typography,
-  Grid,
-  FormControlLabel,
-  Checkbox,
-} from "@mui/material";
+import { FormGroup, Typography, Grid } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { SearchActions } from "../../../store/Search";
+import { AdvanceSearchActions } from "../../../store/AdvanceSearch";
+import AmenitiesItem from "./AmenitiesItem";
+import { allAmenities } from "../../../utils/AllAmenities";
 
-const Anemities = () => {
-  const checkedItems = useSelector((state) => state.search.anemities);
-
+const Amenities = () => {
+  const checkedItems = useSelector((state) => state.advanceSearch.amenities);
   const dispatch = useDispatch();
 
-  const handleCheckboxChange = (event) => {
-    const item = event.target.name;
-    const isChecked = event.target.checked;
+  const handleCheckboxChange = (itemValue, isChecked) => {
+    const newItems = isChecked
+      ? [...checkedItems, itemValue]
+      : checkedItems.filter((item) => item !== itemValue);
 
-    console.log(checkedItems);
-
-    if (isChecked) {
-      dispatch(SearchActions.anemities([...checkedItems, item]));
-    } else {
-      dispatch(
-        SearchActions.anemities(
-          checkedItems.filter((checkedItem) => checkedItem !== item)
-        )
-      );
-    }
+    dispatch(AdvanceSearchActions.amenities(newItems));
   };
-
-  console.log(checkedItems);
 
   return (
     <FormGroup sx={{ my: 3 }}>
@@ -39,33 +23,19 @@ const Anemities = () => {
         Amenities
       </Typography>
       <Grid container direction="column">
-        <Grid item>
-          <FormControlLabel
-            control={<Checkbox />}
-            label="Free Wifi"
-            name="Free Wifi"
-            onChange={handleCheckboxChange}
-          />
-        </Grid>
-        <Grid item>
-          <FormControlLabel
-            control={<Checkbox />}
-            label="Parking"
-            name="Parking"
-            onChange={handleCheckboxChange}
-          />
-        </Grid>
-        <Grid item>
-          <FormControlLabel
-            control={<Checkbox />}
-            label="Swimming Pool"
-            name="Swimming Pool"
-            onChange={handleCheckboxChange}
-          />
-        </Grid>
+        {allAmenities.map((amenity) => (
+          <Grid item key={amenity.value}>
+            <AmenitiesItem
+              name={amenity.value}
+              value={amenity.value}
+              isChecked={checkedItems.includes(amenity.value)}
+              onCheckboxChange={handleCheckboxChange}
+            />
+          </Grid>
+        ))}
       </Grid>
     </FormGroup>
   );
 };
 
-export default Anemities;
+export default Amenities;
