@@ -15,7 +15,7 @@ import CityCarousel2 from "../UI/CityCarousel2";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import SingleCardCarousel from "./SingleCardCarousel";
 
-const AddWithCarasol = () => {
+const AddWithCarasol = (props) => {
   const [slideIndex, setSlideIndex] = useState(1);
 
   const plusSlides = (n) => {
@@ -112,6 +112,8 @@ const AddWithCarasol = () => {
             />
           </Grid>
         </Grid>
+
+        {props.smallcard && 
         <Box
           sx={{
             backgroundImage:
@@ -144,6 +146,7 @@ const AddWithCarasol = () => {
             </Grid>
           </Grid>
         </Box>
+        }
       </Box>
     </>
   );

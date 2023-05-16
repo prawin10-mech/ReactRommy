@@ -131,11 +131,16 @@ const OurServices = () => {
               <Typography variant="h5" sx={{ my: 1 }}>
                 Partitions for rent in Sharjah
               </Typography>
+<<<<<<< HEAD
               <CarouselWithMultipleImage
                 PartitionAddAvilableRoom={PartitionAddAvilableRoom}
               />
             </Box>
             <AddWithCarousel />
+=======
+            </Stack>
+            <AddWithCarasol smallcard={true}/>
+>>>>>>> 325db63731aadebc7d74471f48d303a1a268d47e
           </Box>
           {/* <AvailableRooms /> */}
         </Box>
