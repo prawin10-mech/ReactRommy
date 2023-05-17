@@ -151,7 +151,9 @@ const SecondPage = () => {
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                   <Typography variant="h5">
                     {" "}
-                    Apartments for Rent in {city}
+                    {searchType === "property"
+                      ? `Apartments for Rent in ${city}`
+                      : `Roommates in ${city}`}
                   </Typography>
                   <Typography variant="subtitle2">
                     {" "}

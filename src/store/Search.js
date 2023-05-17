@@ -4,7 +4,7 @@ const initialState = {
   searchType: "property",
   searchText: null,
   propertyType: null,
-  location: null,
+  location: "Dubai",
   price: null,
   commercialProperty: false,
   availableRooms: [],

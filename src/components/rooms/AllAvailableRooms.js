@@ -6,14 +6,16 @@ import AvailableRoom from "./AvaibleRoom";
 const AllAvailableRooms = () => {
   const availableRooms = useSelector((state) => state.search.availableRooms);
 
-  const allAvailableRoomsData =
-    availableRooms.length > 0 ? (
-      availableRooms.map((room, index) => {
-        return <AvailableRoom room={room} key={index} />;
-      })
-    ) : (
-      <p>No Results Found</p>
-    );
+  console.log(availableRooms);
+
+  let allAvailableRoomsData = "";
+  if (availableRooms.length !== 0) {
+    allAvailableRoomsData = availableRooms?.map((room, index) => {
+      return <AvailableRoom room={room} key={index} />;
+    });
+  } else {
+    allAvailableRoomsData = <p>No Results Found</p>;
+  }
 
   return (
     <Box

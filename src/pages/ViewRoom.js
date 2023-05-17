@@ -13,6 +13,7 @@ import {
   Button,
 } from "@mui/material";
 import { DatePicker } from "@mui/lab";
+import { Carousel } from "react-responsive-carousel";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { UserActions } from "../store/User";
@@ -137,18 +138,23 @@ const ViewRoom = () => {
           flexDirection: { xs: "column", md: "row" },
         }}
       >
-        <CardMedia
-          component="img"
-          sx={{
-            width: { xs: "100%", md: "50%" },
-            maxHeight: { xs: "250px", sm: "300px", md: "300px" },
-            padding: "10px",
-            borderRadius: "20px",
-            display: "flex",
-          }}
-          image={room?.images[0]}
-          alt={room?.id}
-        />
+        <Carousel autoPlay>
+          {room.images.map((image, index) => (
+            <CardMedia
+              component="img"
+              sx={{
+                width: { xs: "100%", md: "50%" },
+                maxHeight: { xs: "250px", sm: "300px", md: "300px" },
+                padding: "10px",
+                borderRadius: "20px",
+                display: "flex",
+              }}
+              image={image}
+              alt={index}
+            />
+          ))}
+        </Carousel>
+
         <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
           <Box sx={{ p: 2 }}>
             <Typography variant="h6">{room?.type} to Rent</Typography>
@@ -246,7 +252,7 @@ const ViewRoom = () => {
             )}
           </Grid>
           <Grid item sx={{ mb: 5 }}>
-            <Button onClick={handleOpenCalendar}>Change Check in</Button>
+            <Button onClick={handleOpenCalendar}>Change Check</Button>
             {isOpen && (
               <DatePicker
                 onClose={handleCloseCalendar}

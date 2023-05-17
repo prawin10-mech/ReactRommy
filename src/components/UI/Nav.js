@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RoomyFinderLogo from "../../assets/roomyFinderLogo.jpg.png";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import {
@@ -11,11 +11,12 @@ import {
   MenuItem,
   Tooltip,
   Avatar,
+  Grid,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useSelector, useDispatch } from "react-redux";
 import { UserActions } from "../../store/User";
-import avatar from "../../assets/avatar.jpg";
+import axios from "axios";
 
 const pages = ["About Us", "Contact Us", "Our Services", "Post Property"];
 const pageNavigate = ["aboutUs", "contactUs", "", "postProperty"];
@@ -23,10 +24,15 @@ const pageNavigate = ["aboutUs", "contactUs", "", "postProperty"];
 const Nav = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // const firstName = useSelector((state) => state.user.firstName);
+  // const lastName = useSelector((state) => state.user.lastName);
+  const avatar = useSelector((state) => state.user.profilePicture);
+  const type = useSelector((state) => state.user.type);
   const [activeLink, setActiveLink] = useState("ourServices");
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const settings = ["Profile", "Account", "Dashboard", "My Bookings", "Logout"];
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const settings = ["Home", "My Account", "My Bookings", "Logout"];
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const handleClick = (link) => {
@@ -56,10 +62,33 @@ const Nav = () => {
 
   const handleItemClick = (pageUrl) => {
     handleCloseUserMenu();
-    // Redirect to the desired page
     navigate(`${pageUrl}`);
   };
+
+  const editProfileHandler = async () => {
+    const { data } = await axios.get("");
+    navigate("/editProfile");
+  };
+
+  const fetchUser = async () => {
+    const id = JSON.parse(localStorage.getItem("user")).id;
+    const { data } = await axios.get(
+      `http://roomy-finder-evennode.ap-1.evennode.com/api/v1/profile/profile-info?userId=${id}`
+    );
+    localStorage.setItem("user", JSON.stringify(data));
+    dispatch(UserActions.firstName(data.firstName));
+    dispatch(UserActions.lastName(data.lastName));
+    dispatch(UserActions.country(data.country));
+    dispatch(UserActions.gender(data.gender));
+    dispatch(UserActions.email(data.email));
+    dispatch(UserActions.fcmToken(data.fcmToken));
+  };
   if (localStorage.getItem("token")) dispatch(UserActions.isLoggedIn(true));
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  useEffect(() => {
+    fetchUser();
+  });
   return (
     <div className="nav-container p-3 flex justify-between bg-white">
       <NavLink to={"/"} className="flex align-content-center">
@@ -278,17 +307,18 @@ const Nav = () => {
               sx={{ p: 0, width: "50px" }}
             >
               <Avatar
-                alt="Avatar Sharp"
-                src={avatar}
+                alt="avatar Sharp"
+                src={`${avatar}`}
                 sx={{
-                  width: 50, // replace with your desired width value
-                  height: 50, // replace with your desired width value
+                  width: 50,
+                  height: 50,
+                  border: "2px solid purple",
                 }}
               />
             </IconButton>
           </Tooltip>
           <Menu
-            sx={{ mt: "45px" }}
+            sx={{}}
             id="menu-appbar"
             anchorEl={anchorElUser}
             anchorOrigin={{
@@ -303,30 +333,54 @@ const Nav = () => {
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
-            {settings.map((setting) => {
-              if (setting === "Logout") {
+            <Grid sx={{ backgroundColor: "#ccc", padding: "20px" }}>
+              <Grid
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  mb: 2,
+                }}
+              >
+                <Avatar
+                  alt="avatar Sharp"
+                  src={`${avatar}`}
+                  sx={{
+                    width: 50,
+                    height: 50,
+                    mb: 1,
+                    border: "2px solid purple",
+                  }}
+                />
+
+                <Typography sx={{ fontWeight: "700" }}>
+                  {user.firstName} {user.lastName}
+                </Typography>
+                <Typography>{type}</Typography>
+              </Grid>
+              <MenuItem key={"Edit Profile"} onClick={editProfileHandler}>
+                <Typography textAlign="center">Edit Profile</Typography>
+              </MenuItem>
+
+              {settings.map((setting) => {
+                let onClickHandler = handleCloseUserMenu;
+
+                if (setting === "Logout") {
+                  onClickHandler = handleLogout;
+                } else if (setting === "My Bookings") {
+                  onClickHandler = () => handleItemClick("/myBookings");
+                } else if (setting === "Home") {
+                  onClickHandler = () => handleItemClick("/");
+                }
+
                 return (
-                  <MenuItem key={setting} onClick={() => handleLogout()}>
+                  <MenuItem key={setting} onClick={onClickHandler}>
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 );
-              } else if (setting === "My Bookings") {
-                return (
-                  <MenuItem
-                    key={setting}
-                    onClick={() => handleItemClick("/myBookings")}
-                  >
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                );
-              } else {
-                return (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                );
-              }
-            })}
+              })}
+            </Grid>
           </Menu>
         </Box>
       )}

@@ -40,9 +40,18 @@ const Login = () => {
           "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/login",
           { email, password, fcmToken: "123" }
         );
+        localStorage.setItem("user", JSON.stringify(data));
         localStorage.setItem("token", "bearer " + response.data.token);
         toast.success("Login Successfully", toastOptions);
         dispatch(UserActions.isLoggedIn(true));
+        dispatch(UserActions.firstName(data.firstName));
+        dispatch(UserActions.lastName(data.lastName));
+        dispatch(UserActions.country(data.country));
+        dispatch(UserActions.gender(data.gender));
+        dispatch(UserActions.email(data.email));
+        dispatch(UserActions.fcmToken(data.fcmToken));
+        dispatch(UserActions.profilePicture(data.profilePicture));
+        dispatch(UserActions.type(data.type));
         navigate("/");
       }
     } catch (err) {
