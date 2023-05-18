@@ -45,7 +45,12 @@ const Login = () => {
         localStorage.setItem("token", "bearer " + response.data.token);
         toast.success("Login Successfully", toastOptions);
         dispatch(UserActions.isLoggedIn(true));
-
+        dispatch(UserActions.firstName(data.firstName));
+        dispatch(UserActions.lastName(data.lastName));
+        dispatch(UserActions.email(data.email));
+        dispatch(UserActions.fcmToken(data.fcmToken));
+        dispatch(UserActions.gender(data.gender));
+        dispatch(UserActions.country(data.country));
         navigate("/");
       }
     } catch (err) {

@@ -31,18 +31,16 @@ const ResetPassword = () => {
       "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/send-email-verification-code",
       { email }
     );
-    console.log(data.code);
     setOtpSend(data.code);
     setOtp(true);
     setPasswordInput(false);
   };
   const verifyOTPHandler = async () => {
-    console.log(otpInput, otpSend);
     if (otpInput === otpSend) {
       setPasswordInput(true);
       setOtp(false);
     } else {
-      console.log("wrong otp");
+      toast.error("Wrong OTP", toastOptions);
     }
   };
 
@@ -54,7 +52,6 @@ const ResetPassword = () => {
           { email, password, fcmToken: "123" }
         );
         toast.success("Verification email sent successfully", toastOptions);
-        console.log(data);
       }
     } catch (err) {
       console.log(err);

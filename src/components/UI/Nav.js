@@ -29,7 +29,13 @@ const Nav = () => {
   const [activeLink, setActiveLink] = useState("ourServices");
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const settings = ["Home", "My Account", "My Bookings", "Logout"];
+  const settings = [
+    "Edit Profile",
+    "Home",
+    "My Account",
+    "My Bookings",
+    "Logout",
+  ];
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const handleClick = (link) => {
@@ -86,12 +92,12 @@ const Nav = () => {
   };
   const user = getUserFromCookies();
   if (user) {
-    dispatch(UserActions.firstName(user.firstName));
     dispatch(UserActions.lastName(user.lastName));
     dispatch(UserActions.country(user.country));
     dispatch(UserActions.gender(user.gender));
     dispatch(UserActions.email(user.email));
     dispatch(UserActions.fcmToken(user.fcmToken));
+    dispatch(UserActions?.firstName(user.firstName));
   }
 
   useEffect(() => {
@@ -316,8 +322,8 @@ const Nav = () => {
               sx={{ p: 0, width: "50px" }}
             >
               <Avatar
-                alt={`${user.firstName} avatar`}
-                src={`${user.profilePicture}`}
+                alt={`${user?.firstName} avatar`}
+                src={`${user?.profilePicture}`}
                 sx={{
                   width: 50,
                   height: 50,
@@ -354,8 +360,8 @@ const Nav = () => {
                 }}
               >
                 <Avatar
-                  alt={`${user.firstName} avatar`}
-                  src={`${user.profilePicture}`}
+                  alt={`${user?.firstName} avatar`}
+                  src={`${user?.profilePicture}`}
                   sx={{
                     width: 50,
                     height: 50,
@@ -365,13 +371,10 @@ const Nav = () => {
                 />
 
                 <Typography sx={{ fontWeight: "700" }}>
-                  {user.firstName} {user.lastName}
+                  {user?.firstName} {user?.lastName}
                 </Typography>
-                <Typography>{user.type}</Typography>
+                <Typography>{user?.type}</Typography>
               </Grid>
-              <MenuItem key={"Edit Profile"} onClick={editProfileHandler}>
-                <Typography textAlign="center">Edit Profile</Typography>
-              </MenuItem>
 
               {settings.map((setting) => {
                 let onClickHandler = handleCloseUserMenu;
@@ -382,6 +385,8 @@ const Nav = () => {
                   onClickHandler = () => handleItemClick("/myBookings");
                 } else if (setting === "Home") {
                   onClickHandler = () => handleItemClick("/");
+                } else if (setting === "Edit Profile") {
+                  onClickHandler = () => handleItemClick("/editProfile");
                 }
 
                 return (

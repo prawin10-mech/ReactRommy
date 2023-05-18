@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -14,10 +19,10 @@ import AllRooms from "./components/rooms/AllRooms";
 import SecondPage from "./pages/SecondPage";
 import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
-import PrivateRoute from "./utils/PrivateRoute";
 import MyBookings from "./pages/MyBookings";
 import ViewRoom from "./pages/ViewRoom";
 import EditProfile from "./pages/EditProfile";
+import PrivateRoute from "./utils/PrivateRoute";
 
 const App = () => {
   return (
@@ -28,11 +33,18 @@ const App = () => {
           <Route path="/" element={<OurServices />} />
           <Route path="/aboutUs" element={<AboutUs />} />
           <Route path="/contactUs" element={<ContactUs />} />
-          <Route element={<PrivateRoute />}>
-            <Route path="/postProperty" element={<PostProperty />} />
-            <Route path="/myBookings" element={<MyBookings />} />
-            <Route path="/editProfile" element={<EditProfile />} />
-          </Route>
+          <Route
+            path="/postProperty"
+            element={<PrivateRoute Component={PostProperty} />}
+          />
+          <Route
+            path="/myBookings"
+            element={<PrivateRoute Component={MyBookings} />}
+          />
+          <Route
+            path="/editProfile"
+            element={<PrivateRoute Component={EditProfile} />}
+          />
 
           <Route path="/allAvailableRooms" element={<AllRooms />} />
           <Route path="/rooms/view-room/:id" element={<ViewRoom />} />

@@ -12,7 +12,7 @@ import {
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { UserActions } from "../store/User";
-import TopBackground from "../components/postPropertyComponents/TopBackground";
+import TopBackground from "../components/postPropertyComponents/Topbackground";
 import BottomBackground from "../components/postPropertyComponents/BottomBackground";
 import { toastOptions } from "../utils/ToastOptions";
 import Cookies from "js-cookie";
