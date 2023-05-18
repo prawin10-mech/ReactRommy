@@ -17,6 +17,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useSelector, useDispatch } from "react-redux";
 import { UserActions } from "../../store/User";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const pages = ["About Us", "Contact Us", "Our Services", "Post Property"];
 const pageNavigate = ["aboutUs", "contactUs", "", "postProperty"];
@@ -25,10 +26,6 @@ const Nav = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // const firstName = useSelector((state) => state.user.firstName);
-  // const lastName = useSelector((state) => state.user.lastName);
-  const avatar = useSelector((state) => state.user.profilePicture);
-  const type = useSelector((state) => state.user.type);
   const [activeLink, setActiveLink] = useState("ourServices");
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -71,24 +68,36 @@ const Nav = () => {
   };
 
   const fetchUser = async () => {
-    const id = JSON.parse(localStorage.getItem("user")).id;
+    const id = JSON.parse(Cookies.get("user")).id;
+
     const { data } = await axios.get(
       `http://roomy-finder-evennode.ap-1.evennode.com/api/v1/profile/profile-info?userId=${id}`
     );
-    localStorage.setItem("user", JSON.stringify(data));
-    dispatch(UserActions.firstName(data.firstName));
-    dispatch(UserActions.lastName(data.lastName));
-    dispatch(UserActions.country(data.country));
-    dispatch(UserActions.gender(data.gender));
-    dispatch(UserActions.email(data.email));
-    dispatch(UserActions.fcmToken(data.fcmToken));
+    Cookies.set("user", JSON.stringify(data));
   };
   if (localStorage.getItem("token")) dispatch(UserActions.isLoggedIn(true));
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const getUserFromCookies = () => {
+    const user = Cookies.get("user");
+    if (user) {
+      return JSON.parse(user);
+    }
+    return null;
+  };
+  const user = getUserFromCookies();
+  if (user) {
+    dispatch(UserActions.firstName(user.firstName));
+    dispatch(UserActions.lastName(user.lastName));
+    dispatch(UserActions.country(user.country));
+    dispatch(UserActions.gender(user.gender));
+    dispatch(UserActions.email(user.email));
+    dispatch(UserActions.fcmToken(user.fcmToken));
+  }
+
   useEffect(() => {
     fetchUser();
   });
+
   return (
     <div className="nav-container p-3 flex justify-between bg-white">
       <NavLink to={"/"} className="flex align-content-center">
@@ -307,11 +316,12 @@ const Nav = () => {
               sx={{ p: 0, width: "50px" }}
             >
               <Avatar
-                alt="avatar Sharp"
-                src={`${avatar}`}
+                alt={`${user.firstName} avatar`}
+                src={`${user.profilePicture}`}
                 sx={{
                   width: 50,
                   height: 50,
+                  mb: 1,
                   border: "2px solid purple",
                 }}
               />
@@ -344,8 +354,8 @@ const Nav = () => {
                 }}
               >
                 <Avatar
-                  alt="avatar Sharp"
-                  src={`${avatar}`}
+                  alt={`${user.firstName} avatar`}
+                  src={`${user.profilePicture}`}
                   sx={{
                     width: 50,
                     height: 50,
@@ -357,7 +367,7 @@ const Nav = () => {
                 <Typography sx={{ fontWeight: "700" }}>
                   {user.firstName} {user.lastName}
                 </Typography>
-                <Typography>{type}</Typography>
+                <Typography>{user.type}</Typography>
               </Grid>
               <MenuItem key={"Edit Profile"} onClick={editProfileHandler}>
                 <Typography textAlign="center">Edit Profile</Typography>

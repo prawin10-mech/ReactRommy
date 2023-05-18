@@ -3,20 +3,20 @@ import { cities } from "../../helper";
 import Dubai from "../../assets/Dubai.JPG";
 import NewYork from "../../assets/New York.JPG";
 import Riyadh from "../../assets/Riyadh.JPG";
-import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { NavLink } from "react-router-dom";
 import { Box } from "@mui/material";
 
 const CityCarousel = () => {
   const [currentCityIndex, setCurrentCityIndex] = useState(0);
   const [carouselCities, setCarouselCities] = useState([]);
-  const [activeIndex, setActiveIndex] = useState(1);
 
   useEffect(() => {
     const updateCarouselCities = () => {
       const slicedCities = cities.slice(currentCityIndex, currentCityIndex + 3);
       const remainingCities = cities.slice(0, 3 - slicedCities.length);
-      setCarouselCities([...slicedCities, ...remainingCities]);
+      setCarouselCities(slicedCities.concat(remainingCities));
     };
 
     updateCarouselCities();
@@ -34,48 +34,43 @@ const CityCarousel = () => {
     setCurrentCityIndex(newIndex);
   };
 
-  const carouselItems = carouselCities.map((city, index) => {
-    const isActive = index === activeIndex;
-    const styles = isActive
-      ? "min-h-[35vh] h-[40vh] rounded-2xl"
-      : "my-auto max-h-[30vh] rounded-md";
+  const renderCityImage = (city, imageSrc, altText, isActive) => (
+    <NavLink to="/sp">
+      <img
+        src={imageSrc}
+        alt={altText}
+        style={{
+          objectFit: "cover",
+          margin: "auto",
+          borderRadius: "0.5rem",
+          height: isActive ? "45vh" : "35vh",
+          width: isActive ? "35vw" : "25vw",
+        }}
+      />
+    </NavLink>
+  );
 
-    let image = null;
-    let cityName = null;
-    if (city === "Dubai") {
-      image = (
-        <NavLink to="/sp">
-          <img
-            src={Dubai}
-            alt="Dubai"
-            className={`h-56 object-cover w-96 ${styles}`}
-          />
-        </NavLink>
-      );
-      cityName = "Dubai";
-    } else if (city === "New York") {
-      image = (
-        <NavLink to="/sp">
-          <img
-            src={NewYork}
-            alt="New York"
-            className={`h-56 object-cover w-96 ${styles}`}
-          />
-        </NavLink>
-      );
-      cityName = "New York";
-    } else if (city === "Riyadh") {
-      image = (
-        <NavLink to="/sp">
-          <img
-            src={Riyadh}
-            alt="Riyadh"
-            className={`h-56 object-cover w-96 ${styles}`}
-          />
-        </NavLink>
-      );
-      cityName = "Riyadh";
-    }
+  const cityImages = [
+    { city: "New York", imageSrc: NewYork, altText: "New York" },
+    { city: "Dubai", imageSrc: Dubai, altText: "Dubai" },
+    { city: "Riyadh", imageSrc: Riyadh, altText: "Riyadh" },
+  ];
+
+  const carouselItems = carouselCities.map((city, index) => {
+    const isActive = index === 1; // Check if the index is the middle index
+
+    const styles = isActive
+      ? {
+          minHeight: "45vh",
+          borderRadius: "2rem",
+        }
+      : {
+          margin: "auto",
+          maxHeight: "35vh",
+          borderRadius: "0.5rem",
+        };
+
+    const { imageSrc, altText } = cityImages.find((item) => item.city === city);
 
     return (
       <Box
@@ -90,7 +85,7 @@ const CityCarousel = () => {
           position: "relative",
         }}
       >
-        {image}
+        {renderCityImage(city, imageSrc, altText, isActive)}
         <Box
           sx={{
             position: "absolute",
@@ -102,7 +97,7 @@ const CityCarousel = () => {
             textAlign: "center",
           }}
         >
-          {cityName}
+          {city}
         </Box>
       </Box>
     );
@@ -115,16 +110,26 @@ const CityCarousel = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        mt: "20",
+        mt: "20px",
       }}
     >
-      <ChevronLeft
-        className="h-8 w-8 text-slate-800 cursor-pointer"
+      <ChevronLeftIcon
+        sx={{
+          height: "50px",
+          width: "50px",
+          color: "slategray",
+          cursor: "pointer",
+        }}
         onClick={handlePrevClick}
       />
       <Box sx={{ display: "flex" }}>{carouselItems}</Box>
-      <ChevronRight
-        className="h-8 w-8 text-slate-800 cursor-pointer"
+      <ChevronRightIcon
+        sx={{
+          height: "50px",
+          width: "50px",
+          color: "gray",
+          cursor: "pointer",
+        }}
         onClick={handleNextClick}
       />
     </Box>

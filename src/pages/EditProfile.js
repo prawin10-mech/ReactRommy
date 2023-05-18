@@ -7,19 +7,15 @@ import {
   Select,
   MenuItem,
   Button,
+  InputAdornment,
 } from "@mui/material";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
-
 import { UserActions } from "../store/User";
-
-const toastOptions = {
-  autoClose: 3000,
-  closeButton: true,
-  position: "bottom-right",
-  pauseOnHover: true,
-  draggable: true,
-};
+import TopBackground from "../components/postPropertyComponents/TopBackground";
+import BottomBackground from "../components/postPropertyComponents/BottomBackground";
+import { toastOptions } from "../utils/ToastOptions";
+import Cookies from "js-cookie";
 
 const genderList = ["Male", "Female"];
 const countryList = [
@@ -42,12 +38,12 @@ const EditProfile = () => {
     (state) => state.user
   );
 
-  const [verified, setVerified] = useState(true);
-  const [otp, setOtp] = useState(null);
+  const [verified, setVerified] = useState(false);
+  const [otp, setOtp] = useState(false);
   const [sendedOtp, setSendedOtp] = useState(null);
   const [enteredOtp, setEnteredOtp] = useState(null);
-  const [otpVerified, setOtpVerified] = useState(null);
-  const [emailVerified, setEmailVerified] = useState(null);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(false);
 
   const toastSuccess = (message) => {
     toast.success(message, toastOptions);
@@ -71,16 +67,23 @@ const EditProfile = () => {
 
   const handleUpdateProfile = async () => {
     const obj = { firstName, lastName, email, gender, country, fcmToken };
-    if (otpVerified && emailVerified) {
-      await axios.put(
-        "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/credentials",
-        obj,
-        { headers: { Authorization: token } }
+    if (verified) {
+      const confirmed = window.confirm(
+        "Are you sure you want to save the changes?"
       );
-      setVerified(true);
-      toastSuccess("Info updated successfully");
+      if (confirmed) {
+        await axios.put(
+          "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/credentials",
+          obj,
+          { headers: { Authorization: token } }
+        );
+        setVerified(true);
+        toastSuccess("Info updated successfully");
+      }
     } else if (!emailVerified) {
       toastError("Please verify your email");
+    } else {
+      toastError("Something went wrong");
     }
   };
 
@@ -106,104 +109,99 @@ const EditProfile = () => {
   };
 
   useEffect(() => {
-    setVerified(email === JSON.parse(localStorage.getItem("user")).email);
+    setVerified(email === JSON.parse(Cookies.get("user")).email);
   }, [email]);
 
+  const fieldStyles = {
+    fontWeight: "bold",
+    marginBottom: "8px",
+    width: "150px",
+    fontSize: "1rem",
+  };
+
   return (
-    <Grid
-      container
-      sx={{
-        margin: "auto",
-        maxWidth: "1000px",
-        padding: "24px",
-        display: "flex",
-        justifyContent: "center",
-        flexDirection: "column",
-      }}
-    >
-      <Typography
-        variant="h5"
-        sx={{ marginBottom: "16px", textAlign: "center", fontWeight: 900 }}
-      >
-        Edit Profile
-      </Typography>
+    <>
+      <TopBackground />
       <Grid
+        container
         sx={{
-          padding: "20px",
+          margin: "auto",
+          maxWidth: "1000px",
+          padding: "24px",
           display: "flex",
+          justifyContent: "center",
           flexDirection: "column",
-          alignItems: "center",
         }}
+        spacing={2}
       >
+        <Typography
+          variant="h5"
+          sx={{ marginBottom: "16px", textAlign: "center", fontWeight: 900 }}
+        >
+          Edit Profile
+        </Typography>
         <Grid
           item
-          xs={12}
-          sm={6}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            marginBottom: "16px",
-          }}
+          alignItems="center"
+          sx={{ display: "flex", flexDirection: "row" }}
         >
-          <Typography sx={{ ...fieldStyles, width: "150px" }}>
-            Email:
-          </Typography>
+          <Typography sx={fieldStyles}>Email:</Typography>
           <TextField
             value={email}
             fullWidth
             variant="outlined"
             onChange={emailChangeHandler}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Button
+                    variant="contained"
+                    disabled={verified}
+                    onClick={sendOtpHandler}
+                  >
+                    {verified ? "Verified" : "Verify"}
+                  </Button>
+                </InputAdornment>
+              ),
+            }}
           />
-          <Button
-            variant="contained"
-            disabled={verified}
-            onClick={sendOtpHandler}
-            sx={{ marginLeft: "8px" }}
-          >
-            {verified ? "Verified" : "Verify"}
-          </Button>
         </Grid>
+
         {otp && (
           <Grid
             item
-            xs={12}
-            sm={6}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              marginBottom: "16px",
-            }}
+            alignItems="center"
+            sx={{ display: "flex", flexDirection: "row" }}
           >
-            <Typography sx={{ ...fieldStyles, width: "150px" }}>OTP</Typography>
+            <Typography sx={fieldStyles}>OTP:</Typography>
             <TextField
               value={enteredOtp}
               fullWidth
               variant="outlined"
               onChange={(e) => setEnteredOtp(e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Button
+                      variant="contained"
+                      onClick={verifyOtpHandler}
+                      disabled={otpVerified}
+                      sx={{ marginLeft: "8px" }}
+                    >
+                      {otpVerified ? "Verified" : "Verify"}
+                    </Button>
+                  </InputAdornment>
+                ),
+              }}
             />
-            <Button
-              variant="contained"
-              onClick={verifyOtpHandler}
-              disabled={otpVerified}
-              sx={{ marginLeft: "8px" }}
-            >
-              {otpVerified ? "Verified" : "Verify"}
-            </Button>
           </Grid>
         )}
         <Grid
           item
-          xs={12}
-          sm={6}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            marginBottom: "16px",
-          }}
+          alignItems="center"
+          sx={{ display: "flex", flexDirection: "row" }}
         >
-          <Typography sx={{ ...fieldStyles, width: "150px" }}>
-            First Name:
-          </Typography>
+          <Typography sx={fieldStyles}>First Name:</Typography>
           <TextField
             value={firstName}
             fullWidth
@@ -213,17 +211,10 @@ const EditProfile = () => {
         </Grid>
         <Grid
           item
-          xs={12}
-          sm={6}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            marginBottom: "16px",
-          }}
+          alignItems="center"
+          sx={{ display: "flex", flexDirection: "row" }}
         >
-          <Typography sx={{ ...fieldStyles, width: "150px" }}>
-            Last Name:
-          </Typography>
+          <Typography sx={fieldStyles}>Last Name:</Typography>
           <TextField
             value={lastName}
             fullWidth
@@ -233,13 +224,10 @@ const EditProfile = () => {
         </Grid>
         <Grid
           item
-          xs={12}
-          sm={6}
-          sx={{ display: "flex", alignItems: "center", marginBottom: "16px" }}
+          sx={{ display: "flex", flexDirection: "row" }}
+          alignItems="center"
         >
-          <Typography sx={{ ...fieldStyles, width: "150px" }}>
-            Gender:
-          </Typography>
+          <Typography sx={fieldStyles}>Gender:</Typography>
           <Select
             value={gender}
             fullWidth
@@ -255,13 +243,10 @@ const EditProfile = () => {
         </Grid>
         <Grid
           item
-          xs={12}
-          sm={6}
-          sx={{ display: "flex", alignItems: "center", marginBottom: "16px" }}
+          sx={{ display: "flex", flexDirection: "row" }}
+          alignItems="center"
         >
-          <Typography sx={{ ...fieldStyles, width: "150px" }}>
-            Country:
-          </Typography>
+          <Typography sx={fieldStyles}>Country:</Typography>
           <Select
             value={country}
             fullWidth
@@ -275,20 +260,16 @@ const EditProfile = () => {
             ))}
           </Select>
         </Grid>
-        <Button variant="contained" onClick={handleUpdateProfile}>
-          Save
-        </Button>
+        <Grid item container justifyContent="center">
+          <Button variant="contained" onClick={handleUpdateProfile}>
+            Save
+          </Button>
+        </Grid>
+        <ToastContainer />
       </Grid>
-      <ToastContainer />
-    </Grid>
+      <BottomBackground />
+    </>
   );
-};
-
-const fieldStyles = {
-  fontWeight: "bold",
-  marginBottom: "8px",
-  width: "150px",
-  fontSize: "1rem",
 };
 
 export default EditProfile;

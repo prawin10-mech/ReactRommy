@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const toastOptions = {
@@ -40,22 +41,15 @@ const Login = () => {
           "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/login",
           { email, password, fcmToken: "123" }
         );
-        localStorage.setItem("user", JSON.stringify(data));
+        Cookies.set("user", JSON.stringify(data));
         localStorage.setItem("token", "bearer " + response.data.token);
         toast.success("Login Successfully", toastOptions);
         dispatch(UserActions.isLoggedIn(true));
-        dispatch(UserActions.firstName(data.firstName));
-        dispatch(UserActions.lastName(data.lastName));
-        dispatch(UserActions.country(data.country));
-        dispatch(UserActions.gender(data.gender));
-        dispatch(UserActions.email(data.email));
-        dispatch(UserActions.fcmToken(data.fcmToken));
-        dispatch(UserActions.profilePicture(data.profilePicture));
-        dispatch(UserActions.type(data.type));
+
         navigate("/");
       }
     } catch (err) {
-      toast.error("please enter valid credentials", toastOptions);
+      toast.error("Please enter valid credentials", toastOptions);
       console.log(err);
     }
   };
