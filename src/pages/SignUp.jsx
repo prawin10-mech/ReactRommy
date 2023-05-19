@@ -133,56 +133,47 @@ export default function SignUp() {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <FormControl sx={{ width: "100%" }}>
-                    <InputLabel id="demo-simple-select-standard-label">
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
                       Gender
                     </InputLabel>
                     <Select
-                      fullWidth
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
                       value={"age"}
-                      // onChange={"handleChange"}
-                      displayEmpty
-                      // renderValue={(selected) => {
-                      //   if (selected.length === 0) {
-                      //     return <em>Placeholder</em>;
-                      //   }
-
-                      //   return selected.join(", ");
-                      // }}
-                      // MenuProps={MenuProps}
-                      inputProps={{ "aria-label": "Without label" }}
+                      label="Gender"
+                      // onChange={handleChange}
                     >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
+                      <MenuItem value={"male"}>Male</MenuItem>
+                      <MenuItem value={"female"}>Female</MenuItem>
+                      <MenuItem value={"Other"}>Other</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <FormControl sx={{ width: "100%" }}>
-                    <InputLabel id="demo-simple-select-standard-label">
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
                       Country
                     </InputLabel>
                     <Select
-                      fullWidth
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
                       value={"age"}
-                      // onChange={"handleChange"}
-                      displayEmpty
-                      inputProps={{ "aria-label": "Without label" }}
+                      label="Country"
+                      // onChange={handleChange}
                     >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
                       <MenuItem value={10}>Ten</MenuItem>
                       <MenuItem value={20}>Twenty</MenuItem>
                       <MenuItem value={30}>Thirty</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid
+                  item
+                  xs={12}
+                  sx={{ display: "flex", flexDirection: "row" }}
+                >
+                  {/* <Box></Box> */}
                   <TextField
                     required
                     fullWidth
@@ -190,7 +181,11 @@ export default function SignUp() {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
+                    sx={{ mr: 2 }}
                   />
+                  <Button variant="contained" sx={{ mr: 1 }}>
+                    Verify
+                  </Button>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -208,10 +203,34 @@ export default function SignUp() {
                     required
                     fullWidth
                     name="password"
-                    label="Conf Password"
+                    label="Confirm Password"
                     type="password"
                     id="password"
                     autoComplete="new-password"
+                  />
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sx={{ display: "flex", flexDirection: "row" }}
+                >
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={"age"}
+                    label="Country"
+                    sx={{ minWidth: "30%" }}
+                    // onChange={handleChange}
+                  >
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                  <TextField
+                    fullWidth
+                    label="Mobile Number"
+                    variant="outlined"
+                    type="tel"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -219,7 +238,13 @@ export default function SignUp() {
                     control={
                       <Checkbox value="allowExtraEmails" color="primary" />
                     }
-                    label="I want to receive inspiration, marketing promotions and updates via email."
+                    label="Tearm and conditions"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox value="allowExtraEmails" color="primary" />
+                    }
+                    label="Landlord agrement"
                   />
                 </Grid>
               </Grid>
