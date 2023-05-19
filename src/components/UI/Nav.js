@@ -79,7 +79,7 @@ const Nav = () => {
     const { data } = await axios.get(
       `http://roomy-finder-evennode.ap-1.evennode.com/api/v1/profile/profile-info?userId=${id}`
     );
-    Cookies.set("user", JSON.stringify(data));
+    Cookies.set("user", JSON.stringify(data), { expires: 365 });
   };
   if (localStorage.getItem("token")) dispatch(UserActions.isLoggedIn(true));
 
@@ -387,6 +387,8 @@ const Nav = () => {
                   onClickHandler = () => handleItemClick("/");
                 } else if (setting === "Edit Profile") {
                   onClickHandler = () => handleItemClick("/editProfile");
+                } else if (setting === "My Account") {
+                  onClickHandler = () => handleItemClick("/myAccount");
                 }
 
                 return (

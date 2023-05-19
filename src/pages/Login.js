@@ -41,7 +41,7 @@ const Login = () => {
           "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/login",
           { email, password, fcmToken: "123" }
         );
-        Cookies.set("user", JSON.stringify(data));
+        Cookies.set("user", JSON.stringify(data), { expires: 365 });
         localStorage.setItem("token", "bearer " + response.data.token);
         toast.success("Login Successfully", toastOptions);
         dispatch(UserActions.isLoggedIn(true));
