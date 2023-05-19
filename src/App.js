@@ -25,6 +25,7 @@ import EditProfile from "./pages/EditProfile";
 import PrivateRoute from "./utils/PrivateRoute";
 import MyAccount from "./pages/MyAccount";
 import ViewProfile from "./pages/ViewProfile";
+import Chat from "./pages/Chat";
 
 const App = () => {
   return (
@@ -56,7 +57,12 @@ const App = () => {
             path="/viewProfile"
             element={<PrivateRoute Component={ViewProfile} />}
           />
+          <Route
+            path="/chat"
+            element={<PrivateRoute Component={Chat} />}
+          />
 
+          {/* <Route path="/chat" element={<Chat />} /> */}
           <Route path="/allAvailableRooms" element={<AllRooms />} />
           <Route path="/rooms/view-room/:id" element={<ViewRoom />} />
           <Route path="/sp" element={<SecondPage />} />
