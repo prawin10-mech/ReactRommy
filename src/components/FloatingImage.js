@@ -11,7 +11,7 @@ const FloatingImage = () => {
         height={"300px"}
         className="object-contain"
       />
-      <div className="absolute inset-x-1/4 bottom-0 h-4 bg-gradient-to-t from-gray-800 to-transparent rounded-full"></div>
+      {/* <div className="absolute inset-x-1/4 bottom-0 h-4 bg-gradient-to-t from-gray-800 to-transparent rounded-full"></div> */}
     </div>
   );
 };
