@@ -23,6 +23,8 @@ import MyBookings from "./pages/MyBookings";
 import ViewRoom from "./pages/ViewRoom";
 import EditProfile from "./pages/EditProfile";
 import PrivateRoute from "./utils/PrivateRoute";
+import MyAccount from "./pages/MyAccount";
+import ViewProfile from "./pages/ViewProfile";
 
 const App = () => {
   return (
@@ -44,6 +46,15 @@ const App = () => {
           <Route
             path="/editProfile"
             element={<PrivateRoute Component={EditProfile} />}
+          />
+
+          <Route
+            path="/myAccount"
+            element={<PrivateRoute Component={MyAccount} />}
+          />
+          <Route
+            path="/viewProfile"
+            element={<PrivateRoute Component={ViewProfile} />}
           />
 
           <Route path="/allAvailableRooms" element={<AllRooms />} />
