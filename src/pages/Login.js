@@ -1,13 +1,39 @@
 import React from "react";
-import { Grid, Button, Box, TextField } from "@mui/material";
+import {
+  Grid,
+  Button,
+  Box,
+  TextField,
+  Typography,
+  Avatar,
+} from "@mui/material";
 import TopBackground from "../components/postPropertyComponents/TopBackground.js";
 import BottomBackground from "../components/postPropertyComponents/BottomBackground.js";
 import { UserActions } from "../store/User.js";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import Cookies from "js-cookie";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+
+const Copyright = (props) => {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
+      <NavLink color="inherit" to="/">
+        RoomyFinder
+      </NavLink>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+};
 
 const Login = () => {
   const toastOptions = {
@@ -62,9 +88,33 @@ const Login = () => {
   return (
     <div>
       <TopBackground />
-      <Grid container justifyContent="center" alignItems="center" height="50vh">
-        <Grid item xs={12} sm={6} md={4}>
+      <Grid container justifyContent="center" alignItems="center">
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            marginY: 4,
+          }}
+        >
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+              <LockOutlinedIcon />
+            </Avatar>
+          </Box>
           <Box sx={{ px: 4, py: 3, bgcolor: "white", borderRadius: 1 }}>
+            <Typography
+              sx={{
+                fontWeight: "700",
+                fontSize: "25px",
+                textAlign: "center",
+                mb: 5,
+              }}
+            >
+              Login
+            </Typography>
             <TextField
               label="email"
               variant="outlined"
@@ -89,7 +139,12 @@ const Login = () => {
                 Login
               </Button>
             </Box>
-            <Box sx={{ mt: 2 }}>
+            <Box
+              sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}
+            >
+              <Button onClick={() => navigate("/signup")}>
+                Don't have an account?
+              </Button>
               <Button onClick={() => navigate("/reset_password")}>
                 Forgot Password
               </Button>
@@ -97,6 +152,7 @@ const Login = () => {
           </Box>
         </Grid>
       </Grid>
+      <Copyright sx={{ mt: 5 }} />
       <BottomBackground />
       <ToastContainer />
     </div>
