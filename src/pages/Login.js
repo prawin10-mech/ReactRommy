@@ -6,6 +6,12 @@ import {
   TextField,
   Typography,
   Avatar,
+  OutlinedInput,
+  FilledInput,
+  IconButton,
+  InputAdornment,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import TopBackground from "../components/postPropertyComponents/TopBackground.js";
 import BottomBackground from "../components/postPropertyComponents/BottomBackground.js";
@@ -16,6 +22,8 @@ import { toast, ToastContainer } from "react-toastify";
 import { useNavigate, NavLink } from "react-router-dom";
 import Cookies from "js-cookie";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Visibility from "@mui/icons-material/Visibility";
 
 const Copyright = (props) => {
   return (
@@ -36,6 +44,15 @@ const Copyright = (props) => {
 };
 
 const Login = () => {
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+
   const toastOptions = {
     autoClose: 3000,
     closeButton: true,
@@ -55,6 +72,8 @@ const Login = () => {
   const passwordInputHandler = (e) => {
     dispatch(UserActions.password(e.target.value));
   };
+
+
 
   const loginHandler = async () => {
     try {
@@ -84,6 +103,9 @@ const Login = () => {
       console.log(err);
     }
   };
+
+
+
 
   return (
     <div>
@@ -116,18 +138,38 @@ const Login = () => {
               Login
             </Typography>
             <TextField
+              autoComplete="email"
               label="email"
               variant="outlined"
               onChange={(e) => emailInputHandler(e)}
               fullWidth
             />
             <Box sx={{ mt: 2 }}>
-              <TextField
-                label="password"
-                variant="outlined"
-                onChange={(e) => passwordInputHandler(e)}
-                fullWidth
-              />
+             
+              <FormControl  variant="outlined" sx={{width:"100%"}}>
+                <InputLabel htmlFor="outlined-adornment-password">
+                  Password
+                </InputLabel>
+                <OutlinedInput
+                
+                  onChange={(e) => passwordInputHandler(e)}
+                  id="outlined-adornment-password"
+                  type={showPassword ? "text" : "password"}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                />
+              </FormControl>
             </Box>
             <Box sx={{ mt: 2 }}>
               <Button
