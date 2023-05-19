@@ -1,4 +1,4 @@
-import * as React from "react";
+
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -26,6 +26,37 @@ import {
   InputLabel,
   Select,
 } from "@mui/material";
+import React, { useReducer } from "react";
+
+const initialState = {
+  room:"",
+  firstName: "",
+  lastName: "",
+  gender: "",
+  country: "",
+  email: "",
+  password: "",
+  confirmpassword: "",
+  numbercode: "",
+  number: "",
+  termAndCondition: "",
+  landlordAgrement: "",
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "UPDATE_FIELD":
+      return { ...state, [action.field]: action.value };
+    case "TOGGLE_TEARM_AND_CONDITION":
+      return { ...state, termAndCondition: !state.termAndCondition };
+    case "TOGGLE_LANDLORD_AGREMENT":
+      return { ...state, landlordAgrement: !state.landlordAgrement };
+    case "RESET_FIELDS":
+      return initialState;
+    default:
+      return state;
+  }
+};
 
 function Copyright(props) {
   return (
@@ -50,14 +81,39 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const handleInputChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    const fieldValue = type === "checkbox" ? checked : value;
+    dispatch({ type: "UPDATE_FIELD", field: name, value: fieldValue });
+  };
+
+
+  const handleTeramAndConditionToggle = () => {
+    dispatch({ type: "TOGGLE_TEARM_AND_CONDITION" });
+  };
+  const handleLandlordAgrementToggle = () => {
+    dispatch({ type: "TOGGLE_LANDLORD_AGREMENT" });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    // Perform form submission logic with the state values
+    console.log(state);
+    dispatch({ type: "RESET_FIELDS" });
   };
+
+  console.log("state", state)
+
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     email: data.get("email"),
+  //     password: data.get("password"),
+  //   });
+  // };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -99,12 +155,18 @@ export default function SignUp() {
                   name="row-radio-buttons-group"
                 >
                   <FormControlLabel
+                    name="room"
                     value="roommate"
+                    checked={state.room === "roommate"}
+                    onChange={handleInputChange}
                     control={<Radio />}
                     label="Roommate"
                   />
                   <FormControlLabel
+                    name="room"
                     value="landlord"
+                    checked={state.room === "landlord"}
+                    onChange={handleInputChange}
                     control={<Radio />}
                     label="Landlord"
                   />
@@ -115,6 +177,8 @@ export default function SignUp() {
                   <TextField
                     autoComplete="given-name"
                     name="firstName"
+                    value={state.firstName}
+                    onChange={handleInputChange}
                     required
                     fullWidth
                     id="firstName"
@@ -129,6 +193,8 @@ export default function SignUp() {
                     id="lastName"
                     label="Last Name"
                     name="lastName"
+                    value={state.lastName}
+                    onChange={handleInputChange}
                     autoComplete="family-name"
                   />
                 </Grid>
@@ -140,8 +206,10 @@ export default function SignUp() {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={"age"}
                       label="Gender"
+                      name="gender"
+                      value={state.gender}
+                      onChange={handleInputChange}
                       // onChange={handleChange}
                     >
                       <MenuItem value={"male"}>Male</MenuItem>
@@ -158,7 +226,9 @@ export default function SignUp() {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={"age"}
+                      name="country"
+                      value={state.country}
+                      onChange={handleInputChange}
                       label="Country"
                       // onChange={handleChange}
                     >
@@ -180,6 +250,8 @@ export default function SignUp() {
                     id="email"
                     label="Email Address"
                     name="email"
+                    value={state.email}
+                    onChange={handleInputChange}
                     autoComplete="email"
                     sx={{ mr: 2 }}
                   />
@@ -191,9 +263,11 @@ export default function SignUp() {
                   <TextField
                     required
                     fullWidth
-                    name="password"
-                    label="Password"
                     type="password"
+                    name="password"
+                    value={state.password}
+                    onChange={handleInputChange}
+                    label="Password"
                     id="password"
                     autoComplete="new-password"
                   />
@@ -202,9 +276,11 @@ export default function SignUp() {
                   <TextField
                     required
                     fullWidth
-                    name="password"
-                    label="Confirm Password"
                     type="password"
+                    name="confirmpassword"
+                    value={state.confirmpassword}
+                    onChange={handleInputChange}
+                    label="Confirm Password"
                     id="password"
                     autoComplete="new-password"
                   />
@@ -217,8 +293,10 @@ export default function SignUp() {
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={"age"}
-                    label="Country"
+                    name="numbercode"
+                    value={state.numbercode}
+                    onChange={handleInputChange}
+                    label="numbercode"
                     sx={{ minWidth: "30%" }}
                     // onChange={handleChange}
                   >
@@ -229,6 +307,9 @@ export default function SignUp() {
                   <TextField
                     fullWidth
                     label="Mobile Number"
+                    name="number"
+                    value={state.number}
+                    onChange={handleInputChange}
                     variant="outlined"
                     type="tel"
                   />
@@ -236,13 +317,25 @@ export default function SignUp() {
                 <Grid item xs={12}>
                   <FormControlLabel
                     control={
-                      <Checkbox value="allowExtraEmails" color="primary" />
+                      <Checkbox
+                        name="termAndCondition"
+                        checked={state.termAndCondition}
+                        onChange={handleTeramAndConditionToggle}
+                        value={state.termAndCondition}
+                        color="primary"
+                      />
                     }
                     label="Tearm and conditions"
                   />
                   <FormControlLabel
                     control={
-                      <Checkbox value="allowExtraEmails" color="primary" />
+                      <Checkbox
+                        name="landlordAgrement"
+                        checked={state.landlordAgrement}
+                        onChange={handleLandlordAgrementToggle}
+                        value={state.landlordAgrement}
+                        color="primary"
+                      />
                     }
                     label="Landlord agrement"
                   />
