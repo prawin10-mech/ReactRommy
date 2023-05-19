@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import RoomyFinderLogo from "../../assets/roomyFinderLogo.jpg.png";
-import { NavLink, Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   Button,
   Stack,
