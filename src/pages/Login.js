@@ -151,7 +151,6 @@ const Login = () => {
                   Password
                 </InputLabel>
                 <OutlinedInput
-                
                   onChange={(e) => passwordInputHandler(e)}
                   id="outlined-adornment-password"
                   type={showPassword ? "text" : "password"}

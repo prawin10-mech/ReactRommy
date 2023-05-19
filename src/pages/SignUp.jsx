@@ -22,8 +22,17 @@ import {
   MenuItem,
   InputLabel,
   Select,
+ 
+  OutlinedInput,
+  FilledInput,
+  IconButton,
+  InputAdornment,
+ 
+ 
 } from "@mui/material";
 import React, { useReducer } from "react";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Visibility from "@mui/icons-material/Visibility";
 
 const initialState = {
   room:"",
@@ -80,6 +89,14 @@ const defaultTheme = createTheme();
 export default function SignUp() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+   const [showPassword, setShowPassword] = React.useState(false);
+
+   const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+   const handleMouseDownPassword = (event) => {
+     event.preventDefault();
+   };
+
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
     const fieldValue = type === "checkbox" ? checked : value;
@@ -111,6 +128,7 @@ export default function SignUp() {
   //     password: data.get("password"),
   //   });
   // };
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -257,30 +275,62 @@ export default function SignUp() {
                   </Button>
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    type="password"
-                    name="password"
-                    value={state.password}
-                    onChange={handleInputChange}
-                    label="Password"
-                    id="password"
-                    autoComplete="new-password"
-                  />
+                  
+
+                  <FormControl variant="outlined" sx={{ width: "100%" }}>
+                    <InputLabel htmlFor="outlined-adornment-password">
+                      Password
+                    </InputLabel>
+                    <OutlinedInput
+                      name="password"
+                      value={state.password}
+                      onChange={handleInputChange}
+                      autoComplete="new-password"
+                      id="outlined-adornment-password"
+                      type={showPassword ? "text" : "password"}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Password"
+                    />
+                  </FormControl>
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    type="password"
-                    name="confirmpassword"
-                    value={state.confirmpassword}
-                    onChange={handleInputChange}
-                    label="Confirm Password"
-                    id="password"
-                    autoComplete="new-password"
-                  />
+                  <FormControl variant="outlined" sx={{ width: "100%" }}>
+                    <InputLabel htmlFor="outlined-adornment-password">
+                      Confirm Password
+                    </InputLabel>
+                    <OutlinedInput
+                      autoComplete="new-password"
+                      name="confirmpassword"
+                      value={state.confirmpassword}
+                      onChange={handleInputChange}
+                      id="outlined-adornment-password"
+                      type={showPassword ? "text" : "password"}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Password"
+                    />
+                  </FormControl>
                 </Grid>
                 <Grid
                   item
