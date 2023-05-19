@@ -8,46 +8,57 @@ import GooglePlay from "../assets/GooglePlay.png";
 import FooterBottom from "../assets/FooterBottom.png";
 import { footerSections } from "../utils/FooterData";
 
-const Footer2 = () => {
+const Footer = () => {
   return (
-    <>
+    <Grid sx={{ display: "block" }}>
       <Toolbar
         sx={{
           backgroundColor: "#F7F7F7",
           display: "flex",
           paddingY: "3%",
           flexDirection: "column",
+          width: { xs: "100%", sm: "85%" },
         }}
       >
         <Grid
+          container
+          spacing={2}
+          alignItems="center"
           sx={{
-            display: "flex",
             marginBottom: "10px",
+            justifyContent: "flex-start",
           }}
         >
-          <NavLink to={"/"}>
-            <img src={logo} alt="Roomy finder logo" width={70} />
-          </NavLink>
-          <Box
-            sx={{
-              display: "flex",
-              ml: 2,
-              flexDirection: "column",
-            }}
-          >
-            <Typography
-              variant="h5"
-              sx={{ fontWeight: "bolder", color: "purple" }}
+          <Grid item>
+            {" "}
+            <NavLink to={"/"}>
+              <img src={logo} alt="Roomy finder logo" width={70} />
+            </NavLink>
+          </Grid>
+          <Grid item>
+            {" "}
+            <Box
+              sx={{
+                display: "flex",
+                ml: 2,
+                flexDirection: "column",
+                justifyContent: "start",
+              }}
             >
-              Roomy
-            </Typography>
-            <Typography
-              variant="h5"
-              sx={{ fontWeight: "bolder", color: "orange" }}
-            >
-              Finder
-            </Typography>
-          </Box>
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: "bolder", color: "purple" }}
+              >
+                Roomy
+              </Typography>
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: "bolder", color: "orange" }}
+              >
+                Finder
+              </Typography>
+            </Box>
+          </Grid>
         </Grid>
         <Grid
           container
@@ -88,14 +99,6 @@ const Footer2 = () => {
               </Box>
             </Box>
           </Grid>
-          {/* <Box>
-            <img
-              src={FooterMobile}
-              alt="Footer mobile"
-              width="20%"
-              sx={{ display: { xs: "block", md: "none" } }}
-            />
-          </Box> */}
         </Grid>
       </Toolbar>
       <Box
@@ -103,12 +106,24 @@ const Footer2 = () => {
           backgroundColor: "#FAFAFA",
           backgroundImage: `url(${FooterBottom})`,
           color: "#fff",
+          height: "30px",
         }}
       >
-        T&C
+        <Box
+          sx={{
+            position: "relative",
+            bottom: "290px",
+            height: "60%",
+            display: { xs: "none", sm: "block" },
+          }}
+        >
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <img src={FooterMobile} alt="Footer mobile" width="20%" />
+          </Box>
+        </Box>
       </Box>
-    </>
+    </Grid>
   );
 };
 
-export default Footer2;
+export default Footer;
