@@ -33,7 +33,7 @@ const Copyright = (props) => {
       {"."}
     </Typography>
   );
-}
+};
 
 const Login = () => {
   const toastOptions = {
@@ -93,7 +93,6 @@ const Login = () => {
           item
           xs={12}
           sm={6}
-          md={4}
           sx={{
             display: "flex",
             flexDirection: "column",
