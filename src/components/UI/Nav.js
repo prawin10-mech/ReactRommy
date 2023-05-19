@@ -151,7 +151,7 @@ const Nav = () => {
           id="menu-appbar"
           anchorEl={anchorElNav}
           anchorOrigin={{
-            vertical: "bottom",
+            vertical: "top",
             horizontal: "left",
           }}
           keepMounted

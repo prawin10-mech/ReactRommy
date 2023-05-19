@@ -14,8 +14,10 @@ import Carousel from "react-material-ui-carousel";
 import CityCarousel2 from "../UI/CityCarousel2";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import SingleCardCarousel from "./SingleCardCarousel";
+import { useNavigate } from "react-router-dom";
 
 const AddWithCarasol = (props) => {
+  const navigate = useNavigate();
   const [slideIndex, setSlideIndex] = useState(1);
 
   const plusSlides = (n) => {
@@ -91,6 +93,7 @@ const AddWithCarasol = (props) => {
                 boxShadow:
                   "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;",
               }}
+              onClick={() => navigate("/chat")}
             >
               Chat!
             </Button>
@@ -113,40 +116,40 @@ const AddWithCarasol = (props) => {
           </Grid>
         </Grid>
 
-        {props.smallcard && 
-        <Box
-          sx={{
-            backgroundImage:
-              "  linear-gradient(to right, #43e97b 0%, #38f9d7 100%);",
-            p: 3,
-            width: "70%",
-            mt: "-40px",
-          }}
-        >
-          <Grid
-            container
+        {props.smallcard && (
+          <Box
             sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              backgroundImage:
+                "  linear-gradient(to right, #43e97b 0%, #38f9d7 100%);",
+              p: 3,
+              width: "70%",
+              mt: "-40px",
             }}
           >
-            <Grid item xs={12} md={4}>
-              <Typography variant="subtitle1" gutterBottom>
-                Find Your home in Saaudi Arabia!
-              </Typography>
+            <Grid
+              container
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Grid item xs={12} md={4}>
+                <Typography variant="subtitle1" gutterBottom>
+                  Find Your home in Saaudi Arabia!
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <Typography variant="subtitle1" gutterBottom>
+                  Find Your home in Saaudi Arabia!
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <CityCarousel2 />
+              </Grid>
             </Grid>
-            <Grid item xs={12} md={4}>
-              <Typography variant="subtitle1" gutterBottom>
-                Find Your home in Saaudi Arabia!
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <CityCarousel2 />
-            </Grid>
-          </Grid>
-        </Box>
-        }
+          </Box>
+        )}
       </Box>
     </>
   );
