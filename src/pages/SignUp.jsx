@@ -264,7 +264,7 @@ export default function SignUp() {
             <Box
               component="form"
               noValidate
-              onSubmit={handleVerifyNumber}
+              onSubmit={handleSubmit}
               sx={{ mt: 3 }}
             >
               <FormControl
