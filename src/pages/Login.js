@@ -59,12 +59,12 @@ const Login = () => {
   const loginHandler = async () => {
     try {
       const response = await axios.post(
-        "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/token",
+        "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/token",
         { email, password }
       );
       if (response.status) {
         const { data } = await axios.post(
-          "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/login",
+          "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/login",
           { email, password, fcmToken: "123" }
         );
         Cookies.set("user", JSON.stringify(data), { expires: 365 });

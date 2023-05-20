@@ -63,7 +63,7 @@ const AdvancedSearch = () => {
 
     if (Object.keys(obj).length > 0) {
       const { data } = await axios.post(
-        `http://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/${searchType}-ad/available`,
+        `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/${searchType}-ad/available`,
         obj
       );
       console.log(data);

@@ -23,13 +23,13 @@ const OurServices = () => {
 
   const getAffordableRoomData = async () => {
     const { data } = await axios.post(
-      `http://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available`,
+      `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available`,
       { countryCode: "AE" }
     );
     dispatch(SearchActions.availableRooms(data));
     axios
       .post(
-        "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available",
+        "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available",
         { countryCode: "AE" }
       )
       .then((res) => {
@@ -42,7 +42,7 @@ const OurServices = () => {
 
   const getPartitionRoomData = () => {
     const { data } = axios.post(
-      "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/roommate-ad/available",
+      "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/roommate-ad/available",
       { countryCode: "AE" }
     );
     dispatch(SearchActions.availableRooms(data));
@@ -51,7 +51,7 @@ const OurServices = () => {
 
   const fetchMyBookings = async () => {
     const { data } = await axios.get(
-      "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
+      "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
       { headers: { Authorization: token } }
     );
     dispatch(UserActions.myBookings(data));

@@ -26,7 +26,7 @@ const SecondPage = () => {
 
   const fetchMyBookings = async () => {
     const { data } = await axios.get(
-      "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
+      "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
       { headers: { Authorization: token } }
     );
     dispatch(UserActions.myBookings(data));

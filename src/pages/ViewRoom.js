@@ -110,7 +110,7 @@ const ViewRoom = () => {
 
       if (isAlreadyBooked?._id === room?._id) {
         const { data } = await axios.post(
-          "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
+          "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
           obj,
           { headers: { Authorization: token } }
         );
