@@ -2,7 +2,6 @@ import { Box, Grid, Stack, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import SingleCardCarousel from "../components/Card/SingleCardCarousel";
 
-import { styled } from "@mui/material/styles";
 import CustomizeSelectBox from "../components/MUIcomponent/CustomizeSelectBox";
 import IconButtonMUI from "../components/MUIcomponent/IconButtonMUI";
 import ChipsArray from "../components/MUIcomponent/ChipsArray";

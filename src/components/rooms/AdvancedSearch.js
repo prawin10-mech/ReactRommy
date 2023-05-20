@@ -59,8 +59,6 @@ const AdvancedSearch = () => {
     //   obj.preferredRentType = preferredRentType;
     // }
 
-    console.log(obj);
-
     if (Object.keys(obj).length > 0) {
       const { data } = await axios.post(
         `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/${searchType}-ad/available`,

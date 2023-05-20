@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -58,10 +53,7 @@ const App = () => {
             path="/viewProfile"
             element={<PrivateRoute Component={ViewProfile} />}
           />
-          <Route
-            path="/chat"
-            element={<PrivateRoute Component={Chat} />}
-          />
+          <Route path="/chat" element={<PrivateRoute Component={Chat} />} />
 
           {/* <Route path="/chat" element={<Chat />} /> */}
           <Route path="/allAvailableRooms" element={<AllRooms />} />

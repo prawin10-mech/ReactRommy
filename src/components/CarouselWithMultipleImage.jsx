@@ -42,7 +42,9 @@ export const MultipleImages0 = ({ images }) => {
   const handleLoadMore = () => {
     setNumImages(numImages + 4);
   };
-  return <ImageCarousel1 images={images.slice(0, numImages)} />;
+  return (
+    <ImageCarousel1 images={images.slice(0, numImages)} key={Math.random()} />
+  );
 };
 
 const CarouselWithMultipleImage = (props) => {

@@ -6,8 +6,6 @@ import AvailableRoom from "./AvaibleRoom";
 const AllAvailableRooms = () => {
   const availableRooms = useSelector((state) => state.search.availableRooms);
 
-  console.log(availableRooms);
-
   let allAvailableRoomsData = "";
   if (availableRooms.length !== 0) {
     allAvailableRoomsData = availableRooms?.map((room, index) => {
