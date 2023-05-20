@@ -24,6 +24,7 @@ import {
   OutlinedInput,
   IconButton,
   InputAdornment,
+  CircularProgress,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -32,6 +33,8 @@ import countryCodes from "country-codes-list";
 import { useSelector, useDispatch } from "react-redux";
 import { SignupActions } from "../store/Signup";
 import axios from "axios";
+import { toastOptions } from "../utils/ToastOptions";
+import { toast, ToastContainer } from "react-toastify";
 
 function Copyright(props) {
   return (
@@ -74,6 +77,7 @@ export default function SignUp() {
   const [sendedOtp, setSendedOtp] = useState(null);
   const [otp, setOtp] = useState(null);
   const [sendedOtpToMail, setSendedOtpToMail] = useState(false);
+  const [sendedOtpLoading, setSendedOtpLoading] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -81,45 +85,113 @@ export default function SignUp() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  //  validation of email, number and name
-  const [emailError, setEmailError] = useState("");
-  const [mobileNumberError, setMobileNumberError] = useState("");
-  const [errorpassword, seterrorpassword] = useState("");
-
-  const validateEmail = (value) => {
+  const handleVaidation = () => {
     const emailRegex = /^\S+@\S+\.\S+$/;
-    if (!emailRegex.test(value)) {
-      console.log("1");
-      setEmailError("Error");
-    } else {
-      console.log("2");
-      setEmailError(false);
-    }
-  };
-  const validatePassword = (value) => {
-    if (confirmPassword !== password) {
-      seterrorpassword(true);
-    } else {
-      seterrorpassword(false);
-    }
-  };
-
-  const validateMobileNumber = (value) => {
     const mobileRegex = /^\d{10}$/;
-    if (!mobileRegex.test(value)) {
-      setMobileNumberError("Invalid mobile number");
-    } else {
-      setMobileNumberError(false);
+    const passwordRegex =
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])[a-zA-Z\d@#$%^&+=]{8,}$/;
+
+    if (firstName.length <= 0) {
+      toast.error("Please enter first name", toastOptions);
+      return false;
     }
+    if (lastName.length <= 0) {
+      toast.error("Please enter last name", toastOptions);
+
+      return false;
+    }
+    if (!gender) {
+      toast.error("Please select gender", toastOptions);
+      return false;
+    }
+    if (!country) {
+      toast.error("Please select country");
+      return false;
+    }
+    if (!email) {
+      toast.error("Please enter email address", toastOptions);
+      return false;
+    }
+    if (!emailRegex.test(email)) {
+      toast.error("Please enter valid email address", toastOptions);
+      return false;
+    }
+    if (!sendedOtpToMail) {
+      toast.error("Please verify your email", toastOptions);
+      return false;
+    }
+    if (sendedOtpToMail && !otp) {
+      toast.error("Please enter otp", toastOptions);
+      return false;
+    }
+    if (sendedOtpToMail && !otpVerified) {
+      toast.error("Please vetify otp", toastOptions);
+      return false;
+    }
+    if (!password || !confirmPassword) {
+      toast.error("Please enter password and confirm password", toastOptions);
+      return false;
+    }
+    if (!passwordRegex.test(password)) {
+      console.log(password);
+      console.log(passwordRegex.test(password));
+      toast.error(
+        "Password must contains a number, a capital letter, a small letter, and a symbol",
+        toastOptions
+      );
+      return false;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Password and Confirm Password must be same", toastOptions);
+      return false;
+    }
+    if (!countryCode) {
+      toast.error("Please select a country code", toastOptions);
+      return false;
+    }
+    if (!phone) {
+      toast.error("Please enter phone number", toastOptions);
+      return false;
+    }
+    if (mobileRegex.test(phone)) {
+      toast.error("Please enter Valid phone number", toastOptions);
+      return false;
+    }
+    if (termAndCondition === "null") {
+      toast.error("Please accept terms and conditions", toastOptions);
+      return false;
+    }
+    if (type === "landlord" && landlordAgrement === "null") {
+      toast.error("Please accept landlord Agreement", toastOptions);
+      return false;
+    }
+    return true;
   };
 
   const sendVerifyOtpEmailHandler = async () => {
-    const { data } = await axios.post(
-      "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/send-email-verification-code",
-      { email }
-    );
-    setSendedOtpToMail(true);
-    setSendedOtp(data.code);
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    try {
+      if (!email) {
+        toast.error("Please enter email address", toastOptions);
+        return;
+      }
+      if (!emailRegex.test(email)) {
+        toast.error("Please enter valid email address", toastOptions);
+        return;
+      }
+      setSendedOtpLoading(true);
+      const { data } = await axios.post(
+        "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/send-email-verification-code",
+        { email }
+      );
+      setSendedOtpToMail(true);
+      setSendedOtp(data.code);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setSendedOtpLoading(false);
+    }
   };
 
   const verifyOtpEmailHandler = async () => {
@@ -129,10 +201,6 @@ export default function SignUp() {
       setOtpVerified(false);
     }
   };
-
-  // ======================end validation of email, number and name ====================
-
-  // country code and country list=============================================
   const countyName = countryCodes.customList(
     "countryCode",
     " {countryNameEn}: +{countryCallingCode}"
@@ -140,25 +208,36 @@ export default function SignUp() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (handleValidations()) {
-      const { data } = await axios.post(
-        "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/credentials",
-        {
-          type,
-          phone,
-          email,
-          password,
-          firstName,
-          lastName,
-          country,
-          gender,
-          fcmToken: "123",
-        }
-      );
+    try {
+      const obj = {
+        type,
+        phone,
+        email,
+        password,
+        firstName,
+        lastName,
+        country,
+        gender,
+        fcmToken: "123",
+      };
+      if (handleVaidation()) {
+        const { data } = await axios.post(
+          "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/credentials",
+          obj
+        );
+        console.log(data);
+      }
+    } catch (err) {
+      if (err.response.status === 409) {
+        toast.error("User already exists please login", toastOptions);
+      }
+      console.log(err.response.status);
     }
   };
 
-  const handleValidations = () => {};
+  const handleVerifyNumber = async () => {
+    //verify number before signup
+  };
 
   useEffect(() => {}, [confirmPassword, password]);
 
@@ -185,7 +264,7 @@ export default function SignUp() {
             <Box
               component="form"
               noValidate
-              onSubmit={handleSubmit}
+              onSubmit={handleVerifyNumber}
               sx={{ mt: 3 }}
             >
               <FormControl
@@ -318,8 +397,22 @@ export default function SignUp() {
                     variant="contained"
                     sx={{ mr: 1 }}
                     onClick={sendVerifyOtpEmailHandler}
+                    disabled={sendedOtpToMail}
                   >
-                    Verify
+                    {sendedOtpLoading ? (
+                      <CircularProgress
+                        size={24}
+                        sx={{
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          marginTop: "-12px",
+                          marginLeft: "-12px",
+                        }}
+                      />
+                    ) : (
+                      "Verify"
+                    )}
                   </Button>
                 </Grid>
                 {sendedOtpToMail && (
@@ -345,6 +438,7 @@ export default function SignUp() {
                       variant="contained"
                       sx={{ mr: 1 }}
                       onClick={verifyOtpEmailHandler}
+                      disabled={otpVerified}
                     >
                       Verify
                     </Button>
@@ -409,11 +503,6 @@ export default function SignUp() {
                       label="Password"
                     />
                   </FormControl>
-                  {errorpassword === true ? (
-                    <Typography variant="subtitle2">Not Match</Typography>
-                  ) : (
-                    ""
-                  )}
                 </Grid>
                 <Grid
                   item
@@ -454,9 +543,6 @@ export default function SignUp() {
                     variant="outlined"
                     type="tel"
                   />
-                  {mobileNumberError === false && (
-                    <Typography variant="subtitle2">nust be number </Typography>
-                  )}
                 </Grid>
                 <Grid item xs={12}>
                   <FormControlLabel
@@ -516,6 +602,7 @@ export default function SignUp() {
         </Paper>
       </Container>
       <BottomBackground />
+      <ToastContainer />
     </ThemeProvider>
   );
 }
