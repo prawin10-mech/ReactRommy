@@ -4,4 +4,5 @@ export const toastOptions = {
   position: "bottom-right",
   pauseOnHover: true,
   draggable: true,
+  theme: "dark",
 };
