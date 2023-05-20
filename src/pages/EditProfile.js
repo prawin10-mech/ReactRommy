@@ -73,7 +73,7 @@ const EditProfile = () => {
       );
       if (confirmed) {
         await axios.put(
-          "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/credentials",
+          "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/credentials",
           obj,
           { headers: { Authorization: token } }
         );
@@ -89,7 +89,7 @@ const EditProfile = () => {
 
   const sendOtpHandler = async () => {
     const { data } = await axios.post(
-      "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/send-email-verification-code",
+      "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/send-email-verification-code",
       { email },
       { headers: { Authorization: token } }
     );
