@@ -17,6 +17,7 @@ import { Carousel } from "react-responsive-carousel";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { UserActions } from "../store/User";
+import DummyImage from "../assets/demo.jpg";
 
 const ViewRoom = () => {
   const token = localStorage.getItem("token");
@@ -139,7 +140,22 @@ const ViewRoom = () => {
         }}
       >
         <Carousel autoPlay>
-          {room.images.map((image, index) => (
+          {room?.images.length > 0 ? (
+            room.images.map((image, index) => (
+              <CardMedia
+                component="img"
+                sx={{
+                  width: { xs: "100%", md: "50%" },
+                  maxHeight: { xs: "250px", sm: "300px", md: "300px" },
+                  padding: "10px",
+                  borderRadius: "20px",
+                  display: "flex",
+                }}
+                image={image}
+                alt={index}
+              />
+            ))
+          ) : (
             <CardMedia
               component="img"
               sx={{
@@ -149,10 +165,10 @@ const ViewRoom = () => {
                 borderRadius: "20px",
                 display: "flex",
               }}
-              image={image}
-              alt={index}
+              image={DummyImage}
+              alt={"DummyImage"}
             />
-          ))}
+          )}
         </Carousel>
 
         <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>

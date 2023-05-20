@@ -4,10 +4,13 @@ import { Carousel } from "react-responsive-carousel";
 import { Box, Card, CardMedia, IconButton, Typography } from "@mui/material";
 import { Favorite as FavoriteIcon } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
+import dummy from "../../assets/demo.jpg";
 
 const AvailableRoom = memo(({ room }) => {
   const [liked, setLiked] = useState(false);
-  const images = room.images || [];
+  console.log(room);
+  const images = room.images.length > 0 ? room.images : [dummy] || [dummy];
+  // const images = room.images || [];
 
   const handleClick = useCallback(() => {
     setLiked((prevState) => !prevState);
