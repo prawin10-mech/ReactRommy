@@ -5,18 +5,28 @@ import BottomBackground from "../components/postPropertyComponents/BottomBackgro
 import { Grid, Typography, CardMedia } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { UserActions } from "../store/User";
+import DummyImage from "../assets/demo.jpg";
+import { useNavigate } from "react-router-dom";
 
 const MyBookings = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const myBookings = useSelector((state) => state.user.myBookings);
   const token = localStorage.getItem("token");
 
   const fetchMyBookings = async () => {
     try {
-      const { data } = await axios.get(
-        "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
-        { headers: { Authorization: token } }
+      // const { data } = await axios.get(
+      //   "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
+      //   { headers: { Authorization: token } }
+      // );
+
+      const { data } = await axios.post(
+        "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available",
+        { countryCode: "AE" }
       );
+      console.log(data);
+
       dispatch(UserActions.myBookings(data));
     } catch (error) {
       console.log(error);
@@ -28,30 +38,35 @@ const MyBookings = () => {
   }, []);
 
   const myBookingData = myBookings?.map((booking) => (
-    <Grid
-      key={booking._id}
-      item
-      xs={12}
-      sm={6}
-      md={4}
-      lg={3}
-      className="booking-container"
-    >
-      <CardMedia
-        component="img"
+    <Grid key={booking._id} item xs={12} sm={6} md={4} lg={3}>
+      <Grid
         sx={{
-          minWidth: { xs: "100%", md: "50%" },
-          width: { xs: "100%", md: "50%" },
-          height: { xs: "250px", sm: "300px", md: "300px" },
-          padding: "10px",
-          borderRadius: "20px",
-          display: "flex",
+          width: "300px",
+          height: "250px",
         }}
-        image={booking?.ad?.images[0]}
-        alt={booking?.id}
-      />
-      <Typography variant="subtitle1">{booking.rentType}</Typography>
-      <Typography variant="subtitle1">{booking.rentType}</Typography>
+      >
+        <CardMedia
+          component="img"
+          sx={{
+            // objectFit: "cover",
+            width: "100%",
+            height: "200px",
+            padding: "10px",
+            borderRadius: "20px",
+            display: "flex",
+            cursor: "pointer",
+          }}
+          onClick={() => navigate(`/rooms/view-room/${booking.id}`)}
+          image={booking.images.length > 0 ? booking.images[0] : [DummyImage]}
+          alt={booking?.id}
+        />
+        <Grid sx={{ padding: "10px" }}>
+          <Typography variant="subtitle1">{booking.type}</Typography>
+          <Typography variant="subtitle1">
+            {booking.monthlyPrice} AED
+          </Typography>
+        </Grid>
+      </Grid>
     </Grid>
   ));
 
@@ -64,7 +79,6 @@ const MyBookings = () => {
         container
         spacing={3}
         justifyContent="center"
-        flexDirection={"column"}
         alignItems="center"
         sx={{ margin: "auto", maxWidth: 1200 }}
       >

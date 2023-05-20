@@ -29,17 +29,20 @@ const Nav = () => {
   const [activeLink, setActiveLink] = useState("ourServices");
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const settings = [
-    "Edit Profile",
-    "Home",
-    "My Account",
-    "My Bookings",
-    "Logout",
-  ];
+  const [user, setUser] = useState({});
+  const settings = ["Edit Profile", "Home", "My Account", "Logout"];
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const handleClick = (link) => {
     setActiveLink(link);
+  };
+
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
@@ -56,21 +59,9 @@ const Nav = () => {
     setAnchorElUser(null);
   };
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav("/", event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
   const handleItemClick = (pageUrl) => {
     handleCloseUserMenu();
     navigate(`${pageUrl}`);
-  };
-
-  const editProfileHandler = async () => {
-    const { data } = await axios.get("");
-    navigate("/editProfile");
   };
 
   const fetchUser = async () => {
@@ -81,7 +72,6 @@ const Nav = () => {
     );
     Cookies.set("user", JSON.stringify(data), { expires: 365 });
   };
-  if (localStorage.getItem("token")) dispatch(UserActions.isLoggedIn(true));
 
   const getUserFromCookies = () => {
     const user = Cookies.get("user");
@@ -90,19 +80,28 @@ const Nav = () => {
     }
     return null;
   };
-  const user = getUserFromCookies();
-  if (user) {
-    dispatch(UserActions.lastName(user.lastName));
-    dispatch(UserActions.country(user.country));
-    dispatch(UserActions.gender(user.gender));
-    dispatch(UserActions.email(user.email));
-    dispatch(UserActions.fcmToken(user.fcmToken));
-    dispatch(UserActions?.firstName(user.firstName));
-  }
 
   useEffect(() => {
     fetchUser();
-  });
+    const getUserData = async () => {
+      if (localStorage.getItem("token")) {
+        dispatch(UserActions.isLoggedIn(true));
+      }
+
+      const user = getUserFromCookies();
+      setUser(user);
+      if (user) {
+        dispatch(UserActions.lastName(user.lastName));
+        dispatch(UserActions.country(user.country));
+        dispatch(UserActions.gender(user.gender));
+        dispatch(UserActions.email(user.email));
+        dispatch(UserActions.fcmToken(user.fcmToken));
+        dispatch(UserActions?.firstName(user.firstName));
+      }
+    };
+
+    getUserData();
+  }, []);
 
   return (
     <div className="nav-container p-3 flex justify-between bg-white">
@@ -113,7 +112,7 @@ const Nav = () => {
           width={70}
           className="mr-2"
         />
-        <Stack sx={{ margiin: "auto" }}>
+        <Stack sx={{ margin: "auto" }}>
           <Typography
             variant="h5"
             sx={{
@@ -136,6 +135,7 @@ const Nav = () => {
           </Typography>
         </Stack>
       </NavLink>
+    
       <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
         <IconButton
           size="large"

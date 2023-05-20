@@ -37,6 +37,7 @@ const ViewRoom = () => {
   );
   const rooms = useSelector((state) => state.search.availableRooms);
   const room = rooms.find((room) => room.id === id);
+  console.log(rooms, id);
 
   const handleInputChange = (e) => {
     setValue(e.target.value);
@@ -131,17 +132,34 @@ const ViewRoom = () => {
   };
 
   return (
-    <Box sx={{ mx: "auto", maxWidth: "800px", my: 3 }}>
+    <Box sx={{ mx: "auto", maxWidth: "700px", my: 3 }}>
       <Card
         sx={{
           display: "flex",
           bgcolor: "#f1f1f2",
+          width: "100%",
           flexDirection: { xs: "column", md: "row" },
+          alignItems: "center",
         }}
       >
-        <Carousel autoPlay>
-          {room?.images.length > 0 ? (
-            room.images.map((image, index) => (
+        <Box sx={{ width: "50%", display: "flex", alignItems: "center" }}>
+          <Carousel autoPlay>
+            {room?.images.length > 0 ? (
+              room.images.map((image, index) => (
+                <CardMedia
+                  component="img"
+                  sx={{
+                    width: { xs: "100%", md: "50%" },
+                    maxHeight: { xs: "250px", sm: "300px", md: "300px" },
+                    padding: "10px",
+                    borderRadius: "20px",
+                    display: "flex",
+                  }}
+                  image={image}
+                  alt={index}
+                />
+              ))
+            ) : (
               <CardMedia
                 component="img"
                 sx={{
@@ -151,25 +169,12 @@ const ViewRoom = () => {
                   borderRadius: "20px",
                   display: "flex",
                 }}
-                image={image}
-                alt={index}
+                image={DummyImage}
+                alt={"DummyImage"}
               />
-            ))
-          ) : (
-            <CardMedia
-              component="img"
-              sx={{
-                width: { xs: "100%", md: "50%" },
-                maxHeight: { xs: "250px", sm: "300px", md: "300px" },
-                padding: "10px",
-                borderRadius: "20px",
-                display: "flex",
-              }}
-              image={DummyImage}
-              alt={"DummyImage"}
-            />
-          )}
-        </Carousel>
+            )}
+          </Carousel>
+        </Box>
 
         <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
           <Box sx={{ p: 2 }}>
@@ -198,7 +203,7 @@ const ViewRoom = () => {
         </Box>
       </Card>
 
-      <Box sx={{ mt: 3 }}>
+      {/* <Box sx={{ mt: 3 }}>
         <Typography variant="h5" sx={{ mb: 2 }}>
           Social Preferences
         </Typography>
@@ -225,7 +230,7 @@ const ViewRoom = () => {
             Nationality: {room?.socialPreferences?.nationality}
           </Typography>
         </Box>
-      </Box>
+      </Box> */}
 
       <Box sx={{ p: 2 }}>
         <Typography variant="h6"></Typography>
