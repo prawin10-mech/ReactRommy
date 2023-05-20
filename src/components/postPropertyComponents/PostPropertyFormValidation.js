@@ -74,7 +74,7 @@ const PostPropertyFormValidation = () => {
   };
 
   axios.post(
-    "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad"
+    "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad"
   );
   return <div></div>;
 };

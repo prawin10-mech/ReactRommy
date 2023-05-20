@@ -1,4 +1,3 @@
-
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -22,11 +21,18 @@ import {
   MenuItem,
   InputLabel,
   Select,
+  OutlinedInput,
+  FilledInput,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer, useState } from "react";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Visibility from "@mui/icons-material/Visibility";
+import countryCodes from "country-codes-list";
 
 const initialState = {
-  room:"",
+  room: "",
   firstName: "",
   lastName: "",
   gender: "",
@@ -80,12 +86,74 @@ const defaultTheme = createTheme();
 export default function SignUp() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+  //  validation of email, number and name
+  const [emailError, setEmailError] = useState("");
+  const [mobileNumberError, setMobileNumberError] = useState("");
+  const [errorpassword, seterrorpassword] = useState("");
+
+  const validateEmail = (value) => {
+    console.log(value);
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    if (!emailRegex.test(value)) {
+      console.log("1");
+      setEmailError("Error");
+    } else {
+      console.log("2");
+      setEmailError(false);
+    }
+  };
+  const validatePassword = (value) => {
+    
+    if (state.confirmpassword !== state.password) {
+      seterrorpassword(true);
+    } else {
+     
+      seterrorpassword(false);
+    }
+  };
+
+  const validateMobileNumber = (value) => {
+    const mobileRegex = /^\d{10}$/;
+    if (!mobileRegex.test(value)) {
+      setMobileNumberError("Invalid mobile number");
+    } else {
+      setMobileNumberError(false);
+    }
+  };
+
+  // ======================end validation of email, number and name ====================
+
+  // country code and country list=============================================
+  const countyName = countryCodes.customList(
+    "countryCode",
+    " {countryNameEn}: +{countryCallingCode}"
+  );
+  // console.log(countyName);
+  // ======================end  country code and country list====================
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
     const fieldValue = type === "checkbox" ? checked : value;
+    if (name === "email") {
+      validateEmail(value);
+    }
+    if (name ==="confirmpassword") {
+      validatePassword(value);
+    }
+    // if (name === "firstName" || "lastName") {
+    //   validateEmail(value);
+    // }
+    if (name === "number") {
+      validateMobileNumber(value);
+    }
     dispatch({ type: "UPDATE_FIELD", field: name, value: fieldValue });
   };
-
 
   const handleTeramAndConditionToggle = () => {
     dispatch({ type: "TOGGLE_TEARM_AND_CONDITION" });
@@ -97,20 +165,12 @@ export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Perform form submission logic with the state values
-    console.log(state);
+    // console.log(state);
     dispatch({ type: "RESET_FIELDS" });
   };
 
-  console.log("state", state)
-
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   console.log({
-  //     email: data.get("email"),
-  //     password: data.get("password"),
-  //   });
-  // };
+  useEffect(() => {}, [state.confirmpassword, state.password]);
+  
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -229,9 +289,11 @@ export default function SignUp() {
                       label="Country"
                       // onChange={handleChange}
                     >
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
+                      {Object.entries(countyName).map((val, id) => (
+                        <MenuItem value={val[1].split(":")[0].trim()}>
+                          {val[1].split(":")[0]}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -244,6 +306,7 @@ export default function SignUp() {
                   <TextField
                     required
                     fullWidth
+                    type={"email"}
                     id="email"
                     label="Email Address"
                     name="email"
@@ -252,55 +315,102 @@ export default function SignUp() {
                     autoComplete="email"
                     sx={{ mr: 2 }}
                   />
+                  {emailError !== false || "" ? (
+                    <Typography variant="subtitle2">
+                      email must contain @
+                    </Typography>
+                  ) : (
+                    ""
+                  )}
                   <Button variant="contained" sx={{ mr: 1 }}>
                     Verify
                   </Button>
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    type="password"
-                    name="password"
-                    value={state.password}
-                    onChange={handleInputChange}
-                    label="Password"
-                    id="password"
-                    autoComplete="new-password"
-                  />
+                  <FormControl variant="outlined" sx={{ width: "100%" }}>
+                    <InputLabel htmlFor="outlined-adornment-password">
+                      Password
+                    </InputLabel>
+                    <OutlinedInput
+                      name="password"
+                      value={state.password}
+                      onChange={handleInputChange}
+                      autoComplete="new-password"
+                      id="outlined-adornment-password"
+                      type={showPassword ? "text" : "password"}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Password"
+                    />
+                  </FormControl>
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    type="password"
-                    name="confirmpassword"
-                    value={state.confirmpassword}
-                    onChange={handleInputChange}
-                    label="Confirm Password"
-                    id="password"
-                    autoComplete="new-password"
-                  />
+                  <FormControl variant="outlined" sx={{ width: "100%" }}>
+                    <InputLabel htmlFor="outlined-adornment-password">
+                      Confirm Password
+                    </InputLabel>
+                    <OutlinedInput
+                      autoComplete="new-password"
+                      name="confirmpassword"
+                      value={state.confirmpassword}
+                      onChange={handleInputChange}
+                      id="outlined-adornment-password"
+                      type={showPassword ? "text" : "password"}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Password"
+                    />
+                  </FormControl>
+                  {errorpassword === true ? (
+                    <Typography variant="subtitle2">Not Match</Typography> 
+                  ) : ""}
                 </Grid>
                 <Grid
                   item
                   xs={12}
                   sx={{ display: "flex", flexDirection: "row" }}
                 >
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    name="numbercode"
-                    value={state.numbercode}
-                    onChange={handleInputChange}
-                    label="numbercode"
-                    sx={{ minWidth: "30%" }}
-                    // onChange={handleChange}
-                  >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
+                  <FormControl sx={{ width: "60%" }}>
+                    <InputLabel id="demo-simple-select-label">
+                      Country code
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      name="numbercode"
+                      value={state.numbercode}
+                      onChange={handleInputChange}
+                      // label="Country code"
+                      sx={{ minWidth: "30%" }}
+                      // onChange={handleChange}
+                    >
+                      {Object.entries(countyName).map((val, id) => (
+                        <MenuItem value={val[1].split(":")[1].trim()}>
+                          {val}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                   <TextField
                     fullWidth
                     label="Mobile Number"
@@ -310,6 +420,9 @@ export default function SignUp() {
                     variant="outlined"
                     type="tel"
                   />
+                  {mobileNumberError === false && (
+                    <Typography variant="subtitle2">nust be number </Typography>
+                  )}
                 </Grid>
                 <Grid item xs={12}>
                   <FormControlLabel

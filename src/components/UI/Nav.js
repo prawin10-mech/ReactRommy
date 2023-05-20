@@ -77,7 +77,7 @@ const Nav = () => {
     const id = JSON.parse(Cookies.get("user")).id;
 
     const { data } = await axios.get(
-      `http://roomy-finder-evennode.ap-1.evennode.com/api/v1/profile/profile-info?userId=${id}`
+      `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/profile/profile-info?userId=${id}`
     );
     Cookies.set("user", JSON.stringify(data), { expires: 365 });
   };

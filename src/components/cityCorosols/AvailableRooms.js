@@ -23,7 +23,7 @@ const AvailableRooms = () => {
 
   const fetchAvailableRooms = async () => {
     const { data } = await axios.get(
-      "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/recomended?countryCode=AE"
+      "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/recomended?countryCode=AE"
     );
     if (roomType === "propertyAds") {
       dispatch(roomsTypeActions.availableRooms(data.propertyAds));

@@ -28,7 +28,7 @@ const ResetPassword = () => {
 
   const otpHandler = async () => {
     const { data } = await axios.post(
-      "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/send-email-verification-code",
+      "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/send-email-verification-code",
       { email }
     );
     setOtpSend(data.code);
@@ -48,7 +48,7 @@ const ResetPassword = () => {
     try {
       if (validations()) {
         const { data } = await axios.post(
-          "http://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/reset-password",
+          "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/reset-password",
           { email, password, fcmToken: "123" }
         );
         toast.success("Verification email sent successfully", toastOptions);
