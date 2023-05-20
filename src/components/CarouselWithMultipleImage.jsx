@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { Grid, Typography, Paper, Box, Stack } from "@mui/material";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-// import { Stack } from "react-bootstrap";
+import DummyImage from "../assets/demo.jpg";
 
 const ImageCarousel1 = ({ images }) => {
+  if (images.length === 0) images = [DummyImage];
   return (
     <Paper sx={{ height: "270px" }}>
       {images === [] && (
@@ -36,7 +37,6 @@ const ImageCarousel1 = ({ images }) => {
 };
 
 export const MultipleImages0 = ({ images }) => {
-  //  console.log("image",images);
   const [numImages, setNumImages] = useState(4);
 
   const handleLoadMore = () => {
