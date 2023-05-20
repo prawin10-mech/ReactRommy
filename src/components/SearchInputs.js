@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { SearchIcon } from "@heroicons/react/solid";
 import { SearchActions } from "../store/Search";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import {
+  Box,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  FormControlLabel,
+  Checkbox,
+  Button,
+  Typography,
+  InputLabel,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 const SearchInputs = () => {
   const navigate = useNavigate();
@@ -16,15 +28,27 @@ const SearchInputs = () => {
   const commercialProperty = useSelector(
     (state) => state.search.commercialProperty
   );
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const propertyTypeOptions =
+    searchType === "property"
+      ? ["Bed", "Master Room", "Partition", "Room"]
+      : ["Studio", "Apartment", "House"];
+
   const searchTextHandle = (e) => {
     dispatch(SearchActions.searchText(e.target.value));
   };
-  const searchPropertyTypeHandle = (e) => {
+
+  const handlePropertyTypeChange = (e) => {
     dispatch(SearchActions.propertyType(e.target.value));
   };
+
   const searchLocationHandle = (e) => {
     dispatch(SearchActions.location(e.target.value));
   };
+
   const searchPriceHandle = (e) => {
     dispatch(SearchActions.price(e.target.value));
   };
@@ -34,112 +58,206 @@ const SearchInputs = () => {
   };
 
   const handleSearch = async () => {
-    const obj = {};
-    if (searchText) {
-      obj.city = searchText;
-    }
-    if (location === "Dubai") {
-      obj.countryCode = "AE";
-    } else if (location === "Saudi Arabia") {
-      obj.countryCode = "SA";
-    }
-    if (propertyType) {
-      obj.type = propertyType;
-    }
-    if (price) {
-      obj.price = price;
-    }
-    if (commercialProperty) {
-      obj.commercialProperty = commercialProperty;
-    }
+    setIsLoading(true);
+    setError(null);
 
-    console.log(obj);
+    try {
+      const obj = {};
+      if (searchText) {
+        obj.city = searchText;
+      }
+      if (location === "Dubai") {
+        obj.countryCode = "AE";
+      } else if (location === "Saudi Arabia") {
+        obj.countryCode = "SA";
+      }
+      if (propertyType) {
+        obj.type = propertyType;
+      }
+      if (price) {
+        obj.price = price;
+      }
+      if (commercialProperty) {
+        obj.commercialProperty = commercialProperty;
+      }
 
-    if (Object.keys(obj).length > 0) {
-      const { data } = await axios.post(
-        `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/${searchType}-ad/available`,
-        obj
-      );
-      dispatch(SearchActions.availableRooms(data));
-      navigate("/sp");
-    } else {
-      console.log("obj is empty");
+      console.log(obj);
+
+      if (Object.keys(obj).length > 0) {
+        const { data } = await axios.post(
+          `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/${searchType}-ad/available`,
+          obj
+        );
+        dispatch(SearchActions.availableRooms(data));
+        navigate("/sp");
+      } else {
+        console.log("obj is empty");
+      }
+    } catch (error) {
+      setError("An error occurred while searching. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div>
-      <div className="flex flex-col md:flex-row md:items-center">
-        <input
-          className="border-2 border-grey-300 mr-2 mb-2 md:mb-0 md:w-[50%]"
-          type="text"
-          placeholder="Search by city"
-          onChange={searchTextHandle}
-        />
-        <select
-          name="property"
-          className="border-2 border-grey-300 mr-2 mb-2 md:mb-0"
-          onChange={(e) => searchPropertyTypeHandle(e)}
+    <Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", lg: "row" },
+          mb: 2,
+        }}
+      >
+        <Box
+          sx={{
+            flex: { xs: "1 1 100%", lg: "1 1 auto" },
+            mr: { xs: 0, lg: 2 },
+          }}
         >
-          {searchType === "property" ? (
-            <>
-              <option value="">Property Type</option>
-              <option value="Bed">Bed</option>
-              <option value="Partition">Partition</option>
-              <option value="Room">Room</option>
-              <option value="Master Room">Master room</option>
-              <option value="Mix">Mix</option>{" "}
-            </>
-          ) : (
-            <>
-              <option value="">Property Type</option>
-              <option value="Studio">Studio</option>
-              <option value="Appartment">Appartment</option>
-              <option value="House">House</option>
-            </>
-          )}
-        </select>
-        <select
-          name="bedsBaths"
-          className="border-2 border-grey-300 mr-2 mb-2 md:mb-0"
-          onChange={(e) => searchLocationHandle(e)}
+          <FormControl variant="outlined" fullWidth>
+            <TextField
+              label="Search"
+              type="text"
+              value={searchText}
+              onChange={searchTextHandle}
+              fullWidth
+            />
+          </FormControl>
+        </Box>
+
+        <Box
+          sx={{
+            flex: { xs: "1 1 100%", lg: "1 1 auto" },
+            mr: { xs: 0, lg: 2 },
+          }}
         >
-          <option value="">location</option>
-          <option value="Dubai">Dubai</option>
-          <option value="Saudi Arabia">Saudi Arabia</option>
-        </select>
-        <select
-          name="price"
-          className="border-2 border-grey-300 mb-2 md:mb-0"
-          onChange={(e) => searchPriceHandle(e)}
+          <FormControl variant="outlined" fullWidth>
+            <InputLabel htmlFor="propertyType">Property Type</InputLabel>
+            <Select
+              id="propertyType"
+              label="Property Type"
+              value={propertyType}
+              onChange={handlePropertyTypeChange}
+              fullWidth
+            >
+              {propertyTypeOptions.map((property) => (
+                <MenuItem key={property} value={property}>
+                  {property}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+
+        <Box
+          sx={{
+            flex: { xs: "1 1 100%", lg: "1 1 auto" },
+            mr: { xs: 0, lg: 2 },
+          }}
         >
-          <option value="">Price</option>
-          <option value="1 to 5">1 to 5</option>
-          <option value="5 to 10">5 to 10</option>
-          <option vlaue="10 to 15">10 to 15</option>
-          <option value="15 to 20">15 to 20</option>
-          <option value="+20">+20</option>
-        </select>
-        <button
-          className="p-2 border-slate-400 border-2 ml-2 bg-purple-700 rounded-md"
-          onClick={handleSearch}
+          <FormControl variant="outlined" fullWidth>
+            <InputLabel htmlFor="location">Location</InputLabel>
+            <Select
+              id="location"
+              label="Location"
+              value={location}
+              onChange={searchLocationHandle}
+              fullWidth
+            >
+              <MenuItem value="">Location</MenuItem>
+              <MenuItem value="Dubai">Dubai</MenuItem>
+              <MenuItem value="Saudi Arabia">Saudi Arabia</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+
+        <Box
+          sx={{
+            flex: { xs: "1 1 100%", lg: "1 1 auto" },
+            mr: { xs: 0, lg: 2 },
+          }}
         >
-          <SearchIcon className="w-3 h-3 text-white" />
-        </button>
-      </div>
-      <div className="mt-2 flex flex-col md:flex-row md:justify-between md:items-center">
-        <div className="flex items-center">
-          <input
-            id="commercial"
-            type="checkbox"
-            className="mr-1"
-            onChange={commercialPropertyHandle}
+          <FormControl variant="outlined" fullWidth>
+            <InputLabel htmlFor="price">Price</InputLabel>
+            <Select
+              id="price"
+              label="Price"
+              value={price}
+              onChange={searchPriceHandle}
+              fullWidth // Added fullWidth prop
+            >
+              <MenuItem value=""></MenuItem>
+              <MenuItem value="1 to 5">1 to 5</MenuItem>
+              <MenuItem value="5 to 10">5 to 10</MenuItem>
+              <MenuItem value="10 to 15">10 to 15</MenuItem>
+              <MenuItem value="15 to 20">15 to 20</MenuItem>
+              <MenuItem value="+20">+20</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+
+        <Box
+          sx={{
+            flex: { xs: "1 1 100%", lg: "1 1 auto" },
+            display: "flex",
+            alignItems: "center",
+            mt: { xs: 2, lg: 0 },
+            justifyContent: { xs: "flex-start", lg: "flex-end" },
+          }}
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{
+              padding: 2,
+              border: "2px solid slate",
+              marginLeft: { xs: 0, lg: 2 },
+              backgroundColor: "purple.700",
+              borderRadius: "md",
+            }}
+            onClick={handleSearch}
+            startIcon={<SearchIcon />}
+            disabled={isLoading}
+          >
+            {isLoading ? "Loading..." : "Search"}
+          </Button>
+          {/* {error && (
+            <Typography variant="body2" color="error">
+              {error}
+            </Typography>
+          )} */}
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          mt: 2,
+          display: "flex",
+          flexDirection: { xs: "column", lg: "row" },
+          justifyContent: { xs: "flex-start", lg: "space-between" },
+          alignItems: { xs: "flex-start", lg: "center" },
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                id="commercial"
+                checked={commercialProperty}
+                onChange={commercialPropertyHandle}
+              />
+            }
+            label="Show commercial properties only"
           />
-          <label htmlFor="commercial">Show commercial properties only</label>
-        </div>
-        <p className="mt-2 md:mt-0">Advanced search</p>
-      </div>
-    </div>
+        </Box>
+        <Typography
+          variant="body1"
+          sx={{ mt: { xs: 2, lg: 0 }, ml: { xs: 0, lg: 2 } }}
+        >
+          Advanced search
+        </Typography>
+      </Box>
+    </Box>
   );
 };
 

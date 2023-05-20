@@ -4,7 +4,11 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import TopBackground from "../components/postPropertyComponents/TopBackground";
 import BottomBackground from "../components/postPropertyComponents/BottomBackground";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import AppsIcon from "@mui/icons-material/Apps";
+import InfoIcon from "@mui/icons-material/Info";
+import EventNoteIcon from "@mui/icons-material/EventNote";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const MyAccount = () => {
@@ -57,7 +61,7 @@ const MyAccount = () => {
                 }}
               >
                 <img
-                  src="https://www.bing.com/images/search?q=images&FORM=IQFRBA&id=BC6470C60B7A8615DA7155B539C4A122275DF649"
+                  src="https://wallpapercave.com/wp/wp2599594.jpg"
                   alt={`${user.firstName} profile`}
                 />
               </Box>
@@ -79,7 +83,7 @@ const MyAccount = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid sm={4}>
+        <Grid item sm={4}>
           <Grid item sx={{ width: "100%" }}>
             <Grid
               sx={{
@@ -94,7 +98,7 @@ const MyAccount = () => {
               <Box sx={{ display: "flex" }}>
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
                   <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                    <LockOutlinedIcon />
+                    <NotificationsIcon />
                   </Avatar>
                 </Box>
 
@@ -129,7 +133,7 @@ const MyAccount = () => {
               <Box sx={{ display: "flex" }}>
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
                   <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                    <LockOutlinedIcon />
+                    <AppsIcon />
                   </Avatar>
                 </Box>
 
@@ -167,7 +171,7 @@ const MyAccount = () => {
               <Box sx={{ display: "flex" }}>
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
                   <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                    <LockOutlinedIcon />
+                    <EventNoteIcon />
                   </Avatar>
                 </Box>
 
@@ -201,7 +205,7 @@ const MyAccount = () => {
               <Box sx={{ display: "flex" }}>
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
                   <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                    <LockOutlinedIcon />
+                    <InfoIcon />
                   </Avatar>
                 </Box>
 
@@ -235,7 +239,7 @@ const MyAccount = () => {
               <Box sx={{ display: "flex" }}>
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
                   <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                    <LockOutlinedIcon />
+                    <AccountBalanceWalletIcon />
                   </Avatar>
                 </Box>
 
@@ -245,21 +249,18 @@ const MyAccount = () => {
                 </Box>
               </Box>
               <Box>
-                <Button
-                  variant="contained"
-                  color="secondary"
+                <ChevronRightIcon
                   sx={{
-                    borderRadius: "25px",
-                    backgroundColor: "orange",
-                    color: "white",
+                    height: "50px",
+                    width: "50px",
+                    color: "#fff",
+                    cursor: "pointer",
                   }}
-                >
-                  Withdraw
-                </Button>
+                />
               </Box>
             </Grid>
           </Grid>
-          <Grid item sx={{ width: "100%" }}>
+          {/* <Grid item sx={{ width: "100%" }}>
             <Grid
               sx={{
                 display: "flex",
@@ -286,7 +287,7 @@ const MyAccount = () => {
                 />
               </Box>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
       <BottomBackground />

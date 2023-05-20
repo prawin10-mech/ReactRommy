@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Grid,
   Button,
@@ -7,11 +7,11 @@ import {
   Typography,
   Avatar,
   OutlinedInput,
-  FilledInput,
   IconButton,
   InputAdornment,
   FormControl,
   InputLabel,
+  CircularProgress,
 } from "@mui/material";
 import TopBackground from "../components/postPropertyComponents/TopBackground.js";
 import BottomBackground from "../components/postPropertyComponents/BottomBackground.js";
@@ -24,6 +24,7 @@ import Cookies from "js-cookie";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
+import { toastOptions } from "../utils/ToastOptions.js";
 
 const Copyright = (props) => {
   return (
@@ -45,6 +46,8 @@ const Copyright = (props) => {
 
 const Login = () => {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -52,31 +55,31 @@ const Login = () => {
     event.preventDefault();
   };
 
-
-  const toastOptions = {
-    autoClose: 3000,
-    closeButton: true,
-    position: "bottom-right",
-    pauseOnHover: true,
-    draggable: true,
-  };
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const email = useSelector((state) => state.user.email);
   const password = useSelector((state) => state.user.password);
 
   const emailInputHandler = (e) => {
-    dispatch(UserActions.email(e.target.value));
+    const emailValue = e.target.value;
+    dispatch(UserActions.email(emailValue));
+
+    // Email validation using regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailValue)) {
+      setEmailError("Please enter a valid email address");
+    } else {
+      setEmailError("");
+    }
   };
 
   const passwordInputHandler = (e) => {
     dispatch(UserActions.password(e.target.value));
   };
 
-
-
   const loginHandler = async () => {
     try {
+      setIsLoading(true);
       const response = await axios.post(
         "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/token",
         { email, password }
@@ -101,11 +104,10 @@ const Login = () => {
     } catch (err) {
       toast.error("Please enter valid credentials", toastOptions);
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
-
-
-
 
   return (
     <div>
@@ -143,10 +145,11 @@ const Login = () => {
               variant="outlined"
               onChange={(e) => emailInputHandler(e)}
               fullWidth
+              error={emailError.length > 0} // Set error state based on emailError length
+              helperText={emailError} // Display error message
             />
             <Box sx={{ mt: 2 }}>
-             
-              <FormControl  variant="outlined" sx={{width:"100%"}}>
+              <FormControl variant="outlined" sx={{ width: "100%" }}>
                 <InputLabel htmlFor="outlined-adornment-password">
                   Password
                 </InputLabel>
@@ -176,7 +179,21 @@ const Login = () => {
                 color="success"
                 fullWidth
                 onClick={loginHandler}
+                disabled={isLoading}
+                sx={{ position: "relative" }}
               >
+                {isLoading && (
+                  <CircularProgress
+                    size={24}
+                    sx={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: "-12px",
+                      marginLeft: "-12px",
+                    }}
+                  />
+                )}
                 Login
               </Button>
             </Box>
