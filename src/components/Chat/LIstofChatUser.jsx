@@ -18,6 +18,8 @@ import {
 import { getSender, getSenderNew } from "../Chat/ChatLogic";
 import ChatBody from "./ChatBody";
 
+
+
 const ListofChatUser = ({ listOfChatUser1, dispatch, setreciver }) => {
   const [senders, setSenders] = useState([]);
   const [selectChatUser, setselectChatUser] = useState("");
@@ -94,13 +96,16 @@ const ListofChatUser = ({ listOfChatUser1, dispatch, setreciver }) => {
               direction="row"
               spacing={2}
               onClick={() => GoTochatui(val, senders, senders[id]?.name)}
-              // onClick={setselectChatUser(val)}
-              backgroundColor={selectChatUser !== "" ? "#fff000" : "#00ff00"}
+             
+              // backgroundColor={selectChatUser !== "" ? "#fff000" : "#00ff00"}
               sx={{
                 pt: 1,
                 pl: 1,
                 my: 1,
                 mr: 4,
+                backgroundColor: `${
+                  senders[id]?._id !== data._id ? "#BEE3F8" : "#B9F5D0"
+                }`,
 
                 display: "flex",
                 flexDirection: "row",

@@ -47,21 +47,23 @@ const reducer = (state, action) => {
 const Chat = () => {
   const [selectedChat, setselectedChat] = useState([]);
   const [reciver, setreciver] = useState({
-    userDetails:"",
-    ChatId:""
+    userDetails: "",
+    ChatId: "",
   });
   const [openEmoji, setopenEmoji] = useState(false);
   const [checksearch, setchecksearch] = useState(false);
-  const [handleSearch, sethandleSearch] = useState('');
+  const [handleSearch, sethandleSearch] = useState("");
   const [userSearch, setuserSearch] = useState([]);
   const [listOfChatUser1, setlistOfChatUser] = useState([]);
   const [Chat, setChat] = useState([]);
-    const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDYzMjZiNTNjNTgzMzY1NDM3YjVlZTciLCJuYW1lIjoiR2h1bGFtIiwiZW1haSI6ImdodWxhbUBnbWFpbC5jb20iLCJwaWMiOiJodHRwczovL3Bicy50d2ltZy5jb20vcHJvZmlsZV9pbWFnZXMvOTE3NjMxOTgzMzcwNDYxMTg0L2JYUWpwa0RlXzQwMHg0MDAuanBnIiwiaWF0IjoxNjg0NjcyMjc0LCJleHAiOjE3MTYyMDgyNzR9.ZExDiBb0Vmv27JpgQunZFHwTV5VuZrOgrDDaL6fRU98";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDYzMjZiNTNjNTgzMzY1NDM3YjVlZTciLCJuYW1lIjoiR2h1bGFtIiwiZW1haSI6ImdodWxhbUBnbWFpbC5jb20iLCJwaWMiOiJodHRwczovL3Bicy50d2ltZy5jb20vcHJvZmlsZV9pbWFnZXMvOTE3NjMxOTgzMzcwNDYxMTg0L2JYUWpwa0RlXzQwMHg0MDAuanBnIiwiaWF0IjoxNjg0NjcyMjc0LCJleHAiOjE3MTYyMDgyNzR9.ZExDiBb0Vmv27JpgQunZFHwTV5VuZrOgrDDaL6fRU98";
+
+  // when select any data from search then call api and response add to list of other user
   const createuserChat = async (val) => {
-    sethandleSearch("")
+    sethandleSearch("");
     try {
       const response = await axios
         .post(
@@ -78,14 +80,16 @@ const Chat = () => {
           }
         )
         .then((val) => {
-            setchecksearch(false);
-        
+          setchecksearch(false);
+
           setlistOfChatUser([val.data, ...listOfChatUser1]);
         });
-    }  catch (err) {
+    } catch (err) {
       console.log(err);
     }
   };
+
+  //  api call for list of other user and store in array
   const getUserChatData = async (id) => {
     try {
       const response = await axios
@@ -102,13 +106,12 @@ const Chat = () => {
       console.log(err);
     }
   };
-  useEffect(() => {
-    getUserChatData();
-  },[]);
+
+  // api call when you search
   const callapi = async (e) => {
-    if (e.target.value.length>0){
-      setchecksearch(true)
-    }else{
+    if (e.target.value.length > 0) {
+      setchecksearch(true);
+    } else {
       setchecksearch(false);
     }
     sethandleSearch(e.target.value);
@@ -121,13 +124,18 @@ const Chat = () => {
             "Content-Type": "application/json", // or any other required headers
           },
         }
-        );
-        // sethandleSearch("");
-        setuserSearch(response.data.users);
-      } catch (err) {
-        console.log(err);
-      }
+      );
+      // sethandleSearch("");
+      setuserSearch(response.data.users);
+    } catch (err) {
+      console.log(err);
+    }
   };
+
+  // function call for api call for list of other user
+  useEffect(() => {
+    getUserChatData();
+  }, []);
   return (
     <>
       <Container xs={12} sm={12} sx={{ backgroundColor: "#E8E8E8" }}>
