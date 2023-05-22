@@ -63,14 +63,15 @@ const Nav = () => {
     handleCloseUserMenu();
     navigate(`${pageUrl}`);
   };
+  const id = JSON.parse(Cookies.get("user")).id;
 
   const fetchUser = async () => {
-    const id = JSON.parse(Cookies.get("user")).id;
-
     const { data } = await axios.get(
       `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/profile/profile-info?userId=${id}`
     );
     Cookies.set("user", JSON.stringify(data), { expires: 365 });
+
+    dispatch(UserActions.type(data.type));
   };
 
   const getUserFromCookies = () => {
@@ -101,7 +102,7 @@ const Nav = () => {
     };
 
     getUserData();
-  }, []);
+  }, [id]);
 
   return (
     <div className="nav-container p-3 flex justify-between bg-white">
@@ -135,7 +136,7 @@ const Nav = () => {
           </Typography>
         </Stack>
       </NavLink>
-    
+
       <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
         <IconButton
           size="large"
