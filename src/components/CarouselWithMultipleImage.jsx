@@ -8,7 +8,7 @@ const ImageCarousel1 = ({ images }) => {
   if (images.length === 0) images = [DummyImage];
   return (
     <Paper sx={{ height: "270px" }}>
-      {images === [] && (
+      {/* {images === [] && (
         <Carousel showArrows={false} dynamicHeight={false}>
           {images.map((image, index) => (
             <>
@@ -18,7 +18,7 @@ const ImageCarousel1 = ({ images }) => {
             </>
           ))}
         </Carousel>
-      )}
+      )} */}
       <Carousel showArrows={false} dynamicHeight={false}>
         {images.map((image, index) => (
           <>
@@ -48,7 +48,7 @@ export const MultipleImages0 = ({ images }) => {
 };
 
 const CarouselWithMultipleImage = (props) => {
-  const imageSets = [];
+  let imageSets = [];
   if (props.PartitionAddAvilableRoom) {
     for (let i = 0; i < props.PartitionAddAvilableRoom.length; i += 4) {
       imageSets.push(props.PartitionAddAvilableRoom.slice(i, i + 4));
@@ -60,6 +60,8 @@ const CarouselWithMultipleImage = (props) => {
     }
   }
 
+   imageSets = imageSets.reverse();
+
   return (
     <Stack sx={{ p: 2, my: 2, mx: 1 }} spacing={2}>
       {/* <Grid container justifyContent="center">
@@ -68,7 +70,7 @@ const CarouselWithMultipleImage = (props) => {
         showThumbs={false}
         showArrows={true}
         showStatus={false}
-        emulateTouch={true}
+        // emulateTouch={true}
         infiniteLoop={true}
         // renderArrowPrev={false}
         // renderArrowNext={false}
