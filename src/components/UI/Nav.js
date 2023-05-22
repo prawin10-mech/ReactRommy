@@ -108,7 +108,7 @@ const Nav = () => {
     };
 
     getUserData();
-  }, [id]);
+  }, []);
 
   return (
     <div className="nav-container p-3 flex justify-between bg-white">
