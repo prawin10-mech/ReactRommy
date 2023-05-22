@@ -87,7 +87,8 @@ const MyBookings = () => {
             width: "100%",
             height: "200px",
             padding: "10px",
-            borderRadius: "10px 10px 0 0",
+            overflow: "hidden",
+            borderRadius: "20px ",
             objectFit: "cover",
           }}
           image={
@@ -134,8 +135,12 @@ const MyBookings = () => {
   return (
     <div className="my-bookings-container">
       <TopBackground />
-      <Typography variant="h5">My Bookings</Typography>
-      <Typography variant="subtitle1">{myBookings.length} results</Typography>
+      <Typography variant="h5" align="center" fontWeight={900}>
+        My Bookings
+      </Typography>
+      <Typography variant="subtitle1" align="center">
+        {myBookings.length} results
+      </Typography>
       <Grid
         container
         spacing={3}

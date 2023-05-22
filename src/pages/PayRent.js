@@ -30,7 +30,7 @@ const PayRent = () => {
         "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad/stripe/create-pay-booking-checkout-session",
         {
           bookingId,
-          successUrl: "https://example.success",
+          successUrl: `http://localhost:3000/myBookings/aboutBooking/${bookingId}`,
           cancelUrl: "https://example.cancel",
         },
         { headers: { Authorization: token } }
@@ -62,13 +62,21 @@ const PayRent = () => {
   const payWithCashHandler = async (bookingId) => {
     try {
       setCashLoading(true);
-      const { data } = await axios.post(
-        "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad/pay-cash",
-        bookingId,
-        { headers: { Authorization: token } }
+      const confirmed = window.confirm(
+        "Please confirm that you want to pay cash to the landlord"
       );
 
-      console.log(data);
+      if (confirmed) {
+        const { data } = await axios.post(
+          "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad/pay-cash",
+          { bookingId },
+          { headers: { Authorization: token } }
+        );
+
+        navigate(`/myBookings/aboutBooking/${bookingId}`);
+
+        console.log(data);
+      }
     } catch (err) {
       console.log(err);
     } finally {
