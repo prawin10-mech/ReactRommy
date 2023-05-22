@@ -17,14 +17,10 @@ const MyBookings = () => {
 
   const fetchMyBookings = async () => {
     try {
-      const user = JSON.parse(Cookie.get("user"));
-      console.log(user.type);
       const { data } = await axios.get(
         "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
         { headers: { Authorization: token } }
       );
-      console.log(data);
-
       dispatch(UserActions.myBookings(data));
     } catch (error) {
       console.log(error);
@@ -106,7 +102,7 @@ const MyBookings = () => {
           <Typography variant="subtitle1">
             Location:{" "}
             <Typography component="span" sx={{ fontWeight: "700" }}>
-              {booking.ad.address.buildingName}
+              {booking.ad.address.location}
             </Typography>
           </Typography>
           <Typography variant="subtitle1">

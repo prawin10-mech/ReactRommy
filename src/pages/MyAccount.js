@@ -134,8 +134,10 @@ const MyAccount = () => {
                 alignItems: "center",
                 bgcolor: "#D9D9D9",
                 borderRadius: "15px",
+                cursor: "pointer",
                 mb: 2,
               }}
+              onClick={() => navigate("/myAds")}
             >
               <Box sx={{ display: "flex" }}>
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
