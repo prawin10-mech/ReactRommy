@@ -88,6 +88,15 @@ const AboutBooking = () => {
   return (
     <>
       <TopBackground />
+      {type === "landlord" && !property?.isPayed && (
+        <Grid sx={{ border: "1px solid blue", borderRadius: "10px" }}>
+          <Typography>
+            You will see the tenant information after you have accepted the
+            booking and he paid the rent.
+          </Typography>
+        </Grid>
+      )}
+
       <Grid container justifyContent="center" sx={{ my: 5 }}>
         <Grid item xs={12} md={8} lg={6}>
           <Typography

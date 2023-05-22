@@ -24,6 +24,7 @@ import Chat from "./pages/Chat";
 import SignUp from "./pages/SignUp";
 import AboutBooking from "./pages/AboutBooking";
 import PayRent from "./pages/PayRent";
+import MyAds from "./pages/MyAds";
 
 const App = () => {
   return (
@@ -46,6 +47,7 @@ const App = () => {
             path="/myBookings/aboutBooking/:id"
             element={<PrivateRoute Component={AboutBooking} />}
           />
+          <Route path="/myAds" element={<PrivateRoute Component={MyAds} />} />
           <Route
             path="/editProfile"
             element={<PrivateRoute Component={EditProfile} />}

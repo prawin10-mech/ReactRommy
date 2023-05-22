@@ -63,15 +63,20 @@ const Nav = () => {
     handleCloseUserMenu();
     navigate(`${pageUrl}`);
   };
-  const id = JSON.parse(Cookies.get("user")).id;
+  let id = null;
+  if (Cookies.get("user")) id = JSON.parse(Cookies.get("user")).id;
 
   const fetchUser = async () => {
-    const { data } = await axios.get(
-      `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/profile/profile-info?userId=${id}`
-    );
-    Cookies.set("user", JSON.stringify(data), { expires: 365 });
+    try {
+      const { data } = await axios.get(
+        `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/profile/profile-info?userId=${id}`
+      );
+      Cookies.set("user", JSON.stringify(data), { expires: 365 });
 
-    dispatch(UserActions.type(data.type));
+      dispatch(UserActions.type(data.type));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const getUserFromCookies = () => {
@@ -90,8 +95,9 @@ const Nav = () => {
       }
 
       const user = getUserFromCookies();
-      setUser(user);
+      console.log(user);
       if (user) {
+        setUser(user);
         dispatch(UserActions.lastName(user.lastName));
         dispatch(UserActions.country(user.country));
         dispatch(UserActions.gender(user.gender));
@@ -102,7 +108,7 @@ const Nav = () => {
     };
 
     getUserData();
-  }, [id]);
+  }, []);
 
   return (
     <div className="nav-container p-3 flex justify-between bg-white">
