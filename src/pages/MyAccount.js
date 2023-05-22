@@ -55,17 +55,24 @@ const MyAccount = () => {
               <Box
                 sx={{
                   width: 300,
-                  height: 300,
+                  height: 250,
                   borderRadius: "25px",
                   overflow: "hidden",
+                  boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
                 }}
               >
                 <img
                   src="https://wallpapercave.com/wp/wp2599594.jpg"
                   alt={`${user.firstName} profile`}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
                 />
               </Box>
             </Grid>
+
             <Grid item>
               <Typography variant="h6" fontWeight={900}>
                 {user.firstName} {user.lastName}

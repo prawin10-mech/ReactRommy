@@ -22,6 +22,8 @@ import MyAccount from "./pages/MyAccount";
 import ViewProfile from "./pages/ViewProfile";
 import Chat from "./pages/Chat";
 import SignUp from "./pages/SignUp";
+import AboutBooking from "./pages/AboutBooking";
+import PayRent from "./pages/PayRent";
 
 const App = () => {
   return (
@@ -41,6 +43,10 @@ const App = () => {
             element={<PrivateRoute Component={MyBookings} />}
           />
           <Route
+            path="/myBookings/aboutBooking/:id"
+            element={<PrivateRoute Component={AboutBooking} />}
+          />
+          <Route
             path="/editProfile"
             element={<PrivateRoute Component={EditProfile} />}
           />
@@ -54,6 +60,10 @@ const App = () => {
             element={<PrivateRoute Component={ViewProfile} />}
           />
           <Route path="/chat" element={<PrivateRoute Component={Chat} />} />
+          <Route
+            path="/bookings/property/pay-rent/:id"
+            element={<PrivateRoute Component={PayRent} />}
+          />
 
           {/* <Route path="/chat" element={<Chat />} /> */}
           <Route path="/allAvailableRooms" element={<AllRooms />} />

@@ -84,14 +84,17 @@ const Login = () => {
         "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/token",
         { email, password }
       );
-      if (response.status) {
-        const { data } = await axios.post(
+
+      console.log(response);
+      if (response.status === 200) {
+        const loginResponse = await axios.post(
           "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/login",
           { email, password, fcmToken: "123" }
         );
+
+        const { data } = loginResponse;
         Cookies.set("user", JSON.stringify(data), { expires: 365 });
-        localStorage.setItem("token", "bearer " + response.data.token);
-        toast.success("Login Successfully", toastOptions);
+        localStorage.setItem("token", `bearer ${response.data.token}`);
         dispatch(UserActions.isLoggedIn(true));
         dispatch(UserActions.firstName(data.firstName));
         dispatch(UserActions.lastName(data.lastName));
@@ -99,11 +102,15 @@ const Login = () => {
         dispatch(UserActions.fcmToken(data.fcmToken));
         dispatch(UserActions.gender(data.gender));
         dispatch(UserActions.country(data.country));
+        toast.success("Login Successfully", toastOptions);
         navigate("/");
+      } else {
+        throw new Error("Please enter valid credentials");
       }
-    } catch (err) {
-      toast.error("Please enter valid credentials", toastOptions);
-      console.log(err);
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || error.message;
+      toast.error(errorMessage, toastOptions);
+      console.log(error);
     } finally {
       setIsLoading(false);
     }

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { LoginActions } from "../../store/userLogin";
+import Cookies from "js-cookie";
 
 const Logout = () => {
   const dispatch = useDispatch();
@@ -14,7 +15,8 @@ const Logout = () => {
         color="error"
         fullWidth
         onClick={() => {
-          navigate("/login");
+          Cookies.remove("user");
+          navigate("/");
           localStorage.removeItem("token");
           dispatch(LoginActions.isLoggedIn(false));
         }}
