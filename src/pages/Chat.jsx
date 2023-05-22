@@ -13,72 +13,105 @@ import {
   IconButton,
 } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import axios from "axios";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import EmojiPicker from "emoji-picker-react";
 import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
+import LIstofChatUser from "../components/Chat/LIstofChatUser";
+import SearchItem from "../components/Chat/SearchItem";
+import ChatBody from "../components/Chat/ChatBody";
+
+
+const initialState = {
+  name: "",
+  val: "",
+  senders: "",
+  senderfull: "",
+  
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "UPDATE_FIELD":
+      return { ...state, ...action.field };
+    case "RESET_FIELDS":
+      return initialState;
+    default:
+      return state;
+  }
+};
+
 
 const Chat = () => {
   const [selectedChat, setselectedChat] = useState([]);
+  const [reciver, setreciver] = useState({
+    userDetails:"",
+    ChatId:""
+  });
   const [openEmoji, setopenEmoji] = useState(false);
+  const [checksearch, setchecksearch] = useState(false);
+  const [handleSearch, sethandleSearch] = useState('');
   const [userSearch, setuserSearch] = useState([]);
+  const [listOfChatUser1, setlistOfChatUser] = useState([]);
   const [Chat, setChat] = useState([]);
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDYzMjZiNTNjNTgzMzY1NDM3YjVlZTciLCJuYW1lIjoiR2h1bGFtIiwiZW1haSI6ImdodWxhbUBnbWFpbC5jb20iLCJwaWMiOiJodHRwczovL3Bicy50d2ltZy5jb20vcHJvZmlsZV9pbWFnZXMvOTE3NjMxOTgzMzcwNDYxMTg0L2JYUWpwa0RlXzQwMHg0MDAuanBnIiwiaWF0IjoxNjg0NDAwMzE4LCJleHAiOjE2ODQ0ODY3MTh9.vay_mYKQcflVWrUmUdbm1RqGgW3vU-Mb2guHKuYu6Hg";
-  const config = {
-    headers: {
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  // const getUserData=async()=>{
-  //     const { Response } = await axios.post(
-  //       "http://192.168.0.225:5005/api/chat",
-  //       {
-  //         userid: "64622835b8e5cd9a351b093b",
-  //       },
-  //       config
-  //     );
-  // }
+    const [state, dispatch] = useReducer(reducer, initialState);
 
-  const createuserChat = async () => {
+  const token =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDYzMjZiNTNjNTgzMzY1NDM3YjVlZTciLCJuYW1lIjoiR2h1bGFtIiwiZW1haSI6ImdodWxhbUBnbWFpbC5jb20iLCJwaWMiOiJodHRwczovL3Bicy50d2ltZy5jb20vcHJvZmlsZV9pbWFnZXMvOTE3NjMxOTgzMzcwNDYxMTg0L2JYUWpwa0RlXzQwMHg0MDAuanBnIiwiaWF0IjoxNjg0NjcyMjc0LCJleHAiOjE3MTYyMDgyNzR9.ZExDiBb0Vmv27JpgQunZFHwTV5VuZrOgrDDaL6fRU98";
+  const createuserChat = async (val) => {
+    sethandleSearch("")
     try {
-      const response = await axios.post("http://192.168.0.225:5005/api/chat", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json", // or any other required headers
-        },
-      });
-      console.log("Response", response);
-    } catch (err) {
+      const response = await axios
+        .post(
+          "http://192.168.0.225:5005/api/chat",
+
+          {
+            userid: val,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json", // or any other required headers
+            },
+          }
+        )
+        .then((val) => {
+            setchecksearch(false);
+        
+          setlistOfChatUser([val.data, ...listOfChatUser1]);
+        });
+    }  catch (err) {
       console.log(err);
     }
   };
   const getUserChatData = async (id) => {
     try {
-      const response = await axios.get(
-        "http://192.168.0.225:5005/api/chat",
-        {
+      const response = await axios
+        .get("http://192.168.0.225:5005/api/chat", {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json", // or any other required headers
           },
-        },
-        {
-          userid: id,
-        }
-      );
-      console.log("Response getUserChatData", response);
+        })
+        .then((val) => {
+          setlistOfChatUser(val.data);
+        });
     } catch (err) {
       console.log(err);
     }
   };
   useEffect(() => {
     getUserChatData();
-  });
+  },[]);
   const callapi = async (e) => {
+    if (e.target.value.length>0){
+      setchecksearch(true)
+    }else{
+      setchecksearch(false);
+    }
+    sethandleSearch(e.target.value);
     try {
       const response = await axios.get(
         `http://192.168.0.225:5005/api/user?search=${e.target.value}`,
@@ -88,12 +121,12 @@ const Chat = () => {
             "Content-Type": "application/json", // or any other required headers
           },
         }
-      );
-      setuserSearch(response.data.users);
-      console.log("Response getcahat", response.data.users);
-    } catch (err) {
-      console.log(err);
-    }
+        );
+        // sethandleSearch("");
+        setuserSearch(response.data.users);
+      } catch (err) {
+        console.log(err);
+      }
   };
   return (
     <>
@@ -125,6 +158,8 @@ const Chat = () => {
                 fullWidth
                 id="input-with-icon-textfield"
                 label="Search"
+                name="handleSearch"
+                value={handleSearch}
                 onChange={(e) => callapi(e)}
                 variant="outlined"
               />
@@ -139,51 +174,18 @@ const Chat = () => {
                   //  backgroundColor: "#f4544f"
                 }}
               >
-                {userSearch1 &&
-                  userSearch1.map((val, id) => (
-                    <>
-                      <Paper
-                        direction="row"
-                        spacing={2}
-                        sx={{
-                          pt: 1,
-                          pl: 1,
-                          my: 1,
-                          mr: 4,
-                          //   border: "1px solid blue",
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                        onClick={() => createuserChat(val._id)}
-                      >
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="/static/images/avatar/1.jpg"
-                          name="OP"
-                          sx={{
-                            pl: 2,
-                            // borderBottom: "1px solid #ee00ed",
-                          }}
-                        />
-                        <Box
-                          component="div"
-                          sx={{
-                            textOverflow: "ellipsis",
-                            width: "100%",
-                            px: 1,
-                            // borderBottom: "1px solid #ee00ed",
-                          }}
-                        >
-                          <Typography variant="h5">{val.name}</Typography>
-                          <Typography variant="subtitle2">
-                            Lorem Ipsum is simply dummy text
-                          </Typography>
-                        </Box>
-                      </Paper>
-                    </>
-                  ))}
+                {checksearch === true ? (
+                  <SearchItem
+                    userSearch={userSearch}
+                    createuserChat={createuserChat}
+                  />
+                ) : (
+                  <LIstofChatUser
+                    listOfChatUser1={listOfChatUser1}
+                    dispatch={dispatch}
+                    setreciver={setreciver}
+                  />
+                )}
               </Box>
             </Box>
           </Grid>
@@ -202,7 +204,7 @@ const Chat = () => {
                 <EmojiPicker />
               </Box>
             )}
-            <Box>
+            {/* <Box>
               <Box
                 sx={{
                   display: "flex",
@@ -278,7 +280,8 @@ const Chat = () => {
                   <SendRoundedIcon />
                 </IconButton>
               </Paper>
-            </Box>
+            </Box> */}
+            <ChatBody state1={state} reciver={reciver} />
           </Grid>
         </Grid>
       </Container>
@@ -287,44 +290,4 @@ const Chat = () => {
 };
 
 export default Chat;
-const userSearch1 = [
-  { name: "ghulam", pic: "acn.jpeg", msg: "sdfghjkxcvbn" },
-  { name: "ghulam", pic: "acn.jpeg", msg: "sdfghjkxcvbn" },
-  { name: "ghulam", pic: "acn.jpeg", msg: "sdfghjkxcvbn" },
-  { name: "ghulam", pic: "acn.jpeg", msg: "sdfghjkxcvbn" },
-  { name: "ghulam", pic: "acn.jpeg", msg: "sdfghjkxcvbn" },
-  { name: "ghulam", pic: "acn.jpeg", msg: "sdfghjkxcvbn" },
-  { name: "ghulam", pic: "acn.jpeg", msg: "sdfghjkxcvbn" },
-  { name: "ghulam", pic: "acn.jpeg", msg: "sdfghjkxcvbn" },
-  { name: "ghulam", pic: "acn.jpeg", msg: "sdfghjkxcvbn" },
-  { name: "ghulam", pic: "acn.jpeg", msg: "sdfghjkxcvbn" },
-  { name: "ghulam", pic: "acn.jpeg", msg: "sdfghjkxcvbn" },
-  { name: "ghulam", pic: "acn.jpeg", msg: "sdfghjkxcvbn" },
-  { name: "ghulam", pic: "acn.jpeg", msg: "sdfghjkxcvbn" },
-  { name: "ghulam", pic: "acn.jpeg", msg: "sdfghjkxcvbn" },
-  { name: "ghulam", pic: "acn.jpeg", msg: "sdfghjkxcvbn" },
-];
 
-const chatdata = [
-  { message: "hello test" },
-  { message: "hello test" },
-  { message: "hello test" },
-  { message: "hello test" },
-  { message: "hello test" },
-  {
-    message:
-      "hello test hello test hello test hello test hello test hello test",
-  },
-  { message: "hello test" },
-  { message: "hello test" },
-  { message: "hello test" },
-  { message: "hello test" },
-  {
-    message:
-      "hello test hello test hello test hello test hello test hello test",
-  },
-  {
-    message:
-      "hello test hello test hello test hello test hello test hello test",
-  },
-];
