@@ -25,6 +25,7 @@ const pageNavigate = ["aboutUs", "contactUs", "", "postProperty"];
 const Nav = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   const [activeLink, setActiveLink] = useState("ourServices");
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -64,7 +65,7 @@ const Nav = () => {
     navigate(`${pageUrl}`);
   };
   let id = null;
-  if (Cookies.get("user")) id = JSON.parse(Cookies.get("user")).id;
+  if (token && Cookies.get("user")) id = JSON.parse(Cookies.get("user")).id;
 
   const fetchUser = async () => {
     try {
@@ -88,14 +89,16 @@ const Nav = () => {
   };
 
   useEffect(() => {
-    fetchUser();
+    if (token) {
+      fetchUser();
+    }
+
     const getUserData = async () => {
       if (localStorage.getItem("token")) {
         dispatch(UserActions.isLoggedIn(true));
       }
 
       const user = getUserFromCookies();
-      console.log(user);
       if (user) {
         setUser(user);
         dispatch(UserActions.lastName(user.lastName));

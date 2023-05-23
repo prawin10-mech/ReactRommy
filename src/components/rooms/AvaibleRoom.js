@@ -8,7 +8,6 @@ import dummy from "../../assets/demo.jpg";
 
 const AvailableRoom = memo(({ room }) => {
   const [liked, setLiked] = useState(false);
-  console.log(room);
   const images = room.images.length > 0 ? room.images : [dummy] || [dummy];
   // const images = room.images || [];
 

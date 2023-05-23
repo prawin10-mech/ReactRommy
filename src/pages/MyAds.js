@@ -1,25 +1,39 @@
-import { Button, CardMedia, Grid, Typography } from "@mui/material";
+import {
+  Button,
+  CardMedia,
+  CircularProgress,
+  Grid,
+  Typography,
+} from "@mui/material";
 import React, { useState, useEffect } from "react";
 import TopBackground from "../components/postPropertyComponents/TopBackground";
 import BottomBackground from "../components/postPropertyComponents/BottomBackground";
 import Cookies from "js-cookie";
 import axios from "axios";
 import DummyImage from "../assets/demo.jpg";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 const MyAds = () => {
   const type = JSON.parse(Cookies.get("user")).type;
   const token = localStorage.getItem("token");
   const [myAds, setMyAds] = useState([]);
-  const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   const fetchMyAds = async () => {
+    setIsLoading(true);
     const searchType = type === "landlord" ? "property" : "roommate";
-    const { data } = await axios.get(
-      `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/${searchType}-ad/my-ads`,
-      { headers: { Authorization: token } }
-    );
-    setMyAds(data);
+    try {
+      const { data } = await axios.get(
+        `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/${searchType}-ad/my-ads`,
+        { headers: { Authorization: token } }
+      );
+      setMyAds(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   console.log(myAds);
@@ -75,9 +89,15 @@ const MyAds = () => {
         </Grid>
 
         <Grid container gap={2}>
-          <Grid sx={{color:"purple"}}>Available {myAd.quantity}</Grid>
-          <Grid sx={{color:"orange"}}> Taken {myAd.quantityTaken}</Grid>
-          <Button variant="contained" sx={{borderRadius:"15px"}} onClick={() => navigate(`/rooms/view-room/${myAd.id}`)}>All Details</Button>
+          <Grid sx={{ color: "purple" }}>Available {myAd.quantity}</Grid>
+          <Grid sx={{ color: "orange" }}> Taken {myAd.quantityTaken}</Grid>
+          <Button
+            variant="contained"
+            sx={{ borderRadius: "15px" }}
+            onClick={() => navigate(`/rooms/view-room/${myAd.id}`)}
+          >
+            All Details
+          </Button>
         </Grid>
       </Grid>
     </Grid>
@@ -86,25 +106,37 @@ const MyAds = () => {
   useEffect(() => {
     fetchMyAds();
   }, []);
+
   return (
     <Grid>
       <TopBackground />
-      
-        <Typography variant="h5" align="center" fontWeight={900}>My Ads</Typography>
-    
+      <Typography variant="h5" align="center" fontWeight={900}>
+        My Ads
+      </Typography>
       <Typography variant="subtitle1" align="center">
         {myAds.length} results
       </Typography>
-      <Grid
-        container
-        spacing={3}
-        justifyContent="center"
-        alignItems="center"
-        gap={4}
-        sx={{ margin: "auto", maxWidth: 1200, mb: 5 }}
-      >
-        {myAdsData}
-      </Grid>
+      {isLoading ? (
+        <Grid
+          container
+          justifyContent="center"
+          alignItems="center"
+          sx={{ height: 400 }}
+        >
+          <CircularProgress />
+        </Grid>
+      ) : (
+        <Grid
+          container
+          spacing={3}
+          justifyContent="center"
+          alignItems="center"
+          gap={4}
+          sx={{ margin: "auto", maxWidth: 1200, mb: 5 }}
+        >
+          {myAdsData}
+        </Grid>
+      )}
       <BottomBackground />
     </Grid>
   );

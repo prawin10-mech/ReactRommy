@@ -26,7 +26,6 @@ const OurServices = () => {
       `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available`,
       { countryCode: "AE" }
     );
-    console.log("0000000000000000", data);
     dispatch(SearchActions.availableRooms(data));
     axios
       .post(
@@ -41,23 +40,23 @@ const OurServices = () => {
       });
   };
 
-  const getPartitionRoomData = () => {
-    const { data } = axios.post(
+  const getPartitionRoomData = async () => {
+    const { data } = await axios.post(
       "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/roommate-ad/available",
       { countryCode: "AE" }
     );
     dispatch(SearchActions.availableRooms(data));
     setPartitionAddAvilableRoom(data);
-    console.log("00000000000555500000", data);
   };
 
   const fetchMyBookings = async () => {
-    const { data } = await axios.get(
-      "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
-      { headers: { Authorization: token } }
-    );
-    dispatch(UserActions.myBookings(data));
-    
+    if (token) {
+      const { data } = await axios.get(
+        "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
+        { headers: { Authorization: token } }
+      );
+      dispatch(UserActions.myBookings(data));
+    }
   };
 
   useEffect(() => {
