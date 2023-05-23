@@ -424,17 +424,15 @@ const ViewRoom = () => {
             </Grid>
           </Grid>
         </Box>
-        {user?.type === "roommate" && (
-          <Grid item sx={{ display: "flex", justifyContent: "center" }}>
-            <Button
-              variant={"contained"}
-              color="primary"
-              onClick={handleBookRoom}
-            >
-              Book now
-            </Button>
-          </Grid>
-        )}
+        <Grid item sx={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            variant={"contained"}
+            color="primary"
+            onClick={handleBookRoom}
+          >
+            Book now
+          </Button>
+        </Grid>
 
         <ToastContainer />
       </Box>
