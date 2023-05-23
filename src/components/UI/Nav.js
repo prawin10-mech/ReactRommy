@@ -82,7 +82,7 @@ const Nav = () => {
 
   const getUserFromCookies = () => {
     const user = Cookies.get("user");
-    if (user) {
+    if (token && user) {
       return JSON.parse(user);
     }
     return null;
@@ -99,7 +99,7 @@ const Nav = () => {
       }
 
       const user = getUserFromCookies();
-      if (user) {
+      if (token && user) {
         setUser(user);
         dispatch(UserActions.lastName(user.lastName));
         dispatch(UserActions.country(user.country));
