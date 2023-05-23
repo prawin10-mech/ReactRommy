@@ -60,7 +60,7 @@ const CarouselWithMultipleImage = (props) => {
     }
   }
 
-   imageSets = imageSets.reverse();
+  imageSets = imageSets.reverse();
 
   return (
     <Stack sx={{ p: 2, my: 2, mx: 1 }} spacing={2}>
@@ -76,7 +76,7 @@ const CarouselWithMultipleImage = (props) => {
         // renderArrowNext={false}
       >
         {imageSets.map((imageSet, index) => (
-          <div key={index}>
+          <Grid key={index}>
             <Grid container spacing={2}>
               {imageSet.map((value, id) =>
                 Object.entries(value).map(([key, val]) => {
@@ -92,7 +92,7 @@ const CarouselWithMultipleImage = (props) => {
                 })
               )}
             </Grid>
-          </div>
+          </Grid>
         ))}
       </Carousel>
     </Stack>

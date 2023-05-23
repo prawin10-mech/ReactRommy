@@ -15,7 +15,7 @@ const Logout = () => {
         color="error"
         fullWidth
         onClick={() => {
-          Cookies.remove("user");
+          Cookies.remove("user", { domain: "localhost" });
           navigate("/");
           localStorage.removeItem("token");
           dispatch(LoginActions.isLoggedIn(false));
