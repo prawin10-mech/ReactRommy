@@ -146,7 +146,7 @@ const MyAccount = () => {
                   </Avatar>
                 </Box>
 
-                <Box>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Typography>My Ads</Typography>
                 </Box>
               </Box>
@@ -184,7 +184,7 @@ const MyAccount = () => {
                   </Avatar>
                 </Box>
 
-                <Box>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Typography>My Bookings</Typography>
                 </Box>
               </Box>
@@ -218,7 +218,7 @@ const MyAccount = () => {
                   </Avatar>
                 </Box>
 
-                <Box>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Typography>About</Typography>
                 </Box>
               </Box>

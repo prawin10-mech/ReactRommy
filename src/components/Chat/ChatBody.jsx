@@ -18,6 +18,7 @@ import AttachmentIcon from "@mui/icons-material/Attachment";
 import EmojiPicker from "emoji-picker-react";
 import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
 import axios from 'axios';
+import io from "socket.io-client"
 import {
   getSender,
   getSenderNew,
@@ -27,10 +28,14 @@ import {
   isSameUser,
 } from "./ChatLogic";
 
+// const EENPOINT = "http://192.168.0.225:5005";
+// let socket, selectChatCpmpair;
+
 
 const ChatBody = ({reciver}) => {
   
   const [openEmoji, setopenEmoji] = useState(false);
+  const [socketConnected, setsocketConnected] = useState(false);
   const [chatData, setchatData] = useState([]);
   const [newMessage, setnewMessage] = useState('');
 
@@ -58,6 +63,7 @@ const ChatBody = ({reciver}) => {
           .then((val) => {
             setchatData([...val.data]);
             console.log(val.data);
+            // socket.emit("join Chat", reciver.ChatId);
             // setchatData([...chatData,...val.data]);
           });
       } catch (err) {
@@ -67,7 +73,30 @@ const ChatBody = ({reciver}) => {
 
   useEffect(() => {
     getChatData()
+    // selectChatCpmpair= reciver.userDetails
   }, [reciver]);
+
+  // useEffect(() => {
+  //   socket = io(EENPOINT);
+  //   socket.emit("setup", data);
+  //   socket.on("connected", () => setsocketConnected(true));
+  //   // socket = io("http://192.168.0.225:5005");
+  //   // socket = io(EENPOINT);
+  // }, []);
+  // useEffect(() => {
+   
+  //   socket.on("message recived", (newMessageRecived) => {
+  //     if(!selectChatCpmpair || selectChatCpmpair._id !== newMessageRecived.chat._id){
+  //       // 
+  //     }
+  //     else{
+
+  //     }
+
+  //   });
+    
+  // }, []);
+  
 
   const sendchatdata = async(event)=>{
     if(event.key==="ENTER" && newMessage){

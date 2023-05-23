@@ -15,6 +15,7 @@ import axios from "axios";
 import AdvancedSearch from "../components/rooms/AdvancedSearch";
 import { useSelector, useDispatch } from "react-redux";
 import { UserActions } from "../store/User";
+import { SearchActions } from "../store/Search";
 
 const SecondPage = () => {
   const city = useSelector((state) => state.search.location);
@@ -24,15 +25,28 @@ const SecondPage = () => {
   const token = localStorage.getItem("token");
 
   const fetchMyBookings = async () => {
-    const { data } = await axios.get(
-      "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
-      { headers: { Authorization: token } }
-    );
-    dispatch(UserActions.myBookings(data));
+    if (token) {
+      const { data } = await axios.get(
+        "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
+        { headers: { Authorization: token } }
+      );
+      dispatch(UserActions.myBookings(data));
+    }
   };
+
+  const getPartitionRoomData = async () => {
+    const { data } = await axios.post(
+      "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available",
+      { countryCode: "AE" }
+    );
+    dispatch(SearchActions.availableRooms(data));
+  };
+
   useEffect(() => {
     fetchMyBookings();
-  });
+    getPartitionRoomData();
+  }, []);
+
   return (
     <>
       <Box
@@ -53,7 +67,6 @@ const SecondPage = () => {
       <Box
         sx={{
           width: "100%",
-          // backgroundColor: "#00f0f0",
           display: "flex",
           justifyContent: "center",
         }}
@@ -167,11 +180,6 @@ const SecondPage = () => {
                   />
                 </Box>
               </Box>
-              {/* <Box>
-                <Grid container>
-                  <Grid item></Grid>
-                </Grid>
-              </Box> */}
             </Box>
             <Box>
               <Grid container>

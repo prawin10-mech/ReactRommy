@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TopBackground from "../components/postPropertyComponents/TopBackground";
 import BottomBackground from "../components/postPropertyComponents/BottomBackground";
-import { Grid, Typography, CardMedia } from "@mui/material";
+import { Grid, Typography, CardMedia, CircularProgress } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { UserActions } from "../store/User";
 import DummyImage from "../assets/demo.jpg";
@@ -14,9 +14,11 @@ const MyBookings = () => {
   const navigate = useNavigate();
   const myBookings = useSelector((state) => state.user.myBookings);
   const token = localStorage.getItem("token");
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchMyBookings = async () => {
     try {
+      setIsLoading(true);
       const { data } = await axios.get(
         "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
         { headers: { Authorization: token } }
@@ -24,6 +26,8 @@ const MyBookings = () => {
       dispatch(UserActions.myBookings(data));
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -137,16 +141,27 @@ const MyBookings = () => {
       <Typography variant="subtitle1" align="center">
         {myBookings.length} results
       </Typography>
-      <Grid
-        container
-        spacing={3}
-        justifyContent="center"
-        alignItems="center"
-        gap={4}
-        sx={{ margin: "auto", maxWidth: 1200, mb: 5 }}
-      >
-        {myBookingData}
-      </Grid>
+      {isLoading ? (
+        <Grid
+          container
+          justifyContent="center"
+          alignItems="center"
+          sx={{ height: 400 }}
+        >
+          <CircularProgress />
+        </Grid>
+      ) : (
+        <Grid
+          container
+          spacing={3}
+          justifyContent="center"
+          alignItems="center"
+          gap={4}
+          sx={{ margin: "auto", maxWidth: 1200, mb: 5 }}
+        >
+          {myBookingData}
+        </Grid>
+      )}
       <BottomBackground />
     </div>
   );
