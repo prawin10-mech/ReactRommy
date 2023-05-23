@@ -8,6 +8,7 @@ import AddWithCarousel from "../components/Card/CardForOurServics";
 import MainBgImg from "../assets/mainBackground.jpg";
 import axios from "axios";
 import Footer from "../components/Footer";
+import Cookies from "js-cookie";
 
 import { SearchActions } from "../store/Search";
 import { useDispatch, useSelector } from "react-redux";
@@ -59,10 +60,27 @@ const OurServices = () => {
     }
   };
 
+  let id = null;
+  if (token && Cookies.get("user")) id = JSON.parse(Cookies.get("user")).id;
+
+  const fetchUser = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/profile/profile-info?userId=${id}`
+      );
+      Cookies.set("user", JSON.stringify(data), { expires: 365 });
+
+      dispatch(UserActions.type(data.type));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     getAffordableRoomData();
     getPartitionRoomData();
     fetchMyBookings();
+    fetchUser();
   }, []);
 
   return (

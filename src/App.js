@@ -25,6 +25,7 @@ import SignUp from "./pages/SignUp";
 import AboutBooking from "./pages/AboutBooking";
 import PayRent from "./pages/PayRent";
 import MyAds from "./pages/MyAds";
+import StripePaymentCancel from "./pages/StripePaymentCancel";
 
 const App = () => {
   return (
@@ -62,6 +63,10 @@ const App = () => {
             element={<PrivateRoute Component={ViewProfile} />}
           />
           <Route path="/chat" element={<PrivateRoute Component={Chat} />} />
+          <Route
+            path="/payment/cancel"
+            element={<PrivateRoute Component={StripePaymentCancel} />}
+          />
           <Route
             path="/bookings/property/pay-rent/:id"
             element={<PrivateRoute Component={PayRent} />}

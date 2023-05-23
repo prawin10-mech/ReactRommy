@@ -31,6 +31,7 @@ const Nav = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [user, setUser] = useState({});
+  const [isUpdated, setIsUpdated] = useState(false);
   const settings = ["Edit Profile", "Home", "My Account", "Logout"];
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
@@ -55,6 +56,7 @@ const Nav = () => {
   };
 
   const handleLogout = () => {
+    Cookies.remove("user");
     dispatch(UserActions.isLoggedIn(false));
     localStorage.removeItem("token");
     setAnchorElUser(null);
