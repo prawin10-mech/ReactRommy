@@ -30,7 +30,11 @@ const ViewRoom = () => {
   const { id } = useParams();
   const [value, setValue] = useState("Monthly");
   const [preferredRentType, setPreferredRentType] = useState("Monthly");
-  const user = JSON.parse(Cookies.get("user"));
+  let user = Cookies.get("user");
+  if (user) {
+    user = JSON.parse(user);
+  }
+
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const rooms = useSelector((state) => state.search.availableRooms);
@@ -71,50 +75,51 @@ const ViewRoom = () => {
     setRoom(data.find((room) => room.id === id));
   };
 
-  useEffect(() => {
-    getPartitionRoomData();
-  }, []);
-
   const handleBookRoom = async () => {
-    if (!token) {
+    if (!token && !user) {
       navigate("/login");
-    }
-    try {
-      const obj = {
-        quantity: totalDuration,
-        adId: room._id,
-        rentType: preferredRentType,
-        checkIn: selectedDate,
-        checkOut: checkOutDate,
-      };
+    } else {
+      try {
+        const obj = {
+          quantity: totalDuration,
+          adId: room._id,
+          rentType: preferredRentType,
+          checkIn: selectedDate,
+          checkOut: checkOutDate,
+        };
 
-      const {
-        data,
-      } = await axios.post(
-        "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
-        obj,
-        { headers: { Authorization: token } }
-      );
-      if (data) {
-        toast.success(
-          "Property booked successfully please wait until it confirms"
+        const {
+          data,
+        } = await axios.post(
+          "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
+          obj,
+          { headers: { Authorization: token } }
         );
-      } else {
-        toast.error(
-          "You have already booked this AD. Please check my bookings",
-          toastOptions
-        );
-      }
-    } catch (err) {
-      console.log(err);
-      if (err.response.status === 409) {
-        toast.error(
-          "You have already booked this AD. Please check my bookings",
-          toastOptions
-        );
+        if (data) {
+          toast.success(
+            "Property booked successfully please wait until it confirms"
+          );
+        } else {
+          toast.error(
+            "You have already booked this AD. Please check my bookings",
+            toastOptions
+          );
+        }
+      } catch (err) {
+        console.log(err);
+        if (err.response.status === 409) {
+          toast.error(
+            "You have already booked this AD. Please check my bookings",
+            toastOptions
+          );
+        }
       }
     }
   };
+
+  useEffect(() => {
+    getPartitionRoomData();
+  }, []);
 
   return (
     <>
@@ -323,7 +328,7 @@ const ViewRoom = () => {
           </Grid>
         </Box>
 
-        {user.type === "roommate" && (
+        {user?.type === "roommate" && (
           <Box sx={{ mt: 5 }}>
             <Typography fontWeight={700} fontSize={"1.3rem"} mb={2}>
               Date
@@ -419,15 +424,17 @@ const ViewRoom = () => {
             </Grid>
           </Grid>
         </Box>
-        <Grid item sx={{ display: "flex", justifyContent: "center" }}>
-          <Button
-            variant={"contained"}
-            color="primary"
-            onClick={handleBookRoom}
-          >
-            Book now
-          </Button>
-        </Grid>
+        {user?.type === "roommate" && (
+          <Grid item sx={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              variant={"contained"}
+              color="primary"
+              onClick={handleBookRoom}
+            >
+              Book now
+            </Button>
+          </Grid>
+        )}
 
         <ToastContainer />
       </Box>
