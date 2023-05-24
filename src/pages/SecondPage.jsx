@@ -33,9 +33,10 @@ const SecondPage = () => {
   const dispatch = useDispatch();
   const [locationData, setLocationData] = useState([]);
   const token = localStorage.getItem("token");
+  const tokenExpiration = localStorage.getItem("tokenExpiration");
 
   const fetchMyBookings = async () => {
-    if (token) {
+    if (token && tokenExpiration && Date.now() < parseInt(tokenExpiration)) {
       const { data } = await axios.get(
         "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
         { headers: { Authorization: token } }

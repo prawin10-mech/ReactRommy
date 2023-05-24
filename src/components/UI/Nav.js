@@ -26,6 +26,7 @@ const Nav = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const tokenExpiration = localStorage.getItem("tokenExpiration");
 
   const [activeLink, setActiveLink] = useState("ourServices");
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -67,7 +68,13 @@ const Nav = () => {
     navigate(`${pageUrl}`);
   };
   let id = null;
-  if (token && Cookies.get("user")) id = JSON.parse(Cookies.get("user")).id;
+  if (
+    token &&
+    tokenExpiration &&
+    Date.now() < parseInt(tokenExpiration) &&
+    Cookies.get("user")
+  )
+    id = JSON.parse(Cookies.get("user")).id;
 
   const fetchUser = async () => {
     try {
@@ -84,14 +91,14 @@ const Nav = () => {
 
   const getUserFromCookies = () => {
     const user = Cookies.get("user");
-    if (token && user) {
+    if (token && Date.now() < parseInt(tokenExpiration) && user) {
       return JSON.parse(user);
     }
     return null;
   };
 
   useEffect(() => {
-    if (token) {
+    if (token && Date.now() < parseInt(tokenExpiration)) {
       fetchUser();
     }
 
@@ -101,7 +108,7 @@ const Nav = () => {
       }
 
       const user = getUserFromCookies();
-      if (token && user) {
+      if (token && user && Date.now() < parseInt(tokenExpiration)) {
         setUser(user);
         dispatch(UserActions.lastName(user.lastName));
         dispatch(UserActions.country(user.country));
@@ -276,13 +283,15 @@ const Nav = () => {
           Post Property
         </Button>
       </Stack>
-
-      {!isLoggedIn && (
+      {!isLoggedIn ||
+      !token ||
+      !tokenExpiration ||
+      Date.now() >= parseInt(tokenExpiration) ? (
         <Stack
           direction="row"
           spacing={2}
           alignItems="center"
-          justifyContent={"center"}
+          justifyContent="center"
         >
           <Button
             variant="contained"
@@ -325,8 +334,7 @@ const Nav = () => {
             Sign Up
           </Button>
         </Stack>
-      )}
-      {isLoggedIn && (
+      ) : (
         <Box sx={{ flexGrow: 0, display: "flex" }}>
           <Tooltip title="Open settings">
             <IconButton
@@ -381,7 +389,6 @@ const Nav = () => {
                     border: "2px solid purple",
                   }}
                 />
-
                 <Typography sx={{ fontWeight: "700" }}>
                   {user?.firstName} {user?.lastName}
                 </Typography>

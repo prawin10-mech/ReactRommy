@@ -24,6 +24,7 @@ const OurServices = () => {
   const roomType = useSelector((state) => state.room.roomsType);
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
+  const tokenExpiration = localStorage.getItem("tokenExpiration");
 
   const getAffordableRoomData = async () => {
     const { data } = await axios.post(
@@ -43,17 +44,33 @@ const OurServices = () => {
   };
 
   const fetchMyBookings = async () => {
-    if (token) {
-      const { data } = await axios.get(
-        "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
-        { headers: { Authorization: token } }
-      );
-      dispatch(UserActions.myBookings(data));
+    try {
+      if (token && tokenExpiration) {
+        if (Date.now() < parseInt(tokenExpiration)) {
+          const { data } = await axios.get(
+            "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
+            { headers: { Authorization: token } }
+          );
+          dispatch(UserActions.myBookings(data));
+        } else {
+          localStorage.removeItem("token");
+          localStorage.removeItem("tokenExpiration");
+          Cookies.remove("user");
+        }
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
   let id = null;
-  if (token && Cookies.get("user")) id = JSON.parse(Cookies.get("user")).id;
+  if (
+    token &&
+    tokenExpiration &&
+    Date.now() < parseInt(tokenExpiration) &&
+    Cookies.get("user")
+  )
+    id = JSON.parse(Cookies.get("user")).id;
 
   const fetchUser = async () => {
     try {
