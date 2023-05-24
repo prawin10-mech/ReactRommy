@@ -88,8 +88,6 @@ export default function SignUp() {
   const handleVaidation = () => {
     const emailRegex = /^\S+@\S+\.\S+$/;
     const mobileRegex = /^\d{10}$/;
-    const passwordRegex =
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])[a-zA-Z\d@#$%^&+=]{8,}$/;
 
     if (firstName.length <= 0) {
       toast.error("Please enter first name", toastOptions);
@@ -132,15 +130,6 @@ export default function SignUp() {
       toast.error("Please enter password and confirm password", toastOptions);
       return false;
     }
-    if (!passwordRegex.test(password)) {
-      console.log(password);
-      console.log(passwordRegex.test(password));
-      toast.error(
-        "Password must contains a number, a capital letter, a small letter, and a symbol",
-        toastOptions
-      );
-      return false;
-    }
 
     if (password !== confirmPassword) {
       toast.error("Password and Confirm Password must be same", toastOptions);
@@ -154,7 +143,7 @@ export default function SignUp() {
       toast.error("Please enter phone number", toastOptions);
       return false;
     }
-    if (mobileRegex.test(phone)) {
+    if (!mobileRegex.test(phone)) {
       toast.error("Please enter Valid phone number", toastOptions);
       return false;
     }
