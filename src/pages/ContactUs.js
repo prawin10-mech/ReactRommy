@@ -90,18 +90,23 @@ const ContactUs = () => {
      <Grid
        container
        spacing={2}
-       sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+       sx={{
+         display: "flex",
+         flexDirection: "row",
+         alignItems: "center",
+         justifyContent: "center",
+       }}
      >
        <Grid item xs={12} sm={12} md={6} sx={{ my: { md: "1%" } }}>
          <Paper sx={{ backgroundColor: "#E6E6E6" }}>
            <ContactUsText />
          </Paper>
        </Grid>
-       <Grid item xs={12} sm={12} md={6} sx={{ my: { md: "1%" } }}>
-         {/* <Paper> */}
+       {/* <Grid item xs={12} sm={12} md={6} sx={{ my: { md: "1%" } }}>
+        
          <ContactUsForm />
-         {/* </Paper> */}
-       </Grid>
+       
+       </Grid> */}
      </Grid>
    </Container>
  );

@@ -30,6 +30,19 @@ export default function ContactUsText() {
       password: data.get("password"),
     });
   };
+  const emailAddress = "Support@roomyfinder.com"; // Replace with your email address
+
+  const handleEmailClick = () => {
+    const link = `mailto:${emailAddress}`;
+    window.open(link, "_blank");
+  };
+  const whatsappNumber = "+971586133921"; // Replace with your WhatsApp number
+  
+  const handleWhatsAppClick = () => {
+    const link = `https://wa.me/${whatsappNumber}`;
+    window.open(link, '_blank');
+  };
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -40,14 +53,9 @@ export default function ContactUsText() {
           mx: 2,
           display: "flex",
           flexDirection: "column",
-          //   alignItems: "center",
-          //   justifyContent:"start",
           py: 8,
         }}
       >
-        {/* <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar> */}
         <Typography variant="h4" sx={{ my: 1 }}>
           Let's talk about Roomy Finder
         </Typography>
@@ -65,6 +73,8 @@ export default function ContactUsText() {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
+                color: "blue",
+                cursor: "pointer",
               }}
             >
               <PhoneIcon />
@@ -80,7 +90,10 @@ export default function ContactUsText() {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
+                color: "blue",
+                cursor: "pointer",
               }}
+              onClick={handleWhatsAppClick}
             >
               <WhatsAppIcon />
               <Typography variant="subtitle1" sx={{ mx: 2 }}>
@@ -94,7 +107,10 @@ export default function ContactUsText() {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
+                color: "blue",
+                cursor: "pointer",
               }}
+              onClick={handleEmailClick}
             >
               <EmailIcon />
               <Typography variant="subtitle1" sx={{ mx: 2 }}>
