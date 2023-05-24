@@ -255,7 +255,7 @@ const SearchInputs = () => {
           />
         </Box>
 
-        <Box sx={styles.formControl}>
+        {/* <Box sx={styles.formControl}>
           <FormControl variant="outlined" fullWidth>
             <InputLabel htmlFor="price">Price</InputLabel>
             <Select
@@ -273,7 +273,7 @@ const SearchInputs = () => {
               <MenuItem value="+20">+20</MenuItem>
             </Select>
           </FormControl>
-        </Box>
+        </Box> */}
 
         <Box sx={styles.buttonContainer}>
           <Button
