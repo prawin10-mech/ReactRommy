@@ -5,11 +5,12 @@ import { Box, Card, CardMedia, IconButton, Typography } from "@mui/material";
 import { Favorite as FavoriteIcon } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 import dummy from "../../assets/demo.jpg";
+import { useSelector } from "react-redux";
 
 const AvailableRoom = memo(({ room }) => {
   const [liked, setLiked] = useState(false);
   const images = room.images.length > 0 ? room.images : [dummy] || [dummy];
-  // const images = room.images || [];
+  const searchType = useSelector((state) => state.search.searchType);
 
   const handleClick = useCallback(() => {
     setLiked((prevState) => !prevState);
@@ -70,13 +71,21 @@ const AvailableRoom = memo(({ room }) => {
       >
         <Box sx={{ flex: 1 }}>
           <RouterLink
-            to={`/rooms/view-room/${room.id}`}
+            to={
+              searchType === "property"
+                ? `/rooms/view-room/${room.id}`
+                : `/roommate/view-roommate/${room.id}`
+            }
             sx={{ textDecoration: "none" }}
           >
             {!room.action && <Typography variant="h6">{room.type}</Typography>}
           </RouterLink>
           <RouterLink
-            to={`/rooms/view-room/${room.id}`}
+            to={
+              searchType === "property"
+                ? `/rooms/view-room/${room.id}`
+                : `/roommate/view-roommate/${room.id}`
+            }
             sx={{ textDecoration: "none" }}
           >
             {room.action && (
@@ -87,7 +96,11 @@ const AvailableRoom = memo(({ room }) => {
             )}
           </RouterLink>
           <RouterLink
-            to={`/rooms/view-room/${room.id}`}
+            to={
+              searchType === "property"
+                ? `/rooms/view-room/${room.id}`
+                : `/roommate/view-roommate/${room.id}`
+            }
             sx={{ textDecoration: "none" }}
           >
             {!room.action && (
@@ -97,7 +110,11 @@ const AvailableRoom = memo(({ room }) => {
             )}
           </RouterLink>
           <RouterLink
-            to={`/rooms/view-room/${room.id}`}
+            to={
+              searchType === "property"
+                ? `/rooms/view-room/${room.id}`
+                : `/roommate/view-roommate/${room.id}`
+            }
             sx={{ textDecoration: "none" }}
           >
             {room.action && (

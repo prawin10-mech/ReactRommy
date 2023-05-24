@@ -18,10 +18,9 @@ import CarouselWithMultipleImage from "../components/CarouselWithMultipleImage";
 import { roomsTypeActions } from "../store/Rooms";
 
 const OurServices = () => {
-  const [propertyAddAvilableRoom, setpropertyAddAvilableRoom] = useState([]);
   const [PartitionAddAvilableRoom, setPartitionAddAvilableRoom] = useState([]);
   const rooms = useSelector((state) => state.room.rooms);
-  const roomType = useSelector((state) => state.room.roomsType);
+  const roomType = useSelector((state) => state.search.searchType);
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
   const tokenExpiration = localStorage.getItem("tokenExpiration");
@@ -36,7 +35,7 @@ const OurServices = () => {
 
   const getPartitionRoomData = async () => {
     const { data } = await axios.post(
-      "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available",
+      `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available`,
       { countryCode: "AE" }
     );
     dispatch(SearchActions.availableRooms(data));

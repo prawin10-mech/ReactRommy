@@ -18,7 +18,7 @@ const AdvancedSearch = () => {
   const navigate = useNavigate();
   const [advance, setAdvance] = useState(false);
   const dispatch = useDispatch();
-  const searchType = useSelector((state) => state.search.searchType);
+  const searchType = useSelector((state) => state.room.roomsType);
 
   const type = useSelector((state) => state.advanceSearch.propertyType);
   const amenities = useSelector((state) => state.advanceSearch.amenities);

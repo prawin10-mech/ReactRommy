@@ -25,6 +25,7 @@ import SignUp from "./pages/SignUp";
 import AboutBooking from "./pages/AboutBooking";
 import PayRent from "./pages/PayRent";
 import MyAds from "./pages/MyAds";
+import ViewTenant from "./pages/ViewTenant";
 import StripePaymentCancel from "./pages/StripePaymentCancel";
 
 const App = () => {
@@ -70,6 +71,11 @@ const App = () => {
           <Route
             path="/bookings/property/pay-rent/:id"
             element={<PrivateRoute Component={PayRent} />}
+          />
+
+          <Route
+            path="/roommate/view-roommate/:id"
+            element={<PrivateRoute Component={ViewTenant} />}
           />
 
           {/* <Route path="/chat" element={<Chat />} /> */}
