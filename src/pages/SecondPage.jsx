@@ -1,5 +1,5 @@
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import SingleCardCarousel from "../components/Card/SingleCardCarousel";
 
 import CustomizeSelectBox from "../components/MUIcomponent/CustomizeSelectBox";
@@ -16,12 +16,26 @@ import AdvancedSearch from "../components/rooms/AdvancedSearch";
 import { useSelector, useDispatch } from "react-redux";
 import { UserActions } from "../store/User";
 import { SearchActions } from "../store/Search";
+import {
+  citydata,
+  dubaiCities,
+  abuDahbiCities,
+  sharjahCities,
+  rasAlkimaCities,
+  ummAlQuwainCities,
+  ajmanCities,
+  jeddahCities,
+  meccaCities,
+  riyadhCities,
+} from "../utils/citydata";
 
 const SecondPage = () => {
-  const city = useSelector((state) => state.search.location);
+  const city = useSelector((state) => state.search.searchText);
+  const location = useSelector((state) => state.search.location);
   const availableRooms = useSelector((state) => state.search.availableRooms);
   const searchType = useSelector((state) => state.search.searchType);
   const dispatch = useDispatch();
+  const [locationData, setLocationData] = useState([]);
   const token = localStorage.getItem("token");
 
   const fetchMyBookings = async () => {
@@ -44,8 +58,35 @@ const SecondPage = () => {
 
   useEffect(() => {
     fetchMyBookings();
-    getPartitionRoomData();
+    //getPartitionRoomData();
   }, []);
+
+  const viewArrayData = () => {
+    if (city === "Dubai") {
+      setLocationData(dubaiCities);
+    } else if (city === "Abu Dhabi") {
+      setLocationData(abuDahbiCities);
+    } else if (city === "Sharjah") {
+      setLocationData(sharjahCities);
+    } else if (city === "Ras Al Kima") {
+      setLocationData(rasAlkimaCities);
+    } else if (city === "Umm Al-Quwain") {
+      setLocationData(ummAlQuwainCities);
+    } else if (city === "Ajman") {
+      setLocationData(ajmanCities);
+    } else if (city === "Riyadh") {
+      setLocationData(riyadhCities);
+    } else if (city === "Mecca") {
+      setLocationData(meccaCities);
+    } else if (city === "Jeddah") {
+      setLocationData(jeddahCities);
+    } else {
+      setLocationData([]);
+    }
+  };
+  useEffect(() => {
+    viewArrayData();
+  }, [city]);
 
   return (
     <>
@@ -103,37 +144,44 @@ const SecondPage = () => {
                 }}
               >
                 <CustomizeSelectBox
-                  mainbox={{ m: 2 }}
-                  name={"Room"}
-                  values={["property", "roommate"]}
-                  fn="roomSearch"
-                />
-                <ChipsArray />
-                <CustomizeSelectBox
-                  name={"Apartment"}
+                  name={"Type"}
                   fn="propertyType"
                   values={
                     searchType === "property"
-                      ? ["Bed", "Partition", "Master Room", "Room", "Mix"]
-                      : ["Studio", "Appartment", "House"]
+                      ? [
+                          "All",
+                          "Bed",
+                          "Partition",
+                          "Master Room",
+                          "Room",
+                          "Mix",
+                        ]
+                      : ["All", "Studio", "Appartment", "House"]
                   }
                 />
                 <CustomizeSelectBox
-                  name={"Location"}
-                  fn="location"
-                  values={["Dubai", "Saudi Arabia"]}
+                  name={"Rent"}
+                  fn="PreferredRentType"
+                  values={["All", "Monthly", "Weekly", "Daily"]}
                 />
                 <CustomizeSelectBox
-                  name={"Price"}
-                  fn="price"
-                  values={[
-                    "100-500",
-                    "500-1000",
-                    "1000-1500",
-                    "1500-2000",
-                    "+2000",
-                  ]}
+                  name={"City"}
+                  fn="searchText"
+                  values={[...citydata]}
                 />
+                <CustomizeSelectBox
+                  mainbox={{ m: 2 }}
+                  name={"Area"}
+                  values={[...locationData]}
+                  fn="location"
+                />
+
+                <CustomizeSelectBox
+                  name={"Gender"}
+                  fn="gender"
+                  values={["Male", "Female", "Mix"]}
+                />
+
                 <IconButtonMUI IconButtonsx={{ mt: 1 }} />
               </Box>
               <Box
@@ -145,7 +193,7 @@ const SecondPage = () => {
                   width: "100%",
                 }}
               >
-                <CheckboxLabels label={"Show commercial properties only"} />
+                {/* <CheckboxLabels label={"Show commercial properties only"} /> */}
                 {/* <PositionedMenu /> */}
               </Box>
             </Box>
@@ -172,13 +220,13 @@ const SecondPage = () => {
                     {availableRooms.length} results
                   </Typography>
                 </Box>
-                <Box sx={{ display: "flex", flexDirection: "row" }}>
+                {/* <Box sx={{ display: "flex", flexDirection: "row" }}>
                   <PositionedMenu />
                   <IconLabelButtons
                     icon={FavoriteBorderIcon}
                     name={"Save Search"}
                   />
-                </Box>
+                </Box> */}
               </Box>
             </Box>
             <Box>

@@ -34,8 +34,7 @@ const AdvancedSearch = () => {
   };
 
   const advanceSearchHandler = async () => {
-    const obj = {};
-    obj.countryCode = "AE";
+    const obj = { countryCode: "AE" };
 
     if (type) {
       obj.type = type[0];

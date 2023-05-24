@@ -9,39 +9,36 @@ export default function IconButtonMUI(props) {
   const dispatch = useDispatch();
 
   const searchType = useSelector((state) => state.search.searchType);
-  const searchText = useSelector((state) => state.search.searchText);
+  const city = useSelector((state) => state.search.searchText);
   const propertyType = useSelector((state) => state.search.propertyType);
   const location = useSelector((state) => state.search.location);
-  const price = useSelector((state) => state.search.price);
-  const commercialProperty = useSelector(
-    (state) => state.search.commercialProperty
-  );
+  const gender = useSelector((state) => state.search.gender);
+  const rentType = useSelector((state) => state.search.PreferredRentType);
 
   const handleClick = async () => {
-    const obj = {};
+    const obj = { countryCode: "AE" };
     if (location) {
-      if (location === "Dubai") {
-        obj.countryCode = "AE";
-      } else if (location === "Saudi Arabia") {
-        obj.countryCode = "SA";
-      }
+      obj.location = location;
     }
-    if (propertyType) {
+    if (city) {
+      obj.city = city;
+    }
+    if (gender && gender !== "All") {
+      obj.gender = gender;
+    }
+    if (rentType && rentType !== "All") {
+      obj.preferedRentType = rentType;
+    }
+    if (propertyType && propertyType !== "All") {
       obj.type = propertyType;
     }
-    if (price) {
-      obj.price = price;
-    }
-    if (commercialProperty) {
-      obj.commercialProperty = commercialProperty;
-    }
-
     console.log(obj);
     if (Object.keys(obj).length > 0) {
       const { data } = await axios.post(
         `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/${searchType}-ad/available`,
         obj
       );
+      console.log(data);
       dispatch(SearchActions.availableRooms(data));
     } else {
       console.log("obj is empty");
