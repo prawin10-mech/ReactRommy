@@ -23,6 +23,7 @@ import {
   meccaCities,
   riyadhCities,
 } from "../utils/citydata";
+import Ads from "../components/Ads";
 
 const SecondPage = () => {
   const city = useSelector((state) => state.search.searchText);
@@ -32,9 +33,10 @@ const SecondPage = () => {
   const dispatch = useDispatch();
   const [locationData, setLocationData] = useState([]);
   const token = localStorage.getItem("token");
+  const tokenExpiration = localStorage.getItem("tokenExpiration");
 
   const fetchMyBookings = async () => {
-    if (token) {
+    if (token && tokenExpiration && Date.now() < parseInt(tokenExpiration)) {
       const { data } = await axios.get(
         "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
         { headers: { Authorization: token } }
@@ -230,12 +232,12 @@ const SecondPage = () => {
                   item
                   xs={12}
                   sm={8}
-                  sx={{ backgroundColor: "#fffff5", width: "100%" }}
+                  sx={{ backgroundColor: "#fffff5", width: "100%", px: 2 }}
                 >
                   <AllAvailableRooms />
                 </Grid>
                 <Grid item xs={12} sm={4} sx={{ backgroundColor: "#fffff5" }}>
-                  Adds
+                  <Ads />
                 </Grid>
               </Grid>
             </Box>

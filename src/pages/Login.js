@@ -85,16 +85,21 @@ const Login = () => {
         { email, password }
       );
 
-      console.log(response);
       if (response.status === 200) {
         const loginResponse = await axios.post(
           "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/auth/login",
           { email, password, fcmToken: "123" }
         );
 
+        console.log(response);
+
         const { data } = loginResponse;
         Cookies.set("user", JSON.stringify(data), { expires: 365 });
         localStorage.setItem("token", `bearer ${response.data.token}`);
+        const tokenExpirationTime = Date.now() + response.data.expireAt * 1000;
+        const expirationTimestamp = Date.parse(response.data.expireAt);
+        localStorage.setItem("tokenExpiration", expirationTimestamp);
+
         dispatch(UserActions.isLoggedIn(true));
         dispatch(UserActions.firstName(data.firstName));
         dispatch(UserActions.lastName(data.lastName));

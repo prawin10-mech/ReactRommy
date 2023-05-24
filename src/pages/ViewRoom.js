@@ -25,6 +25,7 @@ import BottomBackground from "../components/postPropertyComponents/BottomBackgro
 
 const ViewRoom = () => {
   const token = localStorage.getItem("token");
+  const tokenExpiration = localStorage.getItem("tokenExpiration");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -74,7 +75,7 @@ const ViewRoom = () => {
   };
 
   const handleBookRoom = async () => {
-    if (!token && !user) {
+    if (!token && !user && Date.now() < parseInt(tokenExpiration)) {
       navigate("/login");
     } else {
       try {
