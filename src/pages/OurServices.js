@@ -35,10 +35,10 @@ const OurServices = () => {
 
   const getPartitionRoomData = async () => {
     const { data } = await axios.post(
-      "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/roommate-ad/available",
+      "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available",
       { countryCode: "AE" }
     );
-    //dispatch(SearchActions.availableRooms(data));
+    dispatch(SearchActions.availableRooms(data));
     setPartitionAddAvilableRoom(data);
   };
 
