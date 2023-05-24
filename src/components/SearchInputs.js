@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { SearchActions } from "../store/Search";
 import { useNavigate } from "react-router-dom";
@@ -14,12 +14,26 @@ import {
   Button,
   Typography,
   InputLabel,
+  Autocomplete,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import {
+  citydata,
+  dubaiCities,
+  abuDahbiCities,
+  sharjahCities,
+  rasAlkimaCities,
+  ummAlQuwainCities,
+  ajmanCities,
+  jeddahCities,
+  meccaCities,
+  riyadhCities,
+} from "../utils/citydata";
 
 const SearchInputs = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [filteredCities, setFilteredCities] = useState([]);
   const searchType = useSelector((state) => state.search.searchType);
   const searchText = useSelector((state) => state.search.searchText);
   const propertyType = useSelector((state) => state.search.propertyType);
@@ -30,15 +44,57 @@ const SearchInputs = () => {
   );
 
   const [isLoading, setIsLoading] = useState(false);
+  const [locationdata, setlocationdata] = useState([]);
   const [error, setError] = useState(null);
 
   const propertyTypeOptions =
     searchType === "property"
-      ? ["Bed", "Master Room", "Partition", "Room"]
-      : ["Studio", "Apartment", "House"];
+      ? ["All", "Bed", "Master Room", "Partition", "Room"]
+      : ["All", "Studio", "Apartment", "House"];
 
-  const searchTextHandle = (e) => {
-    dispatch(SearchActions.searchText(e.target.value));
+  const viewArrayData = () => {
+    if (searchText === "Dubai") {
+      setlocationdata(dubaiCities);
+    } else if (searchText === "Abu Dhabi") {
+      setlocationdata(abuDahbiCities);
+    } else if (searchText === "Sharjah") {
+      setlocationdata(sharjahCities);
+    } else if (searchText === "Ras Al Kima") {
+      setlocationdata(rasAlkimaCities);
+    } else if (searchText === "Umm Al-Quwain") {
+      setlocationdata(ummAlQuwainCities);
+    } else if (searchText === "Ajman") {
+      setlocationdata(ajmanCities);
+    } else if (searchText === "Riyadh") {
+      setlocationdata(riyadhCities);
+    } else if (searchText === "Mecca") {
+      setlocationdata(meccaCities);
+    } else if (searchText === "Jeddah") {
+      setlocationdata(jeddahCities);
+    } else {
+      setlocationdata([]);
+    }
+  };
+  useEffect(() => {
+    viewArrayData();
+  }, [searchText]);
+
+  const handleSearchTextChange = (event, value) => {
+    const searchText = value || "";
+    const filtered = citydata.filter((city) =>
+      city.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFilteredCities(filtered);
+    dispatch(SearchActions.searchText(searchText));
+  };
+
+  const handleCityClick = (event, value) => {
+    dispatch(SearchActions.searchText(value));
+    // setFilteredCities([]);
+  };
+
+  const handleLocationClick = (event, value) => {
+    dispatch(SearchActions.location(value));
   };
 
   const handlePropertyTypeChange = (e) => {
@@ -53,33 +109,33 @@ const SearchInputs = () => {
     dispatch(SearchActions.price(e.target.value));
   };
 
-  const commercialPropertyHandle = (e) => {
-    dispatch(SearchActions.commercialProperty());
-  };
+  // const commercialPropertyHandle = (e) => {
+  //   dispatch(SearchActions.commercialProperty());
+  // };
 
   const handleSearch = async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const obj = {};
+      const obj = { countryCode: "AE" };
+
       if (searchText) {
         obj.city = searchText;
       }
-      if (location === "Dubai") {
-        obj.countryCode = "AE";
-      } else if (location === "Saudi Arabia") {
-        obj.countryCode = "SA";
+      if (location) {
+        obj.location = location;
       }
-      if (propertyType) {
+
+      if (propertyType && propertyType !== "All") {
         obj.type = propertyType;
       }
-      if (price) {
+      if (price && price !== "All") {
         obj.price = price;
       }
-      if (commercialProperty) {
-        obj.commercialProperty = commercialProperty;
-      }
+      // if (commercialProperty) {
+      //   obj.commercialProperty = commercialProperty;
+      // }
 
       console.log(obj);
 
@@ -100,38 +156,70 @@ const SearchInputs = () => {
     }
   };
 
+  const styles = {
+    searchContainer: {
+      display: "flex",
+      spacing: 2,
+      flexDirection: { xs: "column", lg: "row" },
+      marginBottom: 2,
+    },
+    formControl: {
+      flex: { xs: "1 1 100%", lg: "1 1 auto" },
+      marginRight: { xs: 0, lg: 2 },
+    },
+    buttonContainer: {
+      flex: { xs: "1 1 100%", lg: "1 1 auto" },
+      display: "flex",
+      alignItems: "center",
+      marginTop: { xs: 2, lg: 0 },
+      justifyContent: { xs: "flex-start", lg: "flex-end" },
+    },
+    button: {
+      padding: 2,
+      border: "2px solid slate",
+      marginLeft: { xs: 0, lg: 2 },
+      backgroundColor: "purple.700",
+      borderRadius: "md",
+    },
+    advancedSearchContainer: {
+      marginTop: 2,
+      display: "flex",
+      flexDirection: { xs: "column", lg: "row" },
+      justifyContent: { xs: "flex-start", lg: "space-between" },
+      alignItems: { xs: "flex-start", lg: "center" },
+    },
+    commercialCheckboxContainer: {
+      display: "flex",
+      alignItems: "center",
+    },
+    advancedSearchText: {
+      marginTop: { xs: 2, lg: 0 },
+      marginLeft: { xs: 0, lg: 2 },
+    },
+  };
+
   return (
     <Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", lg: "row" },
-          mb: 2,
-        }}
-      >
-        <Box
-          sx={{
-            flex: { xs: "1 1 100%", lg: "1 1 auto" },
-            mr: { xs: 0, lg: 2 },
-          }}
-        >
-          <FormControl variant="outlined" fullWidth>
-            <TextField
-              label="Search"
-              type="text"
-              value={searchText}
-              onChange={searchTextHandle}
-              fullWidth
-            />
-          </FormControl>
+      <Box sx={styles.searchContainer}>
+        <Box sx={styles.formControl}>
+          <Autocomplete
+            options={filteredCities}
+            value={searchText}
+            onChange={handleCityClick}
+            onInputChange={handleSearchTextChange}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Search"
+                type="text"
+                fullWidth
+                variant="outlined"
+              />
+            )}
+          />
         </Box>
 
-        <Box
-          sx={{
-            flex: { xs: "1 1 100%", lg: "1 1 auto" },
-            mr: { xs: 0, lg: 2 },
-          }}
-        >
+        <Box sx={styles.formControl}>
           <FormControl variant="outlined" fullWidth>
             <InputLabel htmlFor="propertyType">Property Type</InputLabel>
             <Select
@@ -150,34 +238,24 @@ const SearchInputs = () => {
           </FormControl>
         </Box>
 
-        <Box
-          sx={{
-            flex: { xs: "1 1 100%", lg: "1 1 auto" },
-            mr: { xs: 0, lg: 2 },
-          }}
-        >
-          <FormControl variant="outlined" fullWidth>
-            <InputLabel htmlFor="location">Location</InputLabel>
-            <Select
-              id="location"
-              label="Location"
-              value={location}
-              onChange={searchLocationHandle}
-              fullWidth
-            >
-              <MenuItem value="">Location</MenuItem>
-              <MenuItem value="Dubai">Dubai</MenuItem>
-              <MenuItem value="Saudi Arabia">Saudi Arabia</MenuItem>
-            </Select>
-          </FormControl>
+        <Box sx={styles.formControl}>
+          <Autocomplete
+            options={locationdata}
+            value={location}
+            onChange={handleLocationClick}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Location"
+                type="text"
+                fullWidth
+                variant="outlined"
+              />
+            )}
+          />
         </Box>
 
-        <Box
-          sx={{
-            flex: { xs: "1 1 100%", lg: "1 1 auto" },
-            mr: { xs: 0, lg: 2 },
-          }}
-        >
+        {/* <Box sx={styles.formControl}>
           <FormControl variant="outlined" fullWidth>
             <InputLabel htmlFor="price">Price</InputLabel>
             <Select
@@ -185,9 +263,9 @@ const SearchInputs = () => {
               label="Price"
               value={price}
               onChange={searchPriceHandle}
-              fullWidth // Added fullWidth prop
+              fullWidth
             >
-              <MenuItem value=""></MenuItem>
+              <MenuItem value="All">All</MenuItem>
               <MenuItem value="1 to 5">1 to 5</MenuItem>
               <MenuItem value="5 to 10">5 to 10</MenuItem>
               <MenuItem value="10 to 15">10 to 15</MenuItem>
@@ -195,50 +273,24 @@ const SearchInputs = () => {
               <MenuItem value="+20">+20</MenuItem>
             </Select>
           </FormControl>
-        </Box>
+        </Box> */}
 
-        <Box
-          sx={{
-            flex: { xs: "1 1 100%", lg: "1 1 auto" },
-            display: "flex",
-            alignItems: "center",
-            mt: { xs: 2, lg: 0 },
-            justifyContent: { xs: "flex-start", lg: "flex-end" },
-          }}
-        >
+        <Box sx={styles.buttonContainer}>
           <Button
             variant="contained"
             color="primary"
-            sx={{
-              padding: 2,
-              border: "2px solid slate",
-              marginLeft: { xs: 0, lg: 2 },
-              backgroundColor: "purple.700",
-              borderRadius: "md",
-            }}
+            sx={styles.button}
             onClick={handleSearch}
             startIcon={<SearchIcon />}
             disabled={isLoading}
           >
             {isLoading ? "Loading..." : "Search"}
           </Button>
-          {/* {error && (
-            <Typography variant="body2" color="error">
-              {error}
-            </Typography>
-          )} */}
         </Box>
       </Box>
-      <Box
-        sx={{
-          mt: 2,
-          display: "flex",
-          flexDirection: { xs: "column", lg: "row" },
-          justifyContent: { xs: "flex-start", lg: "space-between" },
-          alignItems: { xs: "flex-start", lg: "center" },
-        }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+
+      {/* <Box sx={styles.advancedSearchContainer}>
+        <Box sx={styles.commercialCheckboxContainer}>
           <FormControlLabel
             control={
               <Checkbox
@@ -250,13 +302,10 @@ const SearchInputs = () => {
             label="Show commercial properties only"
           />
         </Box>
-        <Typography
-          variant="body1"
-          sx={{ mt: { xs: 2, lg: 0 }, ml: { xs: 0, lg: 2 } }}
-        >
+        <Typography variant="body1" sx={styles.advancedSearchText}>
           Advanced search
         </Typography>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

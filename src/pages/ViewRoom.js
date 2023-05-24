@@ -119,9 +119,17 @@ const ViewRoom = () => {
   }, []);
 
   return (
-    <>
+    <Grid sx={{ overFlowX: "hidden" }}>
       <TopBackground />
-      <Box sx={{ mx: "auto", maxWidth: "700px", my: 3, px: 1 }}>
+      <Box
+        sx={{
+          mx: "auto",
+          maxWidth: "700px",
+          my: 3,
+          px: 1,
+          overFlowX: "hidden",
+        }}
+      >
         <Card
           sx={{
             display: "flex",
@@ -234,37 +242,47 @@ const ViewRoom = () => {
           <Typography fontWeight={700} fontSize={"1.3rem"}>
             Room Overview
           </Typography>
-          <Grid container spacing={2} sx={{ mx: "auto" }}>
+          <Grid container spacing={2} sx={{ mx: "auto", px: 1 }}>
             <Grid item xs={4}>
               <Typography variant="body1" sx={{ mb: 1 }}>
-                No. of peoples:{" "}
-                {room?.socialPreferences?.numberOfPeople ? "Yes" : "No"}
+                People
+              </Typography>
+              <Typography>{room?.socialPreferences?.numberOfPeople}</Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body1" sx={{ mb: 1 }}>
+                Nationality
+              </Typography>
+              <Typography>{room?.socialPreferences?.nationality}</Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body1" sx={{ mb: 1 }}>
+                Smoking
+              </Typography>
+              <Typography>
+                {room?.socialPreferences?.smoking ? "Yes" : "No"}
               </Typography>
             </Grid>
             <Grid item xs={4}>
               <Typography variant="body1" sx={{ mb: 1 }}>
-                Nationality:{" "}
-                {room?.socialPreferences?.nationality ? "Yes" : "No"}
+                Gender
+              </Typography>
+              <Typography>{room?.socialPreferences?.gender}</Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body1" sx={{ mb: 1 }}>
+                Drinking:
+              </Typography>
+              <Typography>
+                {room?.socialPreferences?.drinking ? "Yes" : "No"}
               </Typography>
             </Grid>
             <Grid item xs={4}>
               <Typography variant="body1" sx={{ mb: 1 }}>
-                Smoking: {room?.socialPreferences?.smoking ? "Yes" : "No"}
+                Visitors
               </Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography variant="body1" sx={{ mb: 1 }}>
-                Gender: {room?.socialPreferences?.gender ? "Yes" : "No"}
-              </Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography variant="body1" sx={{ mb: 1 }}>
-                Drinking: {room?.socialPreferences?.drinking ? "Yes" : "No"}
-              </Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography variant="body1" sx={{ mb: 1 }}>
-                Visitors: {room?.socialPreferences?.visitors ? "Yes" : "No"}
+              <Typography>
+                {room?.socialPreferences?.visitors ? "Yes" : "No"}
               </Typography>
             </Grid>
           </Grid>
@@ -301,9 +319,15 @@ const ViewRoom = () => {
               <Typography>Daily</Typography>
             </Grid>
             <Grid item xs={4}>
-              <Typography>{room?.monthlyPrice} AED</Typography>
-              <Typography>{room?.weeklyPrice} AED</Typography>
-              <Typography>{room?.dailyPrice} AED</Typography>
+              <Typography>
+                {room?.monthlyPrice + 0.1 * room?.monthlyPrice} AED
+              </Typography>
+              <Typography>
+                {room?.weeklyPrice + 0.1 * room?.weeklyPrice} AED
+              </Typography>
+              <Typography>
+                {room?.dailyPrice + 0.05 * room?.dailyPrice} AED
+              </Typography>
             </Grid>
           </Grid>
           <Grid container spacing={2} alignItems={"center"} sx={{ mx: "auto" }}>
@@ -433,7 +457,7 @@ const ViewRoom = () => {
         <ToastContainer />
       </Box>
       <BottomBackground />
-    </>
+    </Grid>
   );
 };
 

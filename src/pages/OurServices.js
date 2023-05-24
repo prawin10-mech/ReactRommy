@@ -15,30 +15,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { UserActions } from "../store/User";
 
 import CarouselWithMultipleImage from "../components/CarouselWithMultipleImage";
+import { roomsTypeActions } from "../store/Rooms";
 
 const OurServices = () => {
   const [propertyAddAvilableRoom, setpropertyAddAvilableRoom] = useState([]);
   const [PartitionAddAvilableRoom, setPartitionAddAvilableRoom] = useState([]);
+  const rooms = useSelector((state) => state.room.rooms);
+  const roomType = useSelector((state) => state.room.roomsType);
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
 
   const getAffordableRoomData = async () => {
     const { data } = await axios.post(
-      `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available`,
+      `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/${roomType}-ad/available`,
       { countryCode: "AE" }
     );
-    dispatch(SearchActions.availableRooms(data));
-    axios
-      .post(
-        "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available",
-        { countryCode: "AE" }
-      )
-      .then((res) => {
-        setpropertyAddAvilableRoom(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(roomsTypeActions.availableRooms(data));
   };
 
   const getPartitionRoomData = async () => {
@@ -46,7 +38,7 @@ const OurServices = () => {
       "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/roommate-ad/available",
       { countryCode: "AE" }
     );
-    dispatch(SearchActions.availableRooms(data));
+    //dispatch(SearchActions.availableRooms(data));
     setPartitionAddAvilableRoom(data);
   };
 
@@ -142,9 +134,7 @@ const OurServices = () => {
               <Typography variant="h5" sx={{ mb: 1 }}>
                 Top affordable sharing option in UAE
               </Typography>
-              <CarouselWithMultipleImage
-                propertyAddAvilableRoom={propertyAddAvilableRoom}
-              />
+              <CarouselWithMultipleImage propertyAddAvilableRoom={rooms} />
             </Box>
 
             <Box sx={{ mt: 1, mb: 2 }}>

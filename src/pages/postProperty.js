@@ -24,6 +24,7 @@ import {
   meccaCities,
   riyadhCities,
 } from "../utils/citydata";
+import { toastOptions } from "../utils/ToastOptions";
 
 const PostProperty = () => {
   const navigate = useNavigate();
@@ -31,14 +32,6 @@ const PostProperty = () => {
   const [locationdata, setlocationdata] = useState([]);
   const token = localStorage.getItem("token");
 
-  const toastOptions = {
-    autoClose: 3000,
-    closeButton: true,
-    position: "bottom-right",
-    pauseOnHover: true,
-    draggable: true,
-    theme: "dark",
-  };
   const {
     edit,
     id,
