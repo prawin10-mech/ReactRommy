@@ -1,161 +1,58 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect, useRef } from "react";
 import {
   Box,
   Grid,
   Typography,
-  TextField,
-  Stack,
-  Avatar,
-  InputAdornment,
-  Container,
-  Button,
   Paper,
   InputBase,
   IconButton,
 } from "@mui/material";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import AttachmentIcon from "@mui/icons-material/Attachment";
-import EmojiPicker from "emoji-picker-react";
 import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
-import axios from 'axios';
-import io from "socket.io-client"
-import {
-  getSender,
-  getSenderNew,
-  isSameSender,
-  islastmessage,
-  isSameSenderMargin,
-  isSameUser,
-} from "./ChatLogic";
+import axios from "axios";
 
-// const EENPOINT = "http://192.168.0.225:5005";
-// let socket, selectChatCpmpair;
+const ChatBody = ({ user, messages }) => {
+  const [openEmoji, setOpenEmoji] = useState(false);
+  const [newMessage, setNewMessage] = useState("");
+  const [chatMessages, setChatMessages] = useState([]);
+  const messagesEndRef = useRef(null);
 
+  const token = localStorage.getItem("token");
 
-const ChatBody = ({reciver}) => {
-  
-  const [openEmoji, setopenEmoji] = useState(false);
-  const [socketConnected, setsocketConnected] = useState(false);
-  const [chatData, setchatData] = useState([]);
-  const [newMessage, setnewMessage] = useState('');
-
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDYzMjZiNTNjNTgzMzY1NDM3YjVlZTciLCJuYW1lIjoiR2h1bGFtIiwiZW1haSI6ImdodWxhbUBnbWFpbC5jb20iLCJwaWMiOiJodHRwczovL3Bicy50d2ltZy5jb20vcHJvZmlsZV9pbWFnZXMvOTE3NjMxOTgzMzcwNDYxMTg0L2JYUWpwa0RlXzQwMHg0MDAuanBnIiwiaWF0IjoxNjg0NjcyMjc0LCJleHAiOjE3MTYyMDgyNzR9.ZExDiBb0Vmv27JpgQunZFHwTV5VuZrOgrDDaL6fRU98";
-  const config = {
-    headers: {
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  const getChatData = async () => {
-    console.log(reciver);
-    if (reciver.userDetails === "" || reciver.ChatId ==="") return;
-      try {
-        const response = await axios
-          // .get(`http://192.168.1.104:5005/api/message/64636b3807a086db964cddfd`, {
-          .get(`http://192.168.0.225:5005/api/message/${reciver.ChatId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json", // or any other required headers
-            },
-          })
-          .then((val) => {
-            setchatData([...val.data]);
-            console.log(val.data);
-            // socket.emit("join Chat", reciver.ChatId);
-            // setchatData([...chatData,...val.data]);
-          });
-      } catch (err) {
-        console.log(err);
-      }
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
-    getChatData()
-    // selectChatCpmpair= reciver.userDetails
-  }, [reciver]);
+    setChatMessages(messages);
+    scrollToBottom();
+  }, [messages]);
 
-  // useEffect(() => {
-  //   socket = io(EENPOINT);
-  //   socket.emit("setup", data);
-  //   socket.on("connected", () => setsocketConnected(true));
-  //   // socket = io("http://192.168.0.225:5005");
-  //   // socket = io(EENPOINT);
-  // }, []);
-  // useEffect(() => {
-   
-  //   socket.on("message recived", (newMessageRecived) => {
-  //     if(!selectChatCpmpair || selectChatCpmpair._id !== newMessageRecived.chat._id){
-  //       // 
-  //     }
-  //     else{
-
-  //     }
-
-  //   });
-    
-  // }, []);
-  
-
-  const sendchatdata = async(event)=>{
-    if(event.key==="ENTER" && newMessage){
-      try {
-        setnewMessage("")
-        const response = await axios
-          // .get(`http://192.168.1.104:5005/api/message/64636b3807a086db964cddfd`, {
-          .post(
-            `http://192.168.0.225:5005/api/message/`,
-            {
-              content: newMessage,
-              chatId: reciver.ChatId,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json", // or any other required headers
-              },
-            }
-          )
-          .then((val) => {
-            // setchatData([...chatData, val.data]);
-            console.log("clickenter", val);
-          });
-      } catch (err) {
-        console.log(err);
-      }
-    }
+  const sendMessage = async () => {
     try {
-      setnewMessage("");
-      const response = await axios
-        .post(
-          `http://192.168.0.225:5005/api/message/`,
-          {
-            content: newMessage,
-            chatId: reciver.ChatId,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json", // or any other required headers
-            },
-          }
-        )
-        .then((val) => {
-          console.log("click", [...chatData, val.data]);
-          setchatData([...chatData, val.data]);
-        });
+      const { data } = await axios.post(
+        "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/messages/send",
+        {
+          recieverFcmToken: user.other.fcmToken,
+          recieverId: user.otherId,
+          type: "text",
+          body: newMessage,
+        },
+        { headers: { Authorization: token } }
+      );
+      setNewMessage("");
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
-  const getinputdata = (e)=>{
-    setnewMessage(e.target.value);
-    console.log("e.target.value", e.target.value);
-    // e.target.value
-  }
-  
+  const sendMessageInputHandler = (e) => {
+    setNewMessage(e.target.value);
+  };
+
+  console.log(user);
+
   return (
     <Box>
       <Box
@@ -163,87 +60,78 @@ const ChatBody = ({reciver}) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          backgroundColor: "#f0ffff",
-          p: 1,
+          backgroundColor: "#075e54",
+          padding: "8px 16px",
+          color: "#fff",
         }}
       >
         <Box>
-          <Typography variant="h6">{reciver.userDetails.name}</Typography>
-          <Typography variant="body2">Ghulam Suhani</Typography>
+          <Typography variant="body1" fontWeight={700}>
+            {user?.other?.firstName} {user?.other?.lastName}
+          </Typography>
         </Box>
-        <Typography variant="body1">Room mate</Typography>
+        <Typography variant="body2">{user?.other?.type}</Typography>
       </Box>
       <Box
         sx={{
-          height: "464px",
+          height: "calc(100vh - 200px)",
           overflowY: "auto",
-          //   backgroundColor: "#E8E8E8",
+          padding: "16px",
         }}
       >
-        {chatData.map((val, id) => (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              // marginTop: isSameUser(chatData, val, id) ? 3 : 10,
-              // marginLeft: isSameSenderMargin(chatData, val, id, data._id),
-            }}
-          >
-            {/* {(isSameSender(chatData, val, id, data._id) ||
-              islastmessage(chatData, id, data._id)) && (
-              <Avatar
-                alt="Remy Sharp"
-                src={val.sender.pic}
-                // name={val.sender.name}
-                sx={{
-                  pl: 2,
-                  mx: 2,
-                  my: 1,
-                }}
-              />
-            )} */}
-
-            <Typography
-              variant="body1"
+        {chatMessages.reverse().map((message) => {
+          const isCurrentUser = message?.senderId === user?.otherId;
+          return (
+            <Grid
+              key={message.id}
               sx={{
-                p: "8px 12px",
-                my: "4px",
-                // marginTop:isSameUser(chatData, val, id)?3:10,
-                // marginLeft: isSameSenderMargin(chatData, val, id, data._id),
-                marginLeft:`${val.sender._id === data._id ? "auto" : "0px"}`,
-                backgroundColor: `${
-                  val.sender._id === data._id ? "#BEE3F8" : "#B9F5D0"
-                }`,
-                borderRadius: "20px",
-                maxWidth: "40%",
+                backgroundColor: isCurrentUser ? "purple" : "blue",
+                color: "#fff",
+                padding: "8px",
+                borderRadius: "8px",
+                marginBottom: "8px",
+                alignSelf: isCurrentUser ? "flex-start" : "flex-end",
+                marginLeft: isCurrentUser ? 0 : "auto",
+                marginRight: isCurrentUser ? "auto" : 0,
+                maxWidth: "70%",
               }}
             >
-              {val.content}
-            </Typography>
-          </Box>
-        ))}
+              <Typography variant="body1">{message.body}</Typography>
+            </Grid>
+          );
+        })}
+        <div ref={messagesEndRef} />
       </Box>
 
       <Paper
         component="form"
         sx={{
-          p: "2px 4px",
+          p: "4px",
           display: "flex",
           alignItems: "center",
+          position: "fixed",
+          bottom: 0,
+          backgroundColor: "#f0f0f0",
         }}
       >
         <IconButton
           sx={{ p: "10px" }}
           aria-label="menu"
-          onClick={() => setopenEmoji(!openEmoji)}
+          onClick={() => setOpenEmoji(!openEmoji)}
         >
           <SentimentDissatisfiedIcon />
         </IconButton>
         <InputBase
-          sx={{ ml: 1, flex: 1 }}
-          placeholder=""
+          sx={{
+            ml: 1,
+            borderRadius: "20px",
+            backgroundColor: "#fff",
+            padding: "8px",
+          }}
+          placeholder="Type a message"
+          value={newMessage}
           inputProps={{ "aria-label": "" }}
-          onChange={getinputdata}
+          onChange={sendMessageInputHandler}
         />
 
         <IconButton
@@ -254,45 +142,16 @@ const ChatBody = ({reciver}) => {
           <input hidden accept="image/*" type="file" />
           <AttachmentIcon />
         </IconButton>
-        <IconButton color="primary" sx={{ p: "10px" }} aria-label="directions">
-          <SendRoundedIcon onClick={sendchatdata} />
+        <IconButton
+          color="primary"
+          sx={{ p: "10px", color: "#075e54" }}
+          aria-label="directions"
+        >
+          <SendRoundedIcon onClick={sendMessage} />
         </IconButton>
       </Paper>
     </Box>
   );
 };
 
-export default ChatBody
-
-const data = {
-  _id: "646326b53c583365437b5ee7",
-  name: "Ghulam",
-  emai: "ghulam@gmail.com",
-  pic: "https://pbs.twimg.com/profile_images/917631983370461184/bXQjpkDe_400x400.jpg",
-};
-
-
-
-// const chatdata = [
-//   { message: "hello test" },
-//   { message: "hello test" },
-//   { message: "hello test" },
-//   { message: "hello test" },
-//   { message: "hello test" },
-//   {
-//     message:
-//       "hello test hello test hello test hello test hello test hello test",
-//   },
-//   { message: "hello test" },
-//   { message: "hello test" },
-//   { message: "hello test" },
-//   { message: "hello test" },
-//   {
-//     message:
-//       "hello test hello test hello test hello test hello test hello test",
-//   },
-//   {
-//     message:
-//       "hello test hello test hello test hello test hello test hello test",
-//   },
-// ];
+export default ChatBody;

@@ -3,138 +3,49 @@ import {
   Grid,
   Typography,
   TextField,
-  Stack,
   Avatar,
-  InputAdornment,
   Container,
-  Button,
-  Paper,
-  InputBase,
-  IconButton,
 } from "@mui/material";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import React, { useEffect, useState, useReducer } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import SendRoundedIcon from "@mui/icons-material/SendRounded";
-import AttachmentIcon from "@mui/icons-material/Attachment";
 import EmojiPicker from "emoji-picker-react";
-import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
-import LIstofChatUser from "../components/Chat/LIstofChatUser";
-import SearchItem from "../components/Chat/SearchItem";
+
 import ChatBody from "../components/Chat/ChatBody";
 
-
-const initialState = {
-  name: "",
-  val: "",
-  senders: "",
-  senderfull: "",
-  
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "UPDATE_FIELD":
-      return { ...state, ...action.field };
-    case "RESET_FIELDS":
-      return initialState;
-    default:
-      return state;
-  }
-};
-
-
 const Chat = () => {
-  const [selectedChat, setselectedChat] = useState([]);
-  const [reciver, setreciver] = useState({
-    userDetails: "",
-    ChatId: "",
-  });
   const [openEmoji, setopenEmoji] = useState(false);
-  const [checksearch, setchecksearch] = useState(false);
   const [handleSearch, sethandleSearch] = useState("");
-  const [userSearch, setuserSearch] = useState([]);
-  const [listOfChatUser1, setlistOfChatUser] = useState([]);
-  const [Chat, setChat] = useState([]);
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const token = localStorage.getItem("token");
 
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDYzMjZiNTNjNTgzMzY1NDM3YjVlZTciLCJuYW1lIjoiR2h1bGFtIiwiZW1haSI6ImdodWxhbUBnbWFpbC5jb20iLCJwaWMiOiJodHRwczovL3Bicy50d2ltZy5jb20vcHJvZmlsZV9pbWFnZXMvOTE3NjMxOTgzMzcwNDYxMTg0L2JYUWpwa0RlXzQwMHg0MDAuanBnIiwiaWF0IjoxNjg0NjcyMjc0LCJleHAiOjE3MTYyMDgyNzR9.ZExDiBb0Vmv27JpgQunZFHwTV5VuZrOgrDDaL6fRU98";
+  const [conversations, setConversations] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [user, setUser] = useState([]);
 
-  // when select any data from search then call api and response add to list of other user
-  const createuserChat = async (val) => {
-    sethandleSearch("");
+  const getConversations = async () => {
     try {
-      const response = await axios
-        .post(
-          "http://192.168.0.225:5005/api/chat",
-
-          {
-            userid: val,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json", // or any other required headers
-            },
-          }
-        )
-        .then((val) => {
-          setchecksearch(false);
-
-          setlistOfChatUser([val.data, ...listOfChatUser1]);
-        });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  //  api call for list of other user and store in array
-  const getUserChatData = async (id) => {
-    try {
-      const response = await axios
-        .get("http://192.168.0.225:5005/api/chat", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json", // or any other required headers
-          },
-        })
-        .then((val) => {
-          setlistOfChatUser(val.data);
-        });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  // api call when you search
-  const callapi = async (e) => {
-    if (e.target.value.length > 0) {
-      setchecksearch(true);
-    } else {
-      setchecksearch(false);
-    }
-    sethandleSearch(e.target.value);
-    try {
-      const response = await axios.get(
-        `http://192.168.0.225:5005/api/user?search=${e.target.value}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json", // or any other required headers
-          },
-        }
+      const { data } = await axios.get(
+        "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/messages/conversations",
+        { headers: { Authorization: token } }
       );
-      // sethandleSearch("");
-      setuserSearch(response.data.users);
+      setConversations(data);
+      console.log(data);
     } catch (err) {
       console.log(err);
     }
   };
 
-  // function call for api call for list of other user
+  const getConversationMessages = async (conversation) => {
+    const { data } = await axios.get(
+      `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/messages/?otherId=${conversation.otherId}`,
+      { headers: { Authorization: token } }
+    );
+
+    setMessages(data);
+    setUser(conversation);
+  };
+
   useEffect(() => {
-    getUserChatData();
+    getConversations();
   }, []);
   return (
     <>
@@ -168,33 +79,38 @@ const Chat = () => {
                 label="Search"
                 name="handleSearch"
                 value={handleSearch}
-                onChange={(e) => callapi(e)}
                 variant="outlined"
               />
-
-              <Box
-                sx={{
-                  mx: 2,
-                  my: 1,
-                  height: "500px",
-                  width: "100%",
-                  overflowY: "auto",
-                  //  backgroundColor: "#f4544f"
-                }}
-              >
-                {checksearch === true ? (
-                  <SearchItem
-                    userSearch={userSearch}
-                    createuserChat={createuserChat}
-                  />
-                ) : (
-                  <LIstofChatUser
-                    listOfChatUser1={listOfChatUser1}
-                    dispatch={dispatch}
-                    setreciver={setreciver}
-                  />
-                )}
-              </Box>
+              {conversations.map((conversation) => {
+                const createdAt = new Date(conversation?.lastMessage.createdAt);
+                const hours = createdAt.getHours();
+                const minutes = createdAt.getMinutes();
+                return (
+                  <Grid
+                    container
+                    justifyContent="space-between"
+                    sx={{ bgcolor: "grey", my: 1, cursor: "pointer" }}
+                    onClick={() => getConversationMessages(conversation)}
+                    key={conversation.id}
+                  >
+                    <Grid container alignItems="center">
+                      <Avatar />
+                      <Grid item>
+                        <Typography sx={{ fontWeight: 600 }}>
+                          {conversation?.other?.firstName}{" "}
+                          {conversation?.other?.lastName}
+                        </Typography>
+                        <Typography>
+                          {conversation?.lastMessage?.body}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                    <Grid item>
+                      <Typography>{`${hours}:${minutes}`}</Typography>
+                    </Grid>
+                  </Grid>
+                );
+              })}
             </Box>
           </Grid>
           <Grid
@@ -212,84 +128,7 @@ const Chat = () => {
                 <EmojiPicker />
               </Box>
             )}
-            {/* <Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  backgroundColor: "#f0ffff",
-                  p: 1,
-                }}
-              >
-                <Box>
-                  <Typography variant="h6">Ghulam</Typography>
-                  <Typography variant="body2">Ghulam Suhani</Typography>
-                </Box>
-                <Typography variant="body1">Room mate</Typography>
-              </Box>
-              <Box
-                sx={{
-                  height: "464px",
-                  overflowY: "auto",
-                  //   backgroundColor: "#E8E8E8",
-                }}
-              >
-                {chatdata.map((val, id) => (
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      p: "8px 12px",
-                      my: "4px",
-                      backgroundColor: "white",
-                      borderRadius: "20px",
-                      maxWidth: "40%",
-                    }}
-                  >
-                    {val.message}
-                  </Typography>
-                ))}
-              </Box>
-
-              <Paper
-                component="form"
-                sx={{
-                  p: "2px 4px",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <IconButton
-                  sx={{ p: "10px" }}
-                  aria-label="menu"
-                  onClick={() => setopenEmoji(!openEmoji)}
-                >
-                  <SentimentDissatisfiedIcon />
-                </IconButton>
-                <InputBase
-                  sx={{ ml: 1, flex: 1 }}
-                  placeholder=""
-                  inputProps={{ "aria-label": "" }}
-                />
-
-                <IconButton
-                  color="primary"
-                  aria-label="upload picture"
-                  component="label"
-                >
-                  <input hidden accept="image/*" type="file" />
-                  <AttachmentIcon />
-                </IconButton>
-                <IconButton
-                  color="primary"
-                  sx={{ p: "10px" }}
-                  aria-label="directions"
-                >
-                  <SendRoundedIcon />
-                </IconButton>
-              </Paper>
-            </Box> */}
-            <ChatBody state1={state} reciver={reciver} />
+            <ChatBody user={user} messages={messages} />
           </Grid>
         </Grid>
       </Container>
@@ -298,4 +137,3 @@ const Chat = () => {
 };
 
 export default Chat;
-
