@@ -141,16 +141,7 @@ const SecondPage = () => {
                 width: "100%",
               }}
             >
-              <Box
-                xs={12}
-                sx={{
-                  display: "flex",
-                  px: 3,
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  width: "100%",
-                }}
-              >
+              <Box xs={6} sx={{ display: "flex", flexWrap: "wrap" }}>
                 <CustomizeSelectBox
                   name={"Room Type"}
                   fn="roomSearch"
@@ -172,11 +163,6 @@ const SecondPage = () => {
                       : ["All", "Studio", "Appartment", "House"]
                   }
                 />
-                {/* <CustomizeSelectBox
-                  name={"Rent"}
-                  fn="PreferredRentType"
-                  values={["All", "Monthly", "Weekly", "Daily"]}
-                /> */}
                 <CustomizeSelectBox
                   name={"City"}
                   fn="searchText"
@@ -188,13 +174,6 @@ const SecondPage = () => {
                   values={[...locationData]}
                   fn="location"
                 />
-
-                {/* <CustomizeSelectBox
-                  name={"Gender"}
-                  fn="gender"
-                  values={["Male", "Female", "Mix"]}
-                /> */}
-
                 <IconButtonMUI IconButtonsx={{ mt: 1 }} />
               </Box>
               <Box
