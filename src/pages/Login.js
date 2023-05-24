@@ -109,7 +109,7 @@ const Login = () => {
       }
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
-      toast.error(errorMessage, toastOptions);
+      toast.error("Invalid credentials", toastOptions);
       console.log(error);
     } finally {
       setIsLoading(false);
