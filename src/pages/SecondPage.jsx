@@ -28,6 +28,7 @@ import Ads from "../components/Ads";
 const SecondPage = () => {
   const city = useSelector((state) => state.search.searchText);
   const location = useSelector((state) => state.search.location);
+  const searchText = useSelector((state) => state.search.searchText);
   const availableRooms = useSelector((state) => state.search.availableRooms);
   const searchType = useSelector((state) => state.search.searchType);
   const dispatch = useDispatch();
@@ -36,26 +37,36 @@ const SecondPage = () => {
   const tokenExpiration = localStorage.getItem("tokenExpiration");
 
   const fetchMyBookings = async () => {
-    if (token && tokenExpiration && Date.now() < parseInt(tokenExpiration)) {
-      const { data } = await axios.get(
-        "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
-        { headers: { Authorization: token } }
-      );
-      dispatch(UserActions.myBookings(data));
+    try {
+      if (token && tokenExpiration && Date.now() < parseInt(tokenExpiration)) {
+        const { data } = await axios.get(
+          "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
+          { headers: { Authorization: token } }
+        );
+        dispatch(UserActions.myBookings(data));
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
   const getPartitionRoomData = async () => {
-    const { data } = await axios.post(
-      "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available",
-      { countryCode: "AE" }
-    );
-    dispatch(SearchActions.availableRooms(data));
+    try {
+      const { data } = await axios.post(
+        `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available`,
+        { countryCode: "AE" }
+      );
+      dispatch(SearchActions.availableRooms(data));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
     fetchMyBookings();
-    //getPartitionRoomData();
+    if (availableRooms.length === 0) {
+      getPartitionRoomData();
+    }
   }, []);
 
   const viewArrayData = () => {
@@ -141,6 +152,11 @@ const SecondPage = () => {
                 }}
               >
                 <CustomizeSelectBox
+                  name={"Room Type"}
+                  fn="roomSearch"
+                  values={["property", "Roommate"]}
+                />
+                <CustomizeSelectBox
                   name={"Type"}
                   fn="propertyType"
                   values={
@@ -156,11 +172,11 @@ const SecondPage = () => {
                       : ["All", "Studio", "Appartment", "House"]
                   }
                 />
-                <CustomizeSelectBox
+                {/* <CustomizeSelectBox
                   name={"Rent"}
                   fn="PreferredRentType"
                   values={["All", "Monthly", "Weekly", "Daily"]}
-                />
+                /> */}
                 <CustomizeSelectBox
                   name={"City"}
                   fn="searchText"
@@ -173,11 +189,11 @@ const SecondPage = () => {
                   fn="location"
                 />
 
-                <CustomizeSelectBox
+                {/* <CustomizeSelectBox
                   name={"Gender"}
                   fn="gender"
                   values={["Male", "Female", "Mix"]}
-                />
+                /> */}
 
                 <IconButtonMUI IconButtonsx={{ mt: 1 }} />
               </Box>

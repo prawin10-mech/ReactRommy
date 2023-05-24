@@ -9,10 +9,7 @@ import {
   Select,
   MenuItem,
   FormControl,
-  FormControlLabel,
-  Checkbox,
   Button,
-  Typography,
   InputLabel,
   Autocomplete,
 } from "@mui/material";
@@ -39,9 +36,6 @@ const SearchInputs = () => {
   const propertyType = useSelector((state) => state.search.propertyType);
   const location = useSelector((state) => state.search.location);
   const price = useSelector((state) => state.search.price);
-  const commercialProperty = useSelector(
-    (state) => state.search.commercialProperty
-  );
 
   const [isLoading, setIsLoading] = useState(false);
   const [locationdata, setlocationdata] = useState([]);
@@ -101,18 +95,6 @@ const SearchInputs = () => {
     dispatch(SearchActions.propertyType(e.target.value));
   };
 
-  const searchLocationHandle = (e) => {
-    dispatch(SearchActions.location(e.target.value));
-  };
-
-  const searchPriceHandle = (e) => {
-    dispatch(SearchActions.price(e.target.value));
-  };
-
-  // const commercialPropertyHandle = (e) => {
-  //   dispatch(SearchActions.commercialProperty());
-  // };
-
   const handleSearch = async () => {
     setIsLoading(true);
     setError(null);
@@ -133,11 +115,6 @@ const SearchInputs = () => {
       if (price && price !== "All") {
         obj.price = price;
       }
-      // if (commercialProperty) {
-      //   obj.commercialProperty = commercialProperty;
-      // }
-
-      console.log(obj);
 
       if (Object.keys(obj).length > 0) {
         const { data } = await axios.post(
