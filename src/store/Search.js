@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   searchType: "property",
-  searchText: null,
+  searchText: "Dubai",
   propertyType: null,
-  location: "Dubai",
+  location: null,
   price: null,
   commercialProperty: false,
   availableRooms: [],
@@ -12,7 +12,7 @@ const initialState = {
   amneities: [],
   preferences: [],
   propertyTypes: [],
-  PreferredRentType: [],
+  PreferredRentType: null,
   gender: null,
 };
 
