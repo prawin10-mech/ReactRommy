@@ -64,9 +64,7 @@ const ViewRoom = () => {
   }
 
   const getPartitionRoomData = async () => {
-    const {
-      data,
-    } = await axios.post(
+    const { data } = await axios.post(
       "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available",
       { countryCode: "AE" }
     );
@@ -88,16 +86,15 @@ const ViewRoom = () => {
           checkOut: checkOutDate,
         };
 
-        const {
-          data,
-        } = await axios.post(
+        const { data } = await axios.post(
           "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad",
           obj,
           { headers: { Authorization: token } }
         );
         if (data) {
           toast.success(
-            "Property booked successfully please wait until it confirms"
+            "Property booked successfully please wait until it confirms",
+            toastOptions
           );
         } else {
           toast.error(
@@ -124,7 +121,7 @@ const ViewRoom = () => {
   return (
     <>
       <TopBackground />
-      <Box sx={{ mx: "auto", maxWidth: "700px", my: 3 }}>
+      <Box sx={{ mx: "auto", maxWidth: "700px", my: 3, px: 1 }}>
         <Card
           sx={{
             display: "flex",
@@ -238,34 +235,34 @@ const ViewRoom = () => {
             Room Overview
           </Typography>
           <Grid container spacing={2} sx={{ mx: "auto" }}>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={4}>
               <Typography variant="body1" sx={{ mb: 1 }}>
                 No. of peoples:{" "}
                 {room?.socialPreferences?.numberOfPeople ? "Yes" : "No"}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={4}>
               <Typography variant="body1" sx={{ mb: 1 }}>
                 Nationality:{" "}
                 {room?.socialPreferences?.nationality ? "Yes" : "No"}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={4}>
               <Typography variant="body1" sx={{ mb: 1 }}>
                 Smoking: {room?.socialPreferences?.smoking ? "Yes" : "No"}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={4}>
               <Typography variant="body1" sx={{ mb: 1 }}>
                 Gender: {room?.socialPreferences?.gender ? "Yes" : "No"}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={4}>
               <Typography variant="body1" sx={{ mb: 1 }}>
                 Drinking: {room?.socialPreferences?.drinking ? "Yes" : "No"}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={4}>
               <Typography variant="body1" sx={{ mb: 1 }}>
                 Visitors: {room?.socialPreferences?.visitors ? "Yes" : "No"}
               </Typography>
@@ -280,7 +277,7 @@ const ViewRoom = () => {
           <Grid container spacing={2} sx={{ mx: "auto" }}>
             {room?.amenities?.map((data) => {
               return (
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid item xs={4}>
                   <Typography variant="body1" sx={{ mb: 1 }}>
                     {data}
                   </Typography>
@@ -295,30 +292,30 @@ const ViewRoom = () => {
             Booking Details
           </Typography>
           <Grid container spacing={2} alignItems={"center"} sx={{ mx: "auto" }}>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={4}>
               <Typography fontWeight={600}>Price</Typography>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={4}>
               <Typography>Monthly</Typography>
               <Typography>Weekly</Typography>
               <Typography>Daily</Typography>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={4}>
               <Typography>{room?.monthlyPrice} AED</Typography>
               <Typography>{room?.weeklyPrice} AED</Typography>
               <Typography>{room?.dailyPrice} AED</Typography>
             </Grid>
           </Grid>
           <Grid container spacing={2} alignItems={"center"} sx={{ mx: "auto" }}>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={4}>
               <Typography fontWeight={600}>Deposit</Typography>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={4}>
               <Typography>
                 {room?.deposit && room?.deposit === true ? "Yes" : "No"}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={4}>
               <Typography>
                 {room?.deposit && room?.depositPrice
                   ? `${room?.depositPrice} AED`
@@ -335,7 +332,7 @@ const ViewRoom = () => {
             </Typography>
 
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={12}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   label={"Choose rent type"}
                   variant="outlined"
@@ -354,8 +351,7 @@ const ViewRoom = () => {
             <Grid container spacing={2} my={2}>
               <Grid
                 item
-                xs={12}
-                sm={12}
+                xs={6}
                 sx={{
                   display: "flex",
                   flexDirection: { xs: "column", sm: "row" },
@@ -416,7 +412,7 @@ const ViewRoom = () => {
             Location
           </Typography>
           <Grid container spacing={2} alignItems={"center"} sx={{ mx: "auto" }}>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={4} sm={6} md={4}>
               <Typography>
                 {room?.address?.buildingName}, {room?.address?.location},{" "}
                 {room?.address?.city}
