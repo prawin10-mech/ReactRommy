@@ -1,87 +1,87 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Typography, Grid, Paper } from "@mui/material";
-import { roomsTypeActions } from "../store/Rooms";
 import RoomBuilding from "../assets/roomBuilding.png";
 import RoomWomen from "../assets/roomWomen.png";
+import { useDispatch, useSelector } from "react-redux";
+import { roomsTypeActions } from "../store/Rooms";
+import axios from "axios";
 
 const Rooms = () => {
   const dispatch = useDispatch();
   const activeLink = useSelector((state) => state.room.roomsType);
 
-  const handleProperty = () => {
-    dispatch(roomsTypeActions.propertyAds());
-  };
-
-  const handleRoomMate = () => {
+  const handleProperty = async () => {
+    const { data } = await axios.post(
+      `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/property-ad/available`,
+      { countryCode: "AE" }
+    );
+    dispatch(roomsTypeActions.availableRooms(data));
     dispatch(roomsTypeActions.roommateAds());
   };
 
+  const handleRoomMate = async () => {
+    const { data } = await axios.post(
+      `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/ads/roommate-ad/available`,
+      { countryCode: "AE" }
+    );
+    dispatch(roomsTypeActions.availableRooms(data));
+    dispatch(roomsTypeActions.propertyAds());
+  };
+
   return (
-    <Grid container justifyContent="center" mt={10}>
-      <Grid item sx={{ display: "flex" }}>
-        <img
-          src={RoomBuilding}
-          alt="propertyAds"
-          width={200}
-          height={160}
-          style={{ marginBottom: 10 }}
-        />
-        <Paper
-          elevation={3}
-          onClick={handleRoomMate}
-          sx={{
-            p: 2,
-            height: 240,
-            width: 240,
-            textAlign: "center",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            backgroundColor: activeLink === "propertyAds" ? "white" : undefined,
-            border:
-              activeLink === "propertyAds" ? "2px solid purple" : undefined,
-            borderRadius: "md",
-            boxShadow: "0 0 20px 5px rgba(0,0,0,0.75)",
-          }}
+    <div className="flex justify-center mt-10">
+      <div className="m-10 flex flex-col md:flex-row gap-10">
+        <div
+          className="flex flex-col md:flex-row cursor-pointer"
+          onClick={() => handleProperty()}
         >
-          <Typography variant="h6" component="p">
+          <img
+            src={RoomBuilding}
+            alt="property"
+            width={"200px"}
+            className="h-auto md:h-40 w-auto md:w-40 mx-auto md:mx-0 relative md:left-19 bottom-[18px]"
+          />
+          <p
+            className={`p-5 md:p-10 h-auto md:h-32 w-auto md:w-64 text-center text-xl  bg-white shadow-md text-orange-500 flex-1 md:ml-[-40px] font-bold ${
+              activeLink === "property"
+                ? "border-x-2 border-t-2 border-purple-500 rounded-md bg-white text-purple-600"
+                : "rounded-md"
+            }`}
+            style={{
+              boxShadow: "0 0 20px 5px rgba(0,0,0,0.75)",
+              WebkitBoxShadow: "0 0 20px 5px rgba(0,0,0,0.75)",
+              MozBoxShadow: "0 0 20px 5px rgba(0,0,0,0.75)",
+            }}
+          >
             Find Room
-          </Typography>
-        </Paper>
-      </Grid>
-      <Grid item>
-        <Paper
-          elevation={3}
-          onClick={handleProperty}
-          sx={{
-            p: 2,
-            height: 240,
-            width: 240,
-            textAlign: "center",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            backgroundColor: activeLink === "roommateAds" ? "white" : undefined,
-            border:
-              activeLink === "roommateAds" ? "2px solid purple" : undefined,
-            borderRadius: "md",
-            boxShadow: "0 0 20px 5px rgba(0,0,0,0.75)",
-          }}
+          </p>
+        </div>
+        <div
+          className="flex flex-col md:flex-row cursor-pointer"
+          onClick={() => handleRoomMate()}
         >
           <img
             src={RoomWomen}
             alt="roommateAds"
-            width={200}
-            height={240}
-            style={{ marginBottom: 10 }}
+            width={"250px"}
+            className="h-auto md:h-48 w-auto md:w-40 mx-auto md:mx-0 relative md:left-24 bottom-[40px]"
           />
-          <Typography variant="h6" component="p">
+          <p
+            className={`p-5 md:p-10 h-auto md:h-32 w-auto md:w-64 text-center text-xl  bg-white text-orange-500 shadow-md flex-1 font-bold ${
+              activeLink === "roommate"
+                ? "border-x-2 border-t-2 border-purple-500 rounded-md bg-white text-purple-600"
+                : "rounded-md"
+            } `}
+            style={{
+              boxShadow: "0 0 20px 5px rgba(0,0,0,0.75)",
+              WebkitBoxShadow: "0 0 20px 5px rgba(0,0,0,0.75)",
+              MozBoxShadow: "0 0 20px 5px rgba(0,0,0,0.75)",
+            }}
+          >
             Find Roommate
-          </Typography>
-        </Paper>
-      </Grid>
-    </Grid>
+          </p>
+        </div>
+      </div>
+    </div>
   );
 };
 

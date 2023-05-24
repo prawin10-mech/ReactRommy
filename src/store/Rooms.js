@@ -1,16 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { roomsType: "propertyAds", rooms: [] };
+const initialState = { roomsType: "property", rooms: [] };
 
 const RoomsTypeSlice = createSlice({
   name: "rooms type",
   initialState,
   reducers: {
     propertyAds(state) {
-      state.roomsType = "roommateAds";
+      state.roomsType = "roommate";
     },
     roommateAds(state) {
-      state.roomsType = "propertyAds";
+      state.roomsType = "property";
     },
     availableRooms(state, action) {
       state.rooms = action.payload;

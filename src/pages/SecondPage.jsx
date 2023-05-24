@@ -4,11 +4,6 @@ import SingleCardCarousel from "../components/Card/SingleCardCarousel";
 
 import CustomizeSelectBox from "../components/MUIcomponent/CustomizeSelectBox";
 import IconButtonMUI from "../components/MUIcomponent/IconButtonMUI";
-import ChipsArray from "../components/MUIcomponent/ChipsArray";
-import CheckboxLabels from "../components/MUIcomponent/CheckBox";
-import PositionedMenu from "../components/MUIcomponent/Menu";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import IconLabelButtons from "../components/MUIcomponent/ButtonMuiWithIcon";
 
 import AllAvailableRooms from "../components/rooms/AllAvailableRooms";
 import axios from "axios";
