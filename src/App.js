@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import "slick-carousel/slick/slick.css";
@@ -26,9 +26,33 @@ import AboutBooking from "./pages/AboutBooking";
 import PayRent from "./pages/PayRent";
 import MyAds from "./pages/MyAds";
 import ViewTenant from "./pages/ViewTenant";
+import firebase, { messaging } from "./firebase/index";
+import { getToken } from "firebase/messaging";
 import StripePaymentCancel from "./pages/StripePaymentCancel";
+import axios from "axios";
 
 const App = () => {
+
+  const notificationpremision= async ()=>{
+   const permission = await Notification.requestPermission()
+   if(permission==='granted'){
+     const token = await getToken(messaging, {
+       vapidKey:
+       "BK1YSNEVcw8HU87zqvSqIZIrLAegjVlT_LLIPVRycirOw5ghNJ0zH9uTT5zxceX2v04Z3E0vIIEb38Xk1QeEBRA",
+      });
+      console.log("tojen", firebase);
+   }
+   else if(permission==="denied"){
+    alert("You denied for the notification")
+   }
+  }
+
+  useEffect(() => {
+   notificationpremision()
+   
+  }, [])
+
+  
   return (
     <Router>
       <div>
