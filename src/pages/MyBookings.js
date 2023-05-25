@@ -62,75 +62,78 @@ const MyBookings = () => {
     fetchMyBookings();
   }, []);
 
-  const myBookingData = myBookings?.map((booking) => (
-    <Grid
-      key={booking._id}
-      item
-      xs={12}
-      sm={6}
-      md={4}
-      lg={3}
-      sx={{ cursor: "pointer", p: 2 }}
-      onClick={() => navigate(`/myBookings/aboutBooking/${booking.id}`)}
-    >
+  const myBookingData = myBookings
+    ?.slice()
+    .reverse()
+    .map((booking) => (
       <Grid
-        sx={{
-          width: "300px",
-          backgroundColor: "#f5f5f5",
-          border: "1px solid #ccc",
-          borderRadius: "10px",
-        }}
+        key={booking._id}
+        item
+        xs={12}
+        sm={6}
+        md={4}
+        lg={3}
+        sx={{ cursor: "pointer", p: 2 }}
+        onClick={() => navigate(`/myBookings/aboutBooking/${booking.id}`)}
       >
-        <CardMedia
-          component="img"
+        <Grid
           sx={{
-            width: "100%",
-            height: "200px",
-            padding: "10px",
-            overflow: "hidden",
-            borderRadius: "20px ",
-            objectFit: "cover",
+            width: "300px",
+            backgroundColor: "#f5f5f5",
+            border: "1px solid #ccc",
+            borderRadius: "10px",
           }}
-          image={
-            booking.ad.images.length > 0 ? booking.ad.images[0] : [DummyImage]
-          }
-          alt={booking?.id}
-        />
-        <Grid sx={{ padding: "10px" }}>
-          <Typography variant="subtitle1">
-            Property:{" "}
-            <Typography component="span" sx={{ fontWeight: "700" }}>
-              {booking.quantity} {booking.ad.type}
+        >
+          <CardMedia
+            component="img"
+            sx={{
+              width: "100%",
+              height: "200px",
+              padding: "10px",
+              overflow: "hidden",
+              borderRadius: "20px ",
+              objectFit: "cover",
+            }}
+            image={
+              booking.ad.images.length > 0 ? booking.ad.images[0] : [DummyImage]
+            }
+            alt={booking?.id}
+          />
+          <Grid sx={{ padding: "10px" }}>
+            <Typography variant="subtitle1">
+              Property:{" "}
+              <Typography component="span" sx={{ fontWeight: "700" }}>
+                {booking.quantity} {booking.ad.type}
+              </Typography>
             </Typography>
-          </Typography>
-          <Typography variant="subtitle1">
-            Location:{" "}
-            <Typography component="span" sx={{ fontWeight: "700" }}>
-              {booking.ad.address.location}
+            <Typography variant="subtitle1">
+              Location:{" "}
+              <Typography component="span" sx={{ fontWeight: "700" }}>
+                {booking.ad.address.location}
+              </Typography>
             </Typography>
-          </Typography>
-          <Typography variant="subtitle1">
-            Status:{" "}
-            <Typography
-              component="span"
-              sx={{
-                fontWeight: "700",
-                color: getStatusColor(booking?.status),
-              }}
-            >
-              {!booking?.isPayed ? capitalize(booking.status) : "Paid"}
+            <Typography variant="subtitle1">
+              Status:{" "}
+              <Typography
+                component="span"
+                sx={{
+                  fontWeight: "700",
+                  color: getStatusColor(booking?.status),
+                }}
+              >
+                {!booking?.isPayed ? capitalize(booking.status) : "Paid"}
+              </Typography>
             </Typography>
-          </Typography>
-          <Typography variant="subtitle1">
-            Date:{" "}
-            <Typography component="span" sx={{ fontWeight: "700" }}>
-              {formatDateTime(new Date(booking.createdAt).toISOString())}
+            <Typography variant="subtitle1">
+              Date:{" "}
+              <Typography component="span" sx={{ fontWeight: "700" }}>
+                {formatDateTime(new Date(booking.createdAt).toISOString())}
+              </Typography>
             </Typography>
-          </Typography>
+          </Grid>
         </Grid>
       </Grid>
-    </Grid>
-  ));
+    ));
 
   return (
     <div className="my-bookings-container">
