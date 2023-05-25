@@ -445,7 +445,6 @@ const AboutBooking = () => {
                 spacing={2}
                 sx={{ justifyContent: "center", mt: 5 }}
               >
-                {console.log(type, property.isPayed)}
                 <Button variant="contained">Chat with Tenant</Button>
               </Grid>
             )}
