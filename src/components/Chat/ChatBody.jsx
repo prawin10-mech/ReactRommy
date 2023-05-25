@@ -12,21 +12,38 @@ import AttachmentIcon from "@mui/icons-material/Attachment";
 import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
 import axios from "axios";
 
-const ChatBody = ({ user, messages }) => {
+const ChatBody = ({ user, messages, messageSended }) => {
   const [openEmoji, setOpenEmoji] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
-  const messagesEndRef = useRef(null);
+  const [conversationd, setConversationd] = useState([]);
+  const chatContainerRef = useRef(null);
 
   const token = localStorage.getItem("token");
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
   };
+
+  const getConversations = async () => {
+    try {
+      const { data } = await axios.get(
+        "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/messages/conversations",
+        { headers: { Authorization: token } }
+      );
+      // setConversationd(data.find);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  console.log(conversationd);
 
   useEffect(() => {
     setChatMessages(messages);
     scrollToBottom();
+
+    getConversations();
   }, [messages]);
 
   const sendMessage = async () => {
@@ -42,6 +59,14 @@ const ChatBody = ({ user, messages }) => {
         { headers: { Authorization: token } }
       );
       setNewMessage("");
+      messageSended();
+
+      // After sending the message, retrieve the updated conversation messages
+      const { data: updatedMessages } = await axios.get(
+        `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/messages/?otherId=${user.otherId}`,
+        { headers: { Authorization: token } }
+      );
+      setChatMessages(updatedMessages);
     } catch (err) {
       console.log(err);
     }
@@ -51,10 +76,15 @@ const ChatBody = ({ user, messages }) => {
     setNewMessage(e.target.value);
   };
 
-  console.log(user);
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
 
   return (
-    <Box>
+    <Box sx={{ paddingBottom: "64px" }}>
       <Box
         sx={{
           display: "flex",
@@ -74,33 +104,36 @@ const ChatBody = ({ user, messages }) => {
       </Box>
       <Box
         sx={{
-          height: "calc(100vh - 200px)",
+          height: "calc(100vh - 264px)",
           overflowY: "auto",
           padding: "16px",
         }}
+        ref={chatContainerRef}
       >
-        {chatMessages.reverse().map((message) => {
-          const isCurrentUser = message?.senderId === user?.otherId;
-          return (
-            <Grid
-              key={message.id}
-              sx={{
-                backgroundColor: isCurrentUser ? "purple" : "blue",
-                color: "#fff",
-                padding: "8px",
-                borderRadius: "8px",
-                marginBottom: "8px",
-                alignSelf: isCurrentUser ? "flex-start" : "flex-end",
-                marginLeft: isCurrentUser ? 0 : "auto",
-                marginRight: isCurrentUser ? "auto" : 0,
-                maxWidth: "70%",
-              }}
-            >
-              <Typography variant="body1">{message.body}</Typography>
-            </Grid>
-          );
-        })}
-        <div ref={messagesEndRef} />
+        {chatMessages
+          .slice(0)
+          .reverse()
+          .map((message) => {
+            const isCurrentUser = message?.senderId === user?.otherId;
+            return (
+              <Grid
+                key={message.id}
+                sx={{
+                  backgroundColor: isCurrentUser ? "purple" : "blue",
+                  color: "#fff",
+                  padding: "8px",
+                  borderRadius: "8px",
+                  marginBottom: "8px",
+                  alignSelf: isCurrentUser ? "flex-start" : "flex-end",
+                  marginLeft: isCurrentUser ? 0 : "auto",
+                  marginRight: isCurrentUser ? "auto" : 0,
+                  maxWidth: "70%",
+                }}
+              >
+                <Typography variant="body1">{message.body}</Typography>
+              </Grid>
+            );
+          })}
       </Box>
 
       <Paper
@@ -109,9 +142,8 @@ const ChatBody = ({ user, messages }) => {
           p: "4px",
           display: "flex",
           alignItems: "center",
-          position: "fixed",
-          bottom: 0,
           backgroundColor: "#f0f0f0",
+          zIndex: 1,
         }}
       >
         <IconButton
@@ -127,11 +159,14 @@ const ChatBody = ({ user, messages }) => {
             borderRadius: "20px",
             backgroundColor: "#fff",
             padding: "8px",
+            flex: 1,
+            marginRight: "8px",
           }}
           placeholder="Type a message"
           value={newMessage}
           inputProps={{ "aria-label": "" }}
           onChange={sendMessageInputHandler}
+          onKeyDown={handleKeyDown}
         />
 
         <IconButton
@@ -146,8 +181,9 @@ const ChatBody = ({ user, messages }) => {
           color="primary"
           sx={{ p: "10px", color: "#075e54" }}
           aria-label="directions"
+          onClick={sendMessage}
         >
-          <SendRoundedIcon onClick={sendMessage} />
+          <SendRoundedIcon />
         </IconButton>
       </Paper>
     </Box>

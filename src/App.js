@@ -27,6 +27,7 @@ import PayRent from "./pages/PayRent";
 import MyAds from "./pages/MyAds";
 import ViewTenant from "./pages/ViewTenant";
 import StripePaymentCancel from "./pages/StripePaymentCancel";
+import ChatBody from "./components/Chat/ChatBody";
 
 const App = () => {
   return (
@@ -64,6 +65,10 @@ const App = () => {
             element={<PrivateRoute Component={ViewProfile} />}
           />
           <Route path="/chat" element={<PrivateRoute Component={Chat} />} />
+          <Route
+            path="/chat/:id"
+            element={<PrivateRoute Component={ChatBody} />}
+          />
           <Route
             path="/payment/cancel"
             element={<PrivateRoute Component={StripePaymentCancel} />}

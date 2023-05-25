@@ -97,7 +97,7 @@ const AboutBooking = () => {
         </Grid>
       )}
 
-      <Grid container justifyContent="center" sx={{ my: 5 }}>
+      <Grid container justifyContent="center" sx={{ my: 5, px: 2 }}>
         <Grid item xs={12} md={8} lg={6}>
           <Typography
             variant="h5"
@@ -105,7 +105,7 @@ const AboutBooking = () => {
               fontWeight: 700,
               fontSize: "25px",
               textAlign: "center",
-              mb: 2,
+              my: 2,
             }}
           >
             About Booking
@@ -283,6 +283,7 @@ const AboutBooking = () => {
                     fontWeight: 700,
                     fontSize: "25px",
                     textAlign: "center",
+                    my: 2,
                   }}
                 >
                   About Property
@@ -352,6 +353,7 @@ const AboutBooking = () => {
                     fontWeight: 700,
                     fontSize: "25px",
                     textAlign: "center",
+                    my: 2,
                   }}
                 >
                   About Client
