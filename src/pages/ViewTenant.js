@@ -157,13 +157,7 @@ const ViewRoom = () => {
                     , {room?.address?.location}, {room?.address?.city}
                   </Typography>
                 </Box>
-                <Box
-                //gap={2}
-                //   sx={{
-                //     display: "flex",
-                //     flexDirection: { xs: "row", sm: "column" },
-                //   }}
-                >
+                <Box>
                   <Button variant="contained">Chat</Button>
                   <Typography sx={{ mt: 1, fontWeight: 700 }}>
                     {room?.budget} AED Budget
@@ -181,18 +175,17 @@ const ViewRoom = () => {
             </Box>
           )}
         </Card>
+        <hr style={{ margin: "20px 0" }} />
 
         <Box mb={5}>
-          <Typography fontWeight={700} fontSize={"1.3rem"}>
-            About Me
-          </Typography>
+          <Typography fontWeight={700}>About Me</Typography>
           <Grid container spacing={2} sx={{ mx: "auto", px: 1 }}>
             <Grid item xs={4}>
               <Typography variant="body1" sx={{ mb: 1 }}>
                 Age
               </Typography>
               <Typography sx={{ fontWeight: "600" }}>
-                {room?.aboutYou?.age}
+                {room?.aboutYou?.age ? room?.aboutYou?.age : "N/A"}
               </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -200,7 +193,9 @@ const ViewRoom = () => {
                 Occupation
               </Typography>
               <Typography sx={{ fontWeight: "600" }}>
-                {room?.aboutYou?.occupation}
+                {room?.aboutYou?.occupation
+                  ? room?.aboutYou?.occupation
+                  : "N/A"}
               </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -208,7 +203,9 @@ const ViewRoom = () => {
                 Sign
               </Typography>
               <Typography sx={{ fontWeight: "600" }}>
-                {room?.aboutYou?.astrologicalSign}
+                {room?.aboutYou?.astrologicalSign
+                  ? room?.aboutYou?.astrologicalSign
+                  : "N/A"}
               </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -216,7 +213,7 @@ const ViewRoom = () => {
                 Gender
               </Typography>
               <Typography sx={{ fontWeight: "600" }}>
-                {room?.aboutYou?.gender}
+                {room?.aboutYou?.gender ? room?.aboutYou?.gender : "N/A"}
               </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -224,7 +221,7 @@ const ViewRoom = () => {
                 Nationality
               </Typography>
               <Typography sx={{ fontWeight: "600" }}>
-                {room?.aboutYou?.nationality}
+                {room?.poster?.country ? room?.poster?.country : "N/A"}
               </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -232,7 +229,7 @@ const ViewRoom = () => {
                 Lifestyles:
               </Typography>
               <Typography sx={{ fontWeight: "600" }}>
-                {room?.aboutYou?.lifeStyle}
+                {room?.aboutYou?.lifeStyle ? room?.aboutYou?.lifeStyle : "N/A"}
               </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -240,23 +237,24 @@ const ViewRoom = () => {
                 languages
               </Typography>
               <Typography sx={{ fontWeight: "600" }}>
-                {room?.aboutYou?.languages.join(",")}
+                {room?.aboutYou?.languages.length !== 0
+                  ? room?.aboutYou?.languages.join(",")
+                  : "N/A"}
               </Typography>
             </Grid>
           </Grid>
         </Box>
+        <hr style={{ margin: "10px 0" }} />
 
         <Box mb={5}>
-          <Typography fontWeight={700} fontSize={"1.3rem"}>
-            Preffered Roommate
-          </Typography>
+          <Typography fontWeight={700}>Preffered Roommate</Typography>
           <Grid container spacing={2} sx={{ mx: "auto" }}>
             <Grid item xs={4}>
               <Typography variant="body1" sx={{ mb: 1 }}>
                 Gender
               </Typography>
               <Typography sx={{ fontWeight: "600" }}>
-                {room?.aboutYou?.gender}
+                {room?.socialPreferences?.gender}
               </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -264,7 +262,7 @@ const ViewRoom = () => {
                 Nationality
               </Typography>
               <Typography sx={{ fontWeight: "600" }}>
-                {room?.aboutYou?.nationality}
+                {room?.socialPreferences?.nationality}
               </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -272,15 +270,16 @@ const ViewRoom = () => {
                 Lifestyles:
               </Typography>
               <Typography sx={{ fontWeight: "600" }}>
-                {room?.aboutYou?.lifeStyle}
+                {room?.socialPreferences?.lifeStyle}
               </Typography>
             </Grid>
           </Grid>
         </Box>
+        <hr style={{ margin: "10px 0" }} />
 
         <Box sx={{ mb: 2 }}>
-          <Typography fontWeight={700} fontSize={"1.3rem"} mb={2}>
-            Housing Preferences
+          <Typography fontWeight={700} mb={2}>
+            Sharing/Housing Preferences
           </Typography>
           <Grid container spacing={2} alignItems={"center"} sx={{ mx: "auto" }}>
             <Grid item xs={4}>
@@ -349,11 +348,10 @@ const ViewRoom = () => {
               </Typography>
             </Grid>
           </Grid>
+          <hr style={{ margin: "10px 0" }} />
 
           <Box mb={5}>
-            <Typography fontWeight={700} fontSize={"1.3rem"}>
-              Amenities
-            </Typography>
+            <Typography fontWeight={700}>Amenities</Typography>
             <Grid container spacing={2} sx={{ mx: "auto" }}>
               {room?.amenities?.map((data) => {
                 return (
@@ -366,11 +364,10 @@ const ViewRoom = () => {
               })}
             </Grid>
           </Box>
+          <hr fontWeight="600" />
 
           <Box mb={5}>
-            <Typography fontWeight={700} fontSize={"1.3rem"}>
-              Interests
-            </Typography>
+            <Typography fontWeight={700}>Interests</Typography>
             <Grid container spacing={2} sx={{ mx: "auto" }}>
               {room?.interests?.map((data) => {
                 return (
