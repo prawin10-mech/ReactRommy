@@ -8,17 +8,6 @@ const ImageCarousel1 = ({ images }) => {
   if (images.length === 0) images = [DummyImage];
   return (
     <Paper sx={{ height: "270px" }}>
-      {/* {images === [] && (
-        <Carousel showArrows={false} dynamicHeight={false}>
-          {images.map((image, index) => (
-            <>
-              <Box key={index}>
-                <img src={image} alt="no img" style={{ height: "250px" }} />
-              </Box>
-            </>
-          ))}
-        </Carousel>
-      )} */}
       <Carousel showArrows={false} dynamicHeight={false}>
         {images.map((image, index) => (
           <>
@@ -64,8 +53,6 @@ const CarouselWithMultipleImage = (props) => {
 
   return (
     <Stack sx={{ p: 2, my: 2, mx: 1 }} spacing={2}>
-      {/* <Grid container justifyContent="center">
-                <Grid item xs={12} md={8}> */}
       <Carousel
         showThumbs={false}
         showArrows={true}
@@ -76,7 +63,11 @@ const CarouselWithMultipleImage = (props) => {
         // renderArrowNext={false}
       >
         {imageSets.map((imageSet, index) => (
-          <Grid key={index}>
+          <Grid
+            key={index}
+            // onClick={() => navigate("/")}
+            sx={{ cursor: "pointer" }}
+          >
             <Grid container spacing={2}>
               {imageSet.map((value, id) =>
                 Object.entries(value).map(([key, val]) => {

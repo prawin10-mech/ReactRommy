@@ -15,11 +15,15 @@ const AboutBooking = () => {
   const type = JSON.parse(Cookies.get("user")).type;
 
   const getMyBookedProperty = async () => {
-    const { data } = await axios.get(
-      `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad/${id}`,
-      { headers: { Authorization: token } }
-    );
-    setProperty(data);
+    try {
+      const { data } = await axios.get(
+        `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad/${id}`,
+        { headers: { Authorization: token } }
+      );
+      setProperty(data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const capitalize = (str) => {
@@ -50,35 +54,47 @@ const AboutBooking = () => {
   };
 
   const acceptBookingHandler = async (bookingId) => {
-    const { data } = await axios.post(
-      `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad/${bookingId}/offer`,
-      {},
-      { headers: { Authorization: token } }
-    );
-    if (data === "OK") {
-      setOffered(true);
+    try {
+      const { data } = await axios.post(
+        `https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad/${bookingId}/offer`,
+        {},
+        { headers: { Authorization: token } }
+      );
+      if (data === "OK") {
+        setOffered(true);
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
   console.log(property);
 
   const cancelBookingHandler = async (bookingId) => {
-    await axios.post(
-      "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad/landlord/cancel",
-      { bookingId },
-      { headers: { Authorization: token } }
-    );
-    navigate("/myBookings");
-    setOffered(false);
+    try {
+      await axios.post(
+        "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad/landlord/cancel",
+        { bookingId },
+        { headers: { Authorization: token } }
+      );
+      navigate("/myBookings");
+      setOffered(false);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const cancelTenantBookingHandler = async (bookingId) => {
-    await axios.post(
-      "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad/tenant/cancel",
-      { bookingId },
-      { headers: { Authorization: token } }
-    );
-    navigate("/myBookings");
+    try {
+      await axios.post(
+        "https://roomy-finder-evennode.ap-1.evennode.com/api/v1/bookings/property-ad/tenant/cancel",
+        { bookingId },
+        { headers: { Authorization: token } }
+      );
+      navigate("/myBookings");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -97,7 +113,7 @@ const AboutBooking = () => {
         </Grid>
       )}
 
-      <Grid container justifyContent="center" sx={{ my: 5 }}>
+      <Grid container justifyContent="center" sx={{ my: 5, px: 2 }}>
         <Grid item xs={12} md={8} lg={6}>
           <Typography
             variant="h5"
@@ -105,7 +121,7 @@ const AboutBooking = () => {
               fontWeight: 700,
               fontSize: "25px",
               textAlign: "center",
-              mb: 2,
+              my: 2,
             }}
           >
             About Booking
@@ -283,6 +299,7 @@ const AboutBooking = () => {
                     fontWeight: 700,
                     fontSize: "25px",
                     textAlign: "center",
+                    my: 2,
                   }}
                 >
                   About Property
@@ -352,6 +369,7 @@ const AboutBooking = () => {
                     fontWeight: 700,
                     fontSize: "25px",
                     textAlign: "center",
+                    my: 2,
                   }}
                 >
                   About Client
@@ -419,6 +437,16 @@ const AboutBooking = () => {
                 sx={{ justifyContent: "center", mt: 5 }}
               >
                 <Button variant="contained">Chat with Client</Button>
+              </Grid>
+            )}
+            {type === "landlord" && property?.isPayed && (
+              <Grid
+                container
+                spacing={2}
+                sx={{ justifyContent: "center", mt: 5 }}
+              >
+                {console.log(type, property.isPayed)}
+                <Button variant="contained">Chat with Tenant</Button>
               </Grid>
             )}
 

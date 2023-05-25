@@ -238,6 +238,7 @@ const ViewRoom = () => {
             </Box>
           )}
         </Card>
+        <hr style={{ margin: "20px 0" }} />
 
         <Box mb={5}>
           <Typography fontWeight={700} fontSize={"1.3rem"}>
@@ -288,6 +289,7 @@ const ViewRoom = () => {
             </Grid>
           </Grid>
         </Box>
+        <hr style={{ margin: "20px 0" }} />
 
         <Box mb={5}>
           <Typography fontWeight={700} fontSize={"1.3rem"}>
@@ -305,6 +307,7 @@ const ViewRoom = () => {
             })}
           </Grid>
         </Box>
+        <hr style={{ margin: "20px 0" }} />
 
         <Box sx={{}}>
           <Typography fontWeight={700} fontSize={"1.3rem"} mb={2}>
@@ -349,6 +352,7 @@ const ViewRoom = () => {
             </Grid>
           </Grid>
         </Box>
+        <hr style={{ margin: "20px 0" }} />
 
         {user?.type === "roommate" && (
           <Box sx={{ mt: 5 }}>
@@ -411,24 +415,9 @@ const ViewRoom = () => {
                     </Box>
                   </Typography>
                 </Grid>
-                {/* {preferredRentType === "Monthly" && (
-                <Typography>
-                  Total: {totalDuration}{" "}
-                  {totalDuration > 1 ? "Months" : "Month"}
-                </Typography>
-              )}
-              {preferredRentType === "Weekly" && (
-                <Typography>
-                  Total: {totalDuration} {totalDuration > 1 ? "Weeks" : "Week"}
-                </Typography>
-              )}
-              {preferredRentType === "Daily" && (
-                <Typography>
-                  Total: {totalDuration} {totalDuration > 1 ? "Days" : "Day"}
-                </Typography>
-              )} */}
               </Grid>
             </Grid>
+            <hr style={{ margin: "20px 0" }} />
           </Box>
         )}
 
@@ -445,15 +434,17 @@ const ViewRoom = () => {
             </Grid>
           </Grid>
         </Box>
-        <Grid item sx={{ display: "flex", justifyContent: "center" }}>
-          <Button
-            variant={"contained"}
-            color="primary"
-            onClick={handleBookRoom}
-          >
-            Book now
-          </Button>
-        </Grid>
+        {user?.type === "roommate" && (
+          <Grid item sx={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              variant={"contained"}
+              color="primary"
+              onClick={handleBookRoom}
+            >
+              Book now
+            </Button>
+          </Grid>
+        )}
 
         <ToastContainer />
       </Box>

@@ -30,6 +30,7 @@ import firebase, { messaging } from "./firebase/index";
 import { getToken } from "firebase/messaging";
 import StripePaymentCancel from "./pages/StripePaymentCancel";
 import axios from "axios";
+import ChatBody from "./components/Chat/ChatBody";
 
 const App = () => {
 
@@ -88,6 +89,10 @@ const App = () => {
             element={<PrivateRoute Component={ViewProfile} />}
           />
           <Route path="/chat" element={<PrivateRoute Component={Chat} />} />
+          <Route
+            path="/chat/:id"
+            element={<PrivateRoute Component={ChatBody} />}
+          />
           <Route
             path="/payment/cancel"
             element={<PrivateRoute Component={StripePaymentCancel} />}
