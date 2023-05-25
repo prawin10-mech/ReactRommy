@@ -16,7 +16,6 @@ const ChatBody = ({ user, messages, messageSended }) => {
   const [openEmoji, setOpenEmoji] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
-  const [conversationd, setConversationd] = useState([]);
   const chatContainerRef = useRef(null);
 
   const token = localStorage.getItem("token");
@@ -36,8 +35,6 @@ const ChatBody = ({ user, messages, messageSended }) => {
       console.log(err);
     }
   };
-
-  console.log(conversationd);
 
   useEffect(() => {
     setChatMessages(messages);
