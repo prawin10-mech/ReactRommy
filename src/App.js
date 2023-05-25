@@ -37,11 +37,12 @@ const App = () => {
   const notificationpremision= async ()=>{
    const permission = await Notification.requestPermission()
    if(permission==='granted'){
-     const token = await getToken(messaging, {
-       vapidKey:
-       "BK1YSNEVcw8HU87zqvSqIZIrLAegjVlT_LLIPVRycirOw5ghNJ0zH9uTT5zxceX2v04Z3E0vIIEb38Xk1QeEBRA",
-      });
-      console.log("tojen", firebase);
+  //    const token = await getToken(messaging, {
+  //      vapidKey:
+  //      "BK1YSNEVcw8HU87zqvSqIZIrLAegjVlT_LLIPVRycirOw5ghNJ0zH9uTT5zxceX2v04Z3E0vIIEb38Xk1QeEBRA",
+  //     });
+  //     console.log("tojen", token);
+  console.log("tojen", permission);
    }
    else if(permission==="denied"){
     alert("You denied for the notification")
